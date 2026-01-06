@@ -54,6 +54,9 @@
     <ClCompile Include="demo\source\Demo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="engine\source\Button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\include\AssetManager.h">
@@ -92,7 +95,10 @@
     <ClInclude Include="demo\include\Demo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="demo\include\Button.h">
+    <ClInclude Include="engine\include\Button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\UIManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

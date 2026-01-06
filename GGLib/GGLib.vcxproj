@@ -22,6 +22,7 @@
     <ClCompile Include="demo\source\Demo.cpp" />
     <ClCompile Include="engine\source\AssetManager.cpp" />
     <ClCompile Include="engine\source\AudioManager.cpp" />
+    <ClCompile Include="engine\source\Button.cpp" />
     <ClCompile Include="engine\source\Canvas.cpp" />
     <ClCompile Include="engine\source\Game.cpp" />
     <ClCompile Include="engine\source\GameTimer.cpp" />
@@ -34,7 +35,7 @@
     <ClCompile Include="demo\source\DemoAssetManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="demo\include\Button.h" />
+    <ClInclude Include="engine\include\Button.h" />
     <ClInclude Include="demo\include\Demo.h" />
     <ClInclude Include="engine\include\AssetManager.h" />
     <ClInclude Include="engine\include\AudioManager.h" />
@@ -47,6 +48,7 @@
     <ClInclude Include="engine\include\MoreMath.h" />
     <ClInclude Include="engine\include\TextFile.h" />
     <ClInclude Include="demo\include\DemoAssetManager.h" />
+    <ClInclude Include="engine\include\UIManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

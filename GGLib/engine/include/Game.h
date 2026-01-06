@@ -7,6 +7,7 @@
 #include "Canvas.h"
 #include "AssetManager.h"
 #include "AudioManager.h"
+#include "UIManager.h"
 
 class Game
 {
@@ -22,6 +23,7 @@ protected:
 	GameWindow gameWindow;
 	AssetManager assetManager;
 	AudioManager audioManager;
+	UIManager uiManager;
 
 public:
 	Game();

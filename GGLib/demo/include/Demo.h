@@ -12,7 +12,7 @@ private:
 	Button btn;
 
 public:
-	Demo() : demoAssetManager(std::make_shared<DemoAssetManager>(&assetManager)), btn(&inputManager)
+	Demo() : demoAssetManager(std::make_shared<DemoAssetManager>(&assetManager))
 	{}
 
 private:
