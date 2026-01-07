@@ -5,7 +5,7 @@ bool Demo::onGameInit()
 	// load assets
 	if (!demoAssetManager->loadResources())
 	{
-		std::cout << "Failed to load game resources! See console output. Aborting game." << std::endl;
+		std::cout << "Failed to load resources! See console output. Aborting." << std::endl;
 		return false;
 	}
 
@@ -23,11 +23,29 @@ bool Demo::onGameInit()
 	inputManager.addMouseEventListener(this);
 
 	// init UI
-	btn.setBounds(500, 500, 50, 50);
-	btn.setColor(128, 255, 128);
-	btn.setOnMouseEnter([&]() {btn.setColor(255, 255, 255); });
-	btn.setOnMouseExit([&]() {btn.setColor(128, 255, 128); });
-	btn.setOnClick([]() { std::cout << "Hello" << std::endl; });
+	size_t NUM_COLS = 10, NUM_ROWS = 10;
+	for (size_t c = 0; c < NUM_COLS; c++)
+	{
+		for (size_t r = 0; r < NUM_ROWS; r++)
+		{
+			size_t i = r * NUM_COLS + c;
+
+			Button *btn = new Button;
+
+			btn->setBounds(c * 50 + 250, r*50 + 250, 45, 45);
+			btn->setBackColor(128, 255, 128);
+			btn->setOnMouseEnter([=]() { btn->setBackColor(255, 255, 255); });
+			btn->setOnMouseExit([=]() {btn->setBackColor(128, 255, 128); });
+			btn->setOnClick([=]() { 
+				int i = stoi(btn->getText());
+				i++;
+				btn->setText(std::to_string(i));
+			});
+			btn->setText(std::to_string(i));
+
+			buttons.push_back(btn);
+		}
+	}
 
 	return true;
 }
@@ -54,8 +72,8 @@ void Demo::onGameLoop()
 	canvas.drawString("Mouse X: " + std::to_string(inputManager.getMouseX()), 10, 50);
 	canvas.drawString("Mouse Y: " + std::to_string(inputManager.getMouseY()), 10, 70);
 
-	// render button
-	btn.render(&canvas);
+	// TODO: would be beneficial to abstract this away from the user. problem is you would still need to rely on the user clearing the screen and updating the screen --> how much should the user be able to control ui rendering? ideally as much as they wish, or as little as they wish...
+	uiManager.renderUI(&canvas); 
 
 	// update screen
 	canvas.present();

@@ -31,6 +31,7 @@
     <ClCompile Include="engine\source\InputManager.cpp" />
     <ClCompile Include="engine\source\MoreMath.cpp" />
     <ClCompile Include="engine\source\TextFile.cpp" />
+    <ClCompile Include="engine\source\UIControl.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="demo\source\DemoAssetManager.cpp" />
   </ItemGroup>
@@ -48,6 +49,7 @@
     <ClInclude Include="engine\include\MoreMath.h" />
     <ClInclude Include="engine\include\TextFile.h" />
     <ClInclude Include="demo\include\DemoAssetManager.h" />
+    <ClInclude Include="engine\include\UIControl.h" />
     <ClInclude Include="engine\include\UIManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

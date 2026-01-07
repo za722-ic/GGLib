@@ -53,6 +53,11 @@ void Canvas::setColor(Uint8 c, Uint8 a)
     setColor(c, c, c, a);
 }
 
+void Canvas::setColor(SDL_Color c)
+{
+    color = c;
+}
+
 
 // ------ getters ------
 

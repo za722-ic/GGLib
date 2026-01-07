@@ -1,17 +1,5 @@
 #include "Button.h"
 
-InputManager* Button::inputManager = nullptr;
-
-Button::Button()
-{
-	inputManager->addMouseEventListener(this);
-}
-
-Button::~Button()
-{
-	inputManager->removeMouseEventListener(this);
-}
-
 // bounds
 void Button::setBounds(int _x, int _y, int _w, int _h)
 {
@@ -22,11 +10,23 @@ void Button::setBounds(int _x, int _y, int _w, int _h)
 }
 
 // color
-void Button::setColor(int _r, int _g, int _b)
+void Button::setForeColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
-	r = _r;
-	g = _g;
-	b = _b;
+	foreColor = { r, g, b, a };
+}
+void Button::setBackColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+{
+	backColor = { r, g, b, a };
+}
+
+// text
+void Button::setText(std::string _text)
+{
+	text = _text;
+}
+std::string Button::getText() const
+{
+	return text;
 }
 
 // button events
@@ -45,8 +45,14 @@ void Button::setOnMouseExit(std::function<void()> func)
 
 void Button::render(Canvas *canvas)
 {
-	canvas->setColor(r, g, b);
+	
+	canvas->setColor(backColor);
 	canvas->fillRect(x, y, w, h);
+
+	canvas->setColor(foreColor);
+	canvas->setAlignment(Canvas::Alignment::CENTER_CENTER);
+	canvas->drawString(text, x + w / 2, y + h / 2);
+	canvas->setAlignment(Canvas::Alignment::TOP_LEFT); // TODO: it would be useful if you could push/pop canvas states, rather than having to restore values manually (esp. since the user might not have has TOP_LEFT before this call, and also since we aren't currently restoring the color)
 }
 
 // mouse events

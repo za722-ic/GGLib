@@ -9,7 +9,7 @@ class Demo: public Game, KeyEventListener, MouseEventListener
 private:
 	std::shared_ptr<DemoAssetManager> demoAssetManager;
 
-	Button btn;
+	std::vector<Button*> buttons; // TODO: smart pointer
 
 public:
 	Demo() : demoAssetManager(std::make_shared<DemoAssetManager>(&assetManager))

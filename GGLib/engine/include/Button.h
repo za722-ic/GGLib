@@ -5,10 +5,10 @@
 
 #include <functional>
 
-#include "InputManager.h"
+#include "UIControl.h"
 #include "Canvas.h"
 
-class Button : MouseEventListener
+class Button : UIControl
 {
 private:
 	std::function<void()> onClick;
@@ -20,23 +20,24 @@ private:
 	int w = 0;
 	int h = 0;
 
-	unsigned char r = 128;
-	unsigned char g = 128;
-	unsigned char b = 128;
+	SDL_Color backColor = {200, 200, 200, 255};
+	SDL_Color foreColor = { 0, 0, 0, 255 };
+
+	std::string text = "";
 
 
 public:
-
-	static InputManager* inputManager;
-
-	Button();
-	~Button();
 
 	// bounds
 	void setBounds(int _x, int _y, int _w, int _h);
 
 	// color
-	void setColor(int _r, int _g, int _b);
+	void setForeColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
+	void setBackColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
+
+	// text
+	void setText(std::string _text);
+	std::string getText() const;
 
 	// button events
 	void setOnClick(std::function<void()> func);
@@ -50,5 +51,5 @@ private:
 	// mouse events
 	bool wasInBounds = false; // on prev call
 	bool isInBounds = false;
-	void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY);
+	void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
 };

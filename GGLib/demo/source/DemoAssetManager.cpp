@@ -10,7 +10,7 @@ bool DemoAssetManager::loadResources()
 	bool loadedSuccessfully = true;
 
 	// fonts
-	loadedSuccessfully &= assetManager->loadFont(fontFile, 10);
+	loadedSuccessfully &= assetManager->loadFont(fontFile, 12);
 
 	return loadedSuccessfully;
 }

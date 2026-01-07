@@ -70,6 +70,7 @@ public:
 	void setColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 	void setColor(Uint8 c);
 	void setColor(Uint8 c, Uint8 a);
+	void setColor(SDL_Color c);
 
 
 	

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "InputManager.h"
-#include "Button.h"
+#include "UIControl.h"
 
 class UIManager
 {
@@ -14,6 +14,12 @@ public:
 	{
 		inputManager = _inputManager;
 
-		Button::inputManager = _inputManager;
+		UIControl::inputManager = _inputManager;
+	}
+
+	void renderUI(Canvas* canvas)
+	{
+		for (UIControl* uiControl : UIControl::uiControls)
+			uiControl->render(canvas);
 	}
 };
