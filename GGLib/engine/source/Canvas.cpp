@@ -75,6 +75,16 @@ int Canvas::getHeight()
     return h;
 }
 
+SDL_Color Canvas::getColor()
+{
+    return color;
+}
+
+SDL_Renderer* Canvas::getSDLRenderer()
+{
+    return renderer;
+}
+
 
 // ------ draw funtions ------
 
@@ -102,6 +112,29 @@ void Canvas::drawRect(int x, int y, int w, int h)
 void Canvas::drawRect(const SDL_Rect& rect)
 {
     drawRect(rect.x, rect.y, rect.w, rect.h);
+}
+
+void Canvas::drawRect(int x, int y, int w, int h, int thickness)
+{
+    setSDLColorToCanvasColor();
+    applyCanvasOrigin(x, y);
+    applyCanvasAlignment(x, y, w, h);
+
+    // use 4 rectangles for each of the 4 sides of the rect
+	SDL_Rect top    { x,                 y, w,         thickness         };
+    SDL_Rect left   { x,                 y, thickness, h                 };
+    SDL_Rect right  { x + w - thickness, y, thickness, h                 };
+    SDL_Rect bottom { x,                 y + h - thickness, w, thickness };
+
+	SDL_RenderFillRect(renderer, &top);
+	SDL_RenderFillRect(renderer, &left);
+	SDL_RenderFillRect(renderer, &right);
+	SDL_RenderFillRect(renderer, &bottom);
+}
+
+void Canvas::drawRect(const SDL_Rect& rect, int thickness)
+{
+    drawRect(rect.x, rect.y, rect.w, rect.h, thickness);
 }
 
 void Canvas::fillRect(int x, int y, int w, int h)

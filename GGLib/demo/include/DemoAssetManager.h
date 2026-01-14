@@ -10,7 +10,8 @@ private:
 
 	const std::string baseAssetPath = "demo/resources/";
 
-	const std::string fontFile = "Beef-d.ttf";
+	// const std::string fontFile = "Beef-d.ttf";
+	const std::string fontFile = "lemon_milk/LEMONMILK-Bold.otf";
 	
 
 public:

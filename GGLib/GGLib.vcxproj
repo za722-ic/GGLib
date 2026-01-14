@@ -41,6 +41,7 @@
     <ClInclude Include="engine\include\AssetManager.h" />
     <ClInclude Include="engine\include\AudioManager.h" />
     <ClInclude Include="engine\include\Canvas.h" />
+    <ClInclude Include="engine\include\Checkbox.h" />
     <ClInclude Include="engine\include\Game.h" />
     <ClInclude Include="engine\include\GameTimer.h" />
     <ClInclude Include="engine\include\GameWindow.h" />

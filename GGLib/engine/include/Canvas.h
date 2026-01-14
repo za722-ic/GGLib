@@ -42,6 +42,7 @@ public:
 
 private:
 	SDL_Renderer* renderer = nullptr;
+
 	TTF_Font* font = nullptr;
 
 	// controls how coordinates are interpreted (see applyCanvasAlignment) (e.g. TOP_LEFT means that the coord supplied will be the top left of the rendered object)
@@ -79,6 +80,9 @@ public:
 	int getWidth();
 	int getHeight();
 
+	SDL_Color getColor();
+	SDL_Renderer* getSDLRenderer(); // TODO: this is terrible (and temporary!). Raw pointer to renderer should not be exposed. 
+
 
 	// --- draw funtions ---
 
@@ -88,6 +92,8 @@ public:
 
 	void drawRect(int x, int y, int w, int h);
 	void drawRect(const SDL_Rect& rect);
+	void drawRect(int x, int y, int w, int h, int thickness);
+	void drawRect(const SDL_Rect&, int thickness);
 	void fillRect(int x, int y, int w, int h);
 	void fillRect(const SDL_Rect& rect);
 

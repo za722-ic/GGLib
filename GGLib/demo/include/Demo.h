@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "DemoAssetManager.h"
+#include "Checkbox.h"
 #include "Button.h"
 
 class Demo: public Game, KeyEventListener, MouseEventListener
@@ -10,6 +11,17 @@ private:
 	std::shared_ptr<DemoAssetManager> demoAssetManager;
 
 	std::vector<Button*> buttons; // TODO: smart pointer
+	Checkbox cb;
+
+	float frameTimesAcc;
+	unsigned int framesCount;
+	float avgFps;
+
+	float y = 10;
+	float vy = 200;
+
+	float triRotAngle;
+
 
 public:
 	Demo() : demoAssetManager(std::make_shared<DemoAssetManager>(&assetManager))

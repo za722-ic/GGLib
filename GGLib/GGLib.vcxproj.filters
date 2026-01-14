@@ -107,5 +107,8 @@
     <ClInclude Include="engine\include\UIControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="engine\include\Checkbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

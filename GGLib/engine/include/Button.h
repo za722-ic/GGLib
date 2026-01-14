@@ -6,11 +6,10 @@
 #include <functional>
 
 #include "UIControl.h"
-#include "Canvas.h"
 
 class Button : UIControl
 {
-private:
+protected:
 	std::function<void()> onClick;
 	std::function<void()> onMouseEnter;
 	std::function<void()> onMouseExit;
@@ -44,7 +43,7 @@ public:
 	void setOnMouseEnter(std::function<void()> func);
 	void setOnMouseExit(std::function<void()> func);
 
-	void render(Canvas* canvas);
+	void render(Canvas *canvas) override;
 
 private:
 
