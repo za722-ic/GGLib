@@ -45,7 +45,6 @@ void Button::setOnMouseExit(std::function<void()> func)
 
 void Button::render(Canvas *canvas)
 {
-	
 	canvas->setColor(backColor);
 	canvas->fillRect(x, y, w, h);
 

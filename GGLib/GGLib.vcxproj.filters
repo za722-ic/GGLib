@@ -110,5 +110,14 @@
     <ClInclude Include="engine\include\Checkbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="demo\include\DragManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="demo\include\Slider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="demo\include\Label.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

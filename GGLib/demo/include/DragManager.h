@@ -19,10 +19,10 @@ private:
 	int prevMouseX = -1;
 	int prevMouseY = -1;
 
-	std::function<void()> onClick;
-	std::function<void()> onDragStart;
-	std::function<void()> onDragContinue;
-	std::function<void()> onDragEnd;
+	std::function<void(int mouseX, int mouseY)> onClick;
+	std::function<void(int mouseX, int mouseY)> onDragStart;
+	std::function<void(int mouseX, int mouseY)> onDragContinue;
+	std::function<void(int mouseX, int mouseY)> onDragEnd;
 
 public:
 	void processDrag(MouseEventType mouseEventType, int mouseX, int mouseY)
@@ -42,13 +42,13 @@ public:
 		{
 			if (mouseEventType == LEFT_MOUSE_UP)
 			{
-				if (onClick) onClick();
+				if (onClick) onClick(mouseX, mouseY);
 				state = MouseState::MOUSE_UP;
 				return;
 			}
 			if (mouseMoved)
 			{
-				if (onDragStart) onDragStart();
+				if (onDragStart) onDragStart(mouseX, mouseY);
 				state = MouseState::MOUSE_DOWN_AND_MOVE;
 				return;
 			}
@@ -58,35 +58,35 @@ public:
 		{
 			if (mouseEventType == LEFT_MOUSE_UP)
 			{
-				if (onDragEnd) onDragEnd();
+				if (onDragEnd) onDragEnd(mouseX, mouseY);
 				state = MouseState::MOUSE_UP;
 				return;
 			}
 			if (mouseMoved)
 			{
-				if (onDragContinue) onDragContinue();
+				if (onDragContinue) onDragContinue(mouseX, mouseY);
 				state = MouseState::MOUSE_DOWN_AND_MOVE; // redundant technincally as we stay in the same state, but keep for clarity
 				return;
 			}
 		}
 	}
 
-	void setOnClick(std::function<void()> newOnClick) // called when mouse released without moving
+	void setOnClick(std::function<void(int mouseX, int mouseY)> newOnClick) // called when mouse released without moving
 	{
 		onClick = newOnClick;
 	}
 
-	void setOnDragStart(std::function<void()> newOnDragStart) // called first time mouse is moved whilst down
+	void setOnDragStart(std::function<void(int mouseX, int mouseY)> newOnDragStart) // called first time mouse is moved whilst down
 	{
 		onDragStart = newOnDragStart;
 	}
 
-	void setOnDragContinue(std::function<void()> newOnDragContinue) // called each subsequent time mouse is moved whilst down after onDragStart
+	void setOnDragContinue(std::function<void(int mouseX, int mouseY)> newOnDragContinue) // called each subsequent time mouse is moved whilst down after onDragStart
 	{
 		onDragContinue = newOnDragContinue;
 	}
 
-	void setOnDragEnd(std::function<void()> newOnDragEnd) // called when mouse released after moving it whilst mouse down
+	void setOnDragEnd(std::function<void(int mouseX, int mouseY)> newOnDragEnd) // called when mouse released after moving it whilst mouse down
 	{
 		onDragEnd = newOnDragEnd;
 	}

@@ -7,6 +7,7 @@
 #include <string>
 #include <iostream>
 #include <stdexcept>
+#include <vector>
 
 class Canvas
 {
@@ -103,14 +104,16 @@ public:
 	void drawStringToWidth     (std::string text, int x, int y, int w       );
 	void drawStringToHeight    (std::string text, int x, int y, int h       );
 	void drawStringToDimensions(std::string text, int x, int y, int w, int h);
-
-	
 	
 	void drawImage(SDL_Texture *image, int x, int y, int w, int h);
 	void drawImage(SDL_Texture *image, int x, int y);
 	void drawImage_StrechToFillCanvas(SDL_Texture *image); // draw image, stretching to entire canvas
 	void drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y); // draw a part of an image
 	void drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y, int w, int h);
+
+	void renderRoundedRect(int x, int y, int w, int h, int r, const unsigned int trianglesPerCounter = 8);
+	void renderRegularPolygon(int x, int y, unsigned int numVertices = 3, float rotAngle = 0, float scale = 250.0f);
+
 private:
 
 	// --- helper methods ---

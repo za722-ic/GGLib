@@ -4,6 +4,8 @@
 #include "DemoAssetManager.h"
 #include "Checkbox.h"
 #include "Button.h"
+#include "Slider.h"
+#include "DragManager.h"
 
 class Demo: public Game, KeyEventListener, MouseEventListener
 {
@@ -12,6 +14,7 @@ private:
 
 	std::vector<Button*> buttons; // TODO: smart pointer
 	Checkbox cb;
+	Slider slider;
 
 	float frameTimesAcc;
 	unsigned int framesCount;
@@ -21,6 +24,8 @@ private:
 	float vy = 200;
 
 	float triRotAngle;
+
+	DragManager dragManager;
 
 
 public:

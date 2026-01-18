@@ -254,6 +254,125 @@ void Canvas::drawImage_StrechToFillCanvas(SDL_Texture *image)
     SDL_RenderCopy(renderer, image, NULL, NULL);
 }
 
+
+
+
+// TODO: this does not adhere to applyCanvasAlignment, applyCanvasOrigin
+// TODO: doesnt adhere to naming scheme --> get rid of "render"
+void Canvas::renderRoundedRect(int x, int y, int w, int h, int r, const unsigned int trianglesPerCorner)
+{
+    // r cannot be greater than w or h, otherwise the quarter circles that get rendered are too big
+    // TODO: the case where r is greater than w or h makes this look weird --> how does CSS handle it?
+    if (r > w/2) r = w/2;
+    if (r > h/2) r = h/2;
+
+    std::vector<SDL_Vertex> verts;
+
+    const float INTERVAL = 0.5f * M_PI / trianglesPerCorner; // angle between triangles in a given corner
+
+    auto appendRoundedCornerVerts = [&](float cx, float cy, float startingAngle)
+    {
+        float angle = startingAngle;
+
+        for (int i = 0; i < trianglesPerCorner; i++)
+        {
+            SDL_Vertex v1 =
+            {
+                SDL_FPoint{cx + r * cosf(angle), cy + r * sinf(angle)},
+                color,
+                SDL_FPoint { 0 }
+            };
+
+            angle += INTERVAL;
+
+            SDL_Vertex v2 =
+            {
+                SDL_FPoint{cx + r * cosf(angle), cy + r * sinf(angle)},
+                color,
+                SDL_FPoint { 0 }
+            };
+
+            SDL_Vertex v3 =
+            {
+                SDL_FPoint{cx, cy},
+                color,
+                SDL_FPoint { 0 }
+            };
+
+            verts.push_back(v1);
+            verts.push_back(v2);
+            verts.push_back(v3);
+        }
+    };
+
+    appendRoundedCornerVerts(x + w - r, y + h - r, 0); // top right
+    appendRoundedCornerVerts(x + r, y + h - r, 0.5f * M_PI); // top left
+    appendRoundedCornerVerts(x + r, y + r, M_PI); // bottom left
+    appendRoundedCornerVerts(x + w - r, y + r, 1.5f * M_PI); // bottom right
+
+    SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), nullptr, 0);
+
+    // render rects for everything that's not the corners
+
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 50);
+    SDL_Rect rTop = { x + r, y, w - 2 * r, r };
+    SDL_RenderFillRect(renderer, &rTop);
+
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 50);
+    SDL_Rect rMid = { x, y + r, w, h - 2 * r };
+    SDL_RenderFillRect(renderer, &rMid);
+
+    SDL_SetRenderDrawColor(renderer, 255, 255, 0, 50);
+    SDL_Rect rBot = { x + r, y + h - r, w - 2 * r, r };
+    SDL_RenderFillRect(renderer, &rBot);
+}
+
+// TODO: this does not adhere to applyCanvasAlignment, applyCanvasOrigin
+// TODO: x y here specify the center bby default, not the top-left --> how does p5.js handle this? top left of bounding box?
+void Canvas::renderRegularPolygon(int x, int y, unsigned int numVertices, float rotAngle, float scale)
+{
+    const float INTERVAL = (2.0f * M_PI) / numVertices;
+
+    std::vector<SDL_Vertex> verts;
+
+    for (int i = 0; i < numVertices; i++)
+    {
+        float angle = rotAngle + INTERVAL * i;
+
+        SDL_Vertex v1 =
+        {
+            SDL_FPoint{x + scale * cosf(angle), y + scale * sinf(angle)},
+            color,
+            SDL_FPoint { 0 }
+        };
+
+        angle = rotAngle + INTERVAL * (i + 1);
+
+        SDL_Vertex v2 =
+        {
+            SDL_FPoint{x + scale * cosf(angle), y + scale * sinf(angle)},
+            color,
+            SDL_FPoint { 0 }
+        };
+
+        SDL_Vertex v3 =
+        {
+            SDL_FPoint{(float)x, (float)y},
+            color,
+            SDL_FPoint { 0 }
+        };
+
+        verts.push_back(v1);
+        verts.push_back(v2);
+        verts.push_back(v3);
+    }
+
+    SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), nullptr, 0);
+}
+
+
 // ------ helper methods ------
 
 void Canvas::setSDLColorToCanvasColor()

@@ -36,6 +36,9 @@
     <ClCompile Include="demo\source\DemoAssetManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="demo\include\DragManager.h" />
+    <ClInclude Include="demo\include\Label.h" />
+    <ClInclude Include="demo\include\Slider.h" />
     <ClInclude Include="engine\include\Button.h" />
     <ClInclude Include="demo\include\Demo.h" />
     <ClInclude Include="engine\include\AssetManager.h" />

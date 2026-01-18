@@ -74,6 +74,9 @@ bool Demo::onGameInit()
 			buttons.push_back(btn);
 		}
 	}
+	slider.x = 300;
+	slider.y = 900;
+	slider.max = 1000;
 
 	return true;
 }
@@ -85,109 +88,6 @@ void Demo::onGameQuit()
 	assetManager.unloadFont("Beef-d.ttf");
 }
 
-// TODO: the case where r is greater than w or h makes this look weird --> how does CSS handle it?
-void renderRoundedRect(SDL_Renderer* renderer, int x, int y, int w, int h, int r, SDL_Color color = { 255, 255, 255, 255 }, const unsigned int trianglesPerCorner = 32)
-{
-	std::vector<SDL_Vertex> verts;
-
-	const float INTERVAL = 0.5f * M_PI / trianglesPerCorner; // angle between triangles in a given corner
-
-	auto appendRoundedCornerVerts = [&](float cx, float cy, float startingAngle)
-	{
-		float angle = startingAngle;
-
-		for (int i = 0; i < trianglesPerCorner; i++)
-		{
-			SDL_Vertex v1 =
-			{
-				SDL_FPoint{cx + r * cosf(angle), cy + r * sinf(angle)},
-				color,
-				SDL_FPoint { 0 }
-			};
-			
-			angle += INTERVAL;
-
-			SDL_Vertex v2 =
-			{
-				SDL_FPoint{cx + r * cosf(angle), cy + r * sinf(angle)},
-				color,
-				SDL_FPoint { 0 }
-			};
-
-			SDL_Vertex v3 =
-			{
-				SDL_FPoint{cx, cy},
-				color,
-				SDL_FPoint { 0 }
-			};
-
-			verts.push_back(v1);
-			verts.push_back(v2);
-			verts.push_back(v3);
-		}
-	};
-
-	appendRoundedCornerVerts(x + w - r, y + h - r, 0          ); // top right
-	appendRoundedCornerVerts(x + r,     y + h - r, 0.5f * M_PI); // top left
-	appendRoundedCornerVerts(x + r,     y + r,     M_PI       ); // bottom left
-	appendRoundedCornerVerts(x + w - r, y + r,     1.5f * M_PI); // bottom right
-
-	SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), nullptr, 0);
-
-	// render rects for everything that's not the corners
-
-	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-
-	SDL_Rect rTop = { x + r, y, w - 2 * r, r };
-	SDL_RenderFillRect(renderer, &rTop);
-
-	SDL_Rect rMid = { x, y+r, w, h - 2 * r };
-	SDL_RenderFillRect(renderer, &rMid);
-
-	SDL_Rect rBot = { x + r, y + h - r, w - 2 * r, r };
-	SDL_RenderFillRect(renderer, &rBot);
-}
-
-void renderRegularPolygon(SDL_Renderer* renderer, int x, int y, unsigned int numVertices = 3, float rotAngle = 0, float scale = 250.0f, SDL_Color color = {255, 255, 255, 255})
-{
-	const float INTERVAL = (2.0f * M_PI) / numVertices;
-
-	std::vector<SDL_Vertex> verts;
-
-	for (int i = 0; i < numVertices; i++)
-	{
-		float angle = rotAngle + INTERVAL * i;
-	
-		SDL_Vertex v1 =
-		{
-			SDL_FPoint{x + scale * cosf(angle), y + scale * sinf(angle)},
-			color,
-			SDL_FPoint { 0 }
-		};
-		
-		angle = rotAngle + INTERVAL * (i + 1);
-
-		SDL_Vertex v2 =
-		{
-			SDL_FPoint{x + scale * cosf(angle), y + scale * sinf(angle)},
-			color,
-			SDL_FPoint { 0 }
-		};
-
-		SDL_Vertex v3 =
-		{
-			SDL_FPoint{(float)x, (float)y},
-			color,
-			SDL_FPoint { 0 }
-		};
-	
-		verts.push_back(v1);
-		verts.push_back(v2);
-		verts.push_back(v3);
-	}
-
-	SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), nullptr, 0);
-}
 
 void Demo::onGameLoop()
 {
@@ -218,15 +118,21 @@ void Demo::onGameLoop()
 	canvas.drawString("FPS: " + std::to_string(avgFps), 10, 90);
 
 	triRotAngle += deltaTime();
-	renderRegularPolygon(canvas.getSDLRenderer(), 800, 300, 3, triRotAngle, 45.0f, {255, 0, 255, 255});
-	renderRegularPolygon(canvas.getSDLRenderer(), 800, 450, 4, triRotAngle, 45.0f, {255, 0, 255, 255});
-	renderRegularPolygon(canvas.getSDLRenderer(), 800, 600, 5, triRotAngle, 45.0f, {255, 0, 255, 255});
-	renderRegularPolygon(canvas.getSDLRenderer(), 800, 750, 6, triRotAngle, 45.0f, {255, 0, 255, 255});
+	canvas.setColor(255, 0, 255);
+	canvas.renderRegularPolygon(800, 300, 3, triRotAngle, 45.0f);
+	canvas.renderRegularPolygon(800, 450, 4, triRotAngle, 45.0f);
+	canvas.renderRegularPolygon(800, 600, 5, triRotAngle, 45.0f);
+	canvas.renderRegularPolygon(800, 750, 6, triRotAngle, 45.0f);
 	    
-	renderRoundedRect(canvas.getSDLRenderer(), 900, 200, 300, 300, 20);
-	renderRoundedRect(canvas.getSDLRenderer(), 900, 600, 300, 150, 75, {128, 128, 255, 255});
+	canvas.setColor(12833, 255, 255);
+	canvas.renderRoundedRect(900, 200, 300, 300, 20);
+	canvas.setColor(255, 128, 255);
+	canvas.renderRoundedRect(900, 600, 38, 38, 75);
+	canvas.renderRoundedRect(900, 800, 300, 150, 75);
+	canvas.renderRoundedRect(1300, 300, 150, 350, 50);
 
 	// TODO: would be beneficial to abstract this away from the user. problem is you would still need to rely on the user clearing the screen and updating the screen --> how much should the user be able to control ui rendering? ideally as much as they wish, or as little as they wish...
+	canvas.setColor(255); // TODO: this should not be a thing --> ui elements' color should be defined by ui elements
 	uiManager.renderUI(&canvas);
 
 
@@ -236,12 +142,13 @@ void Demo::onGameLoop()
 		y = canvas.getHeight() - 20;
 		vy = -vy;
 	}
-	if (y < 0)
+	if (y < 20)
 	{
-		y = 0;
+		y = 20;
 		vy = -vy;
 	}
-	renderRegularPolygon(canvas.getSDLRenderer(), 1000, y, 64, 0, 20.0f, {255, 255, 0, 255});
+	canvas.setColor(255, 255, 0);
+	canvas.renderRegularPolygon(1000, y, 64, 0, 20.0f);
 	
 
 	// update screen

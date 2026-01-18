@@ -9,4 +9,6 @@ namespace MoreMath
 	float map(float val, float domanLower, float domainUpper, float rangeLower, float rangeUpper);
 
 	float clamp(float val, float min, float max);
+
+	float mapAndClamp(float val, float domainLower, float domainUpper, float rangeLower, float rangeUpper);
 }
