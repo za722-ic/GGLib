@@ -1,0 +1,130 @@
+#include "ui/Textbox.h"
+
+// bounds
+void Textbox::setBounds(int _x, int _y, int _w, int _h)
+{
+	x = _x;
+	y = _y;
+	w = _w;
+	h = _h;
+}
+
+// color
+void Textbox::setForeColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+{
+	foreColor = { r, g, b, a };
+}
+void Textbox::setBackColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+{
+	backColor = { r, g, b, a };
+}
+
+// text
+void Textbox::setText(std::string _text)
+{
+	text = _text;
+}
+std::string Textbox::getText() const
+{
+	return text;
+}
+
+// rendering
+void Textbox::render(Canvas* canvas)
+{
+	int PADDING = 7;
+
+	// draw light border if focused
+	if (isFocused)
+	{
+		canvas->setColor(255);
+	}
+	else
+	{
+		canvas->setColor(128);
+	}
+	canvas->drawRect(x, y, w, h, 3);
+	//canvas->renderRoundedRect(x, y, w, h, 5);
+
+	// draw text
+	canvas->setColor(foreColor);
+	canvas->setAlignment(Canvas::Alignment::CENTER_LEFT);
+	canvas->drawString(text, x + PADDING, y + h / 2);
+	canvas->setAlignment(Canvas::Alignment::TOP_LEFT); // TODO: it would be useful if you could push/pop canvas states, rather than having to restore values manually (esp. since the user might not have has TOP_LEFT before this call, and also since we aren't currently restoring the color)
+
+	// draw cursor
+	int tw;
+	canvas->getTextDimensions(text.substr(0, cursorPos), &tw, nullptr);
+	int gw;
+	std::string glyph(text.substr(cursorPos, 1));
+	canvas->getTextDimensions(glyph, &gw, nullptr);
+
+	canvas->setColor(255, 0, 0);
+	canvas->fillRect(x + tw, y + h + 5, 3, 3);
+}
+
+// mouse events
+void Textbox::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
+{
+	if (mouseEventType == MouseEventType::LEFT_MOUSE_UP)
+	{
+		// set/unset textbox focus
+		bool isInBounds = (mouseX >= x && mouseX < x + w) && (mouseY >= y && mouseY < y + h);
+		isFocused = isInBounds;
+	}
+}
+
+// key events
+void Textbox::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
+{
+	if (!isFocused) return;
+	
+	if (keyEventType == KEY_UP) return;
+	
+	if (key == SDLK_BACKSPACE) deleteCharAtCursorPos();
+}
+
+void Textbox::onTextInputEvent(std::string text)
+{
+	if (!isFocused) return;
+
+	insertTextAtCursorPos(text);
+	cursorPos += text.size();
+}
+
+// handling text
+void Textbox::insertTextAtCursorPos(std::string text)
+{
+	setText(getText() + text);
+}
+
+void Textbox::deleteCharAtCursorPos()
+{
+	if (text.empty()) return; // textbox is empty
+
+	text = text.substr(0, text.size() - 1);
+}
+
+void Textbox::moveCursorLeft()
+{
+	if (cursorPos == 0) return;
+	cursorPos--;
+}
+
+void Textbox::moveCursorRight()
+{
+	if (cursorPos == text.size() - 1) return;
+	cursorPos++;
+}
+
+void Textbox::moveCursorToStartOfPrevToken()
+{}
+
+void Textbox::moveCursorToStartOfNextToken()
+{}
+
+void Textbox::moveCursorToStartOfText()
+{}
+
+void Textbox::moveCursorToEndOfText()
+{}

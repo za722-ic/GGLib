@@ -1,7 +1,8 @@
 #include "InputManager.h"
 
-void InputManager::setRenderer(SDL_Renderer* newRenderer)
+void InputManager::init(SDL_Renderer* newRenderer)
 {
+	SDL_StartTextInput();
 	renderer = newRenderer;
 }
 
@@ -40,6 +41,12 @@ bool InputManager::pollEvents()
 		}
 		if (e.type == SDL_KEYUP)
 			notifyKeyEventListeners(KEY_UP, e.key.keysym.sym);
+
+		// text input events
+		if (e.type == SDL_TEXTINPUT)
+		{
+			notifyTextInputEventListeners(std::string(e.text.text));
+		}
 	}
 	return true;
 }
@@ -48,7 +55,7 @@ void InputManager::addKeyEventListener(KeyEventListener* keyEventListener)
 {
 	keyEventListeners.push_back(keyEventListener);
 }
-void InputManager::removeKeyListener(KeyEventListener* keyEventListener)
+void InputManager::removeKeyEventListener(KeyEventListener* keyEventListener)
 {
 	keyEventListeners.remove(keyEventListener);
 }
@@ -60,6 +67,16 @@ void InputManager::addMouseEventListener(MouseEventListener* mouseEventListener)
 void InputManager::removeMouseEventListener(MouseEventListener* mouseEventListener)
 {
     mouseEventListeners.remove(mouseEventListener);
+}
+
+void InputManager::addTextInputEventListener(TextInputEventListener* textInputEventListener)
+{
+	textInputEventListeners.push_back(textInputEventListener);
+}
+
+void InputManager::removeTextInputEventListener(TextInputEventListener* textInputEventListener)
+{
+	textInputEventListeners.remove(textInputEventListener);
 }
 
 const Uint8* InputManager::getKeyboardState()
@@ -90,9 +107,17 @@ void InputManager::notifyMouseEventListeners(MouseEventType mouseEventType)
 {
 	pollMousePosition();
 
-	for (MouseEventListener* mouseEventListener : mouseEventListeners)
+	for (MouseEventListener* mouseEventListenerPtr : mouseEventListeners)
 	{
-		mouseEventListener->onMouseEvent(mouseEventType, mouseX, mouseY);
+		mouseEventListenerPtr->onMouseEvent(mouseEventType, mouseX, mouseY);
+	}
+}
+
+void InputManager::notifyTextInputEventListeners(std::string text)
+{
+	for (TextInputEventListener* textInputEventListenerPtr : textInputEventListeners)
+	{		
+		textInputEventListenerPtr->onTextInputEvent(text);
 	}
 }
 

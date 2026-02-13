@@ -22,7 +22,7 @@
     <ClCompile Include="demo\source\Demo.cpp" />
     <ClCompile Include="engine\source\AssetManager.cpp" />
     <ClCompile Include="engine\source\AudioManager.cpp" />
-    <ClCompile Include="engine\source\Button.cpp" />
+    <ClCompile Include="engine\source\ui\Button.cpp" />
     <ClCompile Include="engine\source\Canvas.cpp" />
     <ClCompile Include="engine\source\Game.cpp" />
     <ClCompile Include="engine\source\GameTimer.cpp" />
@@ -31,20 +31,23 @@
     <ClCompile Include="engine\source\InputManager.cpp" />
     <ClCompile Include="engine\source\MoreMath.cpp" />
     <ClCompile Include="engine\source\TextFile.cpp" />
-    <ClCompile Include="engine\source\UIControl.cpp" />
+    <ClCompile Include="engine\source\ui\Combobox.cpp" />
+    <ClCompile Include="engine\source\ui\Textbox.cpp" />
+    <ClCompile Include="engine\source\ui\UIControl.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="demo\source\DemoAssetManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="demo\include\DragManager.h" />
-    <ClInclude Include="demo\include\Label.h" />
-    <ClInclude Include="demo\include\Slider.h" />
-    <ClInclude Include="engine\include\Button.h" />
+    <ClInclude Include="engine\include\DragManager.h" />
+    <ClInclude Include="engine\include\ui\Combobox.h" />
+    <ClInclude Include="engine\include\ui\Label.h" />
+    <ClInclude Include="engine\include\ui\Slider.h" />
+    <ClInclude Include="engine\include\ui\Button.h" />
     <ClInclude Include="demo\include\Demo.h" />
     <ClInclude Include="engine\include\AssetManager.h" />
     <ClInclude Include="engine\include\AudioManager.h" />
     <ClInclude Include="engine\include\Canvas.h" />
-    <ClInclude Include="engine\include\Checkbox.h" />
+    <ClInclude Include="engine\include\ui\Checkbox.h" />
     <ClInclude Include="engine\include\Game.h" />
     <ClInclude Include="engine\include\GameTimer.h" />
     <ClInclude Include="engine\include\GameWindow.h" />
@@ -53,8 +56,9 @@
     <ClInclude Include="engine\include\MoreMath.h" />
     <ClInclude Include="engine\include\TextFile.h" />
     <ClInclude Include="demo\include\DemoAssetManager.h" />
-    <ClInclude Include="engine\include\UIControl.h" />
-    <ClInclude Include="engine\include\UIManager.h" />
+    <ClInclude Include="engine\include\ui\Textbox.h" />
+    <ClInclude Include="engine\include\ui\UIControl.h" />
+    <ClInclude Include="engine\include\ui\UIManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -116,6 +120,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>D:\visual_cpp_dev_lib\SDL2_image-2.8.2\include;D:\visual_cpp_dev_lib\SDL2_mixer-2.8.0\include;D:\visual_cpp_dev_lib\SDL2_ttf-2.22.0\include;D:\visual_cpp_dev_lib\SDL2-2.30.4\include;$(IncludePath)</IncludePath>
+    <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
+    <LibraryPath>D:\visual_cpp_dev_lib\SDL2_image-2.8.2\lib\x64;D:\visual_cpp_dev_lib\SDL2_mixer-2.8.0\lib\x64;D:\visual_cpp_dev_lib\SDL2_ttf-2.22.0\lib\x64;D:\visual_cpp_dev_lib\SDL2-2.30.4\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -149,7 +158,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)demo/include/;$(ProjectDir)engine/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)demo/include/;$(ProjectDir)engine/include/;$(ProjectDir)engine/include/ui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -166,10 +175,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)demo/include/;$(ProjectDir)engine/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

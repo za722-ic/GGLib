@@ -10,6 +10,7 @@
 #include <optional>
 #include <unordered_map>
 #include <functional>
+#include <memory>
 
 #include "TextFile.h"
 
@@ -29,7 +30,7 @@ public:
     AssetManager();
     ~AssetManager();
 
-    void setRenderer(SDL_Renderer* renderer);
+    void init(SDL_Renderer* renderer);
 
     void setBaseAssetPath(std::string newBaseAssetPath);
 

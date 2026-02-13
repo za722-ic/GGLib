@@ -20,6 +20,9 @@ Course of action if true: we need a much more optimised sequence of draw calls t
 Aight so experiment showed it's actually text rendering that's slow, so focus on that instead --> cache rendering results in controls
 */
 
+const int UI_X = 250;
+const int UI_Y = 400;
+
 bool Demo::onGameInit()
 {
 	// load assets
@@ -43,10 +46,8 @@ bool Demo::onGameInit()
 	inputManager.addMouseEventListener(this);
 
 	// init UI
-	const int UI_X = 250;
-	const int UI_Y = 50;
 	size_t NUM_COLS = 3, NUM_ROWS = 3;
-	cb.setBounds(UI_X, UI_Y + 550, 170, 30);
+	cb.setBounds(UI_X, UI_Y + 200, 170, 30);
 	cb.setText("Checkbox");
 	Checkbox* cbPtr = &cb; // TODO: ugly
 	for (size_t c = 0; c < NUM_COLS; c++)
@@ -74,19 +75,17 @@ bool Demo::onGameInit()
 			buttons.push_back(btn);
 		}
 	}
-	slider.x = 300;
-	slider.y = 900;
+	slider.x = UI_X;
+	slider.y = UI_Y + 300;
 	slider.max = 1000;
+	tb.setBounds(UI_X, UI_Y + 500, 200, 40);
+	combobox.setBounds(UI_X + 700, UI_Y + 300, 200, 40);
 
 	return true;
 }
 
 void Demo::onGameQuit()
-{
-	// Release font file
-	// TODO: isn't this dealt with automatically by the asset manager's destructor? why unload here?
-	assetManager.unloadFont("Beef-d.ttf");
-}
+{}
 
 
 void Demo::onGameLoop()
@@ -117,19 +116,19 @@ void Demo::onGameLoop()
 	}
 	canvas.drawString("FPS: " + std::to_string(avgFps), 10, 90);
 
+	canvas.setColor(170);
+	canvas.renderRoundedRect(UI_X + 950, 200, 300, 300, 20);
+
+	canvas.setColor(255, 128, 255);
+	canvas.renderRoundedRect(UI_X + 800 - 45*2-10, 200, 200, 650, 50);
+
 	triRotAngle += deltaTime();
 	canvas.setColor(255, 0, 255);
-	canvas.renderRegularPolygon(800, 300, 3, triRotAngle, 45.0f);
-	canvas.renderRegularPolygon(800, 450, 4, triRotAngle, 45.0f);
-	canvas.renderRegularPolygon(800, 600, 5, triRotAngle, 45.0f);
-	canvas.renderRegularPolygon(800, 750, 6, triRotAngle, 45.0f);
+	canvas.renderRegularPolygon(UI_X + 800, 300, 3, triRotAngle, 45.0f);
+	canvas.renderRegularPolygon(UI_X + 800, 450, 4, triRotAngle, 45.0f);
+	canvas.renderRegularPolygon(UI_X + 800, 600, 5, triRotAngle, 45.0f);
+	canvas.renderRegularPolygon(UI_X + 800, 750, 6, triRotAngle, 45.0f);
 	    
-	canvas.setColor(12833, 255, 255);
-	canvas.renderRoundedRect(900, 200, 300, 300, 20);
-	canvas.setColor(255, 128, 255);
-	canvas.renderRoundedRect(900, 600, 38, 38, 75);
-	canvas.renderRoundedRect(900, 800, 300, 150, 75);
-	canvas.renderRoundedRect(1300, 300, 150, 350, 50);
 
 	// TODO: would be beneficial to abstract this away from the user. problem is you would still need to rely on the user clearing the screen and updating the screen --> how much should the user be able to control ui rendering? ideally as much as they wish, or as little as they wish...
 	canvas.setColor(255); // TODO: this should not be a thing --> ui elements' color should be defined by ui elements
@@ -147,8 +146,9 @@ void Demo::onGameLoop()
 		y = 20;
 		vy = -vy;
 	}
+	
 	canvas.setColor(255, 255, 0);
-	canvas.renderRegularPolygon(1000, y, 64, 0, 20.0f);
+	canvas.renderRegularPolygon(1700, y, 64, 0, 20.0f);
 	
 
 	// update screen

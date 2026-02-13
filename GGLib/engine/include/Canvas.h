@@ -59,7 +59,7 @@ public:
 
 	// --- setters ---
 
-	void setRenderer(SDL_Renderer* renderer);
+	void init(SDL_Renderer* renderer);
 
 	void setFont(TTF_Font* font);
 
@@ -104,6 +104,8 @@ public:
 	void drawStringToWidth     (std::string text, int x, int y, int w       );
 	void drawStringToHeight    (std::string text, int x, int y, int h       );
 	void drawStringToDimensions(std::string text, int x, int y, int w, int h);
+	SDL_Texture* drawStringToTexture(std::string text); // TODO: this returns a raw pointer to an SDL_Texture, which the user of this function must manually destroy using SDL_DestroyTexture(textTexture); --> create a wrapper class that does this automagically
+	void getTextDimensions(std::string text, int* w, int* h);
 	
 	void drawImage(SDL_Texture *image, int x, int y, int w, int h);
 	void drawImage(SDL_Texture *image, int x, int y);
@@ -111,7 +113,7 @@ public:
 	void drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y); // draw a part of an image
 	void drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y, int w, int h);
 
-	void renderRoundedRect(int x, int y, int w, int h, int r, const unsigned int trianglesPerCounter = 8);
+	void renderRoundedRect(int x, int y, int w, int h, int r, const unsigned int trianglesPerCounter = 8, bool isDebug = false); // TODO: temp isDebug flag
 	void renderRegularPolygon(int x, int y, unsigned int numVertices = 3, float rotAngle = 0, float scale = 250.0f);
 
 private:
@@ -124,6 +126,4 @@ private:
 	void applyCanvasAlignment(int &x, int &y, int w, int h);
 	HorizontalAlignment getHorizontaAlignment(Alignment alignment);
 	VerticalAlignment getVerticalAlignment(Alignment alignment);
-
-	void getTextDimensions(std::string text, int* w, int* h);
 };

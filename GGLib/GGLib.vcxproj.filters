@@ -54,10 +54,16 @@
     <ClCompile Include="demo\source\Demo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\Button.cpp">
+    <ClCompile Include="engine\source\ui\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\UIControl.cpp">
+    <ClCompile Include="engine\source\ui\UIControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\source\ui\Textbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\source\ui\Combobox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,25 +104,31 @@
     <ClInclude Include="demo\include\Demo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\Button.h">
+    <ClInclude Include="engine\include\ui\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\UIManager.h">
+    <ClInclude Include="engine\include\ui\UIManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\UIControl.h">
+    <ClInclude Include="engine\include\ui\UIControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\Checkbox.h">
+    <ClInclude Include="engine\include\ui\Checkbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="demo\include\DragManager.h">
+    <ClInclude Include="engine\include\DragManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="demo\include\Slider.h">
+    <ClInclude Include="engine\include\ui\Slider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="demo\include\Label.h">
+    <ClInclude Include="engine\include\ui\Label.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\ui\Textbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\ui\Combobox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

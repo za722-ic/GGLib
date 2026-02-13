@@ -63,14 +63,16 @@ public:
 
 	void render(Canvas* canvas) override
 	{
-		canvas->setColor(255, 220, 220);
+		canvas->setColor(32, 255, 100);
 		canvas->renderRoundedRect(x, y, w, h, rRail); // TODO: make border radius configurable, and make it such that 
 
 		if (isRenderValueStr)
 		{
+			canvas->setColor(255);
 			canvas->setAlignment(Canvas::Alignment::CENTER_LEFT);
 			canvas->drawString(std::to_string(value), x + w + textPadding, y + h / 2);
 			canvas->setAlignment(Canvas::Alignment::TOP_LEFT);
+			canvas->setColor(32, 255, 100);
 		}
 
 		if (isRenderTicks)
@@ -88,11 +90,11 @@ public:
 		if (isMouseHovering)
 			canvas->setColor(128);
 		else
-			canvas->setColor(255);
+			canvas->setColor(32, 100, 80);
 
 		int knobX = MoreMath::map(value, min, max, x+rRail, x+w-rRail);
 		canvas->renderRegularPolygon(knobX, y+h/2, 16, 0.0f, rKnob);
-		canvas->setColor(200);
+		canvas->setColor(32, 150, 100);
 		canvas->renderRegularPolygon(knobX, y+h/2, 16, 0.0f, rKnob*0.7f);
 	}
 

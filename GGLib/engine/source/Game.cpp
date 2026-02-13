@@ -14,9 +14,9 @@ Game::Game()
     SDL_Renderer* renderer = rendererOptional.value();
 
     // pass renderer to: canvas, asset manager, input manager
-    canvas.setRenderer(renderer);
-    assetManager.setRenderer(renderer);
-    inputManager.setRenderer(renderer);
+    canvas.init(renderer);
+    assetManager.init(renderer);
+    inputManager.init(renderer);
 
     // give audioManager pointer to all loaded audio files in assetManaegr
     audioManager.setAudioPtrs(assetManager.getAudioPtrs());

@@ -2,10 +2,11 @@
 
 #include "Game.h"
 #include "DemoAssetManager.h"
-#include "Checkbox.h"
-#include "Button.h"
-#include "Slider.h"
-#include "DragManager.h"
+#include "ui/Checkbox.h"
+#include "ui/Button.h"
+#include "ui/Slider.h"
+#include "ui/Textbox.h"
+#include "ui/Combobox.h"
 
 class Demo: public Game, KeyEventListener, MouseEventListener
 {
@@ -15,6 +16,8 @@ private:
 	std::vector<Button*> buttons; // TODO: smart pointer
 	Checkbox cb;
 	Slider slider;
+	Textbox tb;
+	Combobox combobox;
 
 	float frameTimesAcc;
 	unsigned int framesCount;

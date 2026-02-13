@@ -16,7 +16,7 @@ AssetManager::~AssetManager()
     freeMap<TextFile*   >(textFilePtrs, [this](std::string fileName){  unloadTextFile(fileName); });
 }
 
-void AssetManager::setRenderer(SDL_Renderer* newRenderer)
+void AssetManager::init(SDL_Renderer* newRenderer)
 {
     renderer = newRenderer;
 }
@@ -51,7 +51,9 @@ std::optional<TTF_Font*> AssetManager::getFont(std::string fileName) const
     return fontPtrs->at(fileName);
 }
 void AssetManager::unloadFont(std::string fileName)
-{
+{ 
+    return; // TODO: this function is broken --> undefined pointer error
+
     if (!fontPtrs->contains(fileName)) return;
 
     TTF_CloseFont((*fontPtrs)[fileName]);

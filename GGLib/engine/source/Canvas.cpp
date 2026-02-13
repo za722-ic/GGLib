@@ -2,7 +2,7 @@
 
 // ------ setters ------
 
-void Canvas::setRenderer(SDL_Renderer* newRenderer)
+void Canvas::init(SDL_Renderer* newRenderer)
 {
     renderer = newRenderer;
 }
@@ -189,20 +189,7 @@ void Canvas::drawStringToHeight(std::string text, int x, int y, int desiredHeigh
 
 void Canvas::drawStringToDimensions(std::string text, int x, int y, int w, int h)
 {
-    // if string is empty, we have nothing to do!
-    if (text.size() == 0) return;
-
-    // render text to texture
-    SDL_Surface* textSurface = NULL;
-    textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
-    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-
-    // error checking
-    if (textSurface == NULL || textTexture == NULL)
-    {
-        std::cout << "Error in RenderText: (textSurface == NULL || textTexture == NULL)" << std::endl << SDL_GetError() << std::endl;
-        return;
-    }
+    SDL_Texture* textTexture = drawStringToTexture(text);
 
     // determine offsets based on alignment option and canvas origin
     applyCanvasOrigin(x, y);
@@ -216,9 +203,41 @@ void Canvas::drawStringToDimensions(std::string text, int x, int y, int w, int h
         return;
     }
 
-    // free surface/texture used to render text
+    // free texture used to render text
     SDL_DestroyTexture(textTexture);
+}
+
+SDL_Texture* Canvas::drawStringToTexture(std::string text)
+{
+    // if string is empty, we have nothing to do!
+    if (text.size() == 0) return nullptr;
+
+    // render text to texture
+    SDL_Surface* textSurface = NULL;
+    textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+    // error checking
+    if (textSurface == NULL || textTexture == NULL)
+    {
+        std::cout << "Error in RenderText: (textSurface == NULL || textTexture == NULL)" << std::endl << SDL_GetError() << std::endl;
+        return nullptr;
+    }
+
+    // free surface used to render text
     SDL_FreeSurface(textSurface);
+
+    // return texture
+    return textTexture;
+}
+
+void Canvas::getTextDimensions(std::string text, int* w, int* h) // FYI: upon experimentation, passing w or h as NULL does NOT cause an error!
+{
+    if (TTF_SizeText(font, text.c_str(), w, h) < 0)
+    {
+        std::cout << "TTF_SizeText() failed in TextRendering::GetTextDimensions(std::string text, int *w, int *h)" << std::endl;
+        std::cout << SDL_GetError() << std::endl;
+    }
 }
 
 void Canvas::drawImage(SDL_Texture* image, int x, int y, int w, int h)
@@ -259,7 +278,7 @@ void Canvas::drawImage_StrechToFillCanvas(SDL_Texture *image)
 
 // TODO: this does not adhere to applyCanvasAlignment, applyCanvasOrigin
 // TODO: doesnt adhere to naming scheme --> get rid of "render"
-void Canvas::renderRoundedRect(int x, int y, int w, int h, int r, const unsigned int trianglesPerCorner)
+void Canvas::renderRoundedRect(int x, int y, int w, int h, int r, const unsigned int trianglesPerCorner, bool isDebug)
 {
     // r cannot be greater than w or h, otherwise the quarter circles that get rendered are too big
     // TODO: the case where r is greater than w or h makes this look weird --> how does CSS handle it?
@@ -316,15 +335,15 @@ void Canvas::renderRoundedRect(int x, int y, int w, int h, int r, const unsigned
 
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 50);
+    if (isDebug)SDL_SetRenderDrawColor(renderer, 255, 0, 0, 50);
     SDL_Rect rTop = { x + r, y, w - 2 * r, r };
     SDL_RenderFillRect(renderer, &rTop);
 
-    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 50);
+    if (isDebug)SDL_SetRenderDrawColor(renderer, 0, 255, 0, 50);
     SDL_Rect rMid = { x, y + r, w, h - 2 * r };
     SDL_RenderFillRect(renderer, &rMid);
 
-    SDL_SetRenderDrawColor(renderer, 255, 255, 0, 50);
+    if (isDebug)SDL_SetRenderDrawColor(renderer, 255, 255, 0, 50);
     SDL_Rect rBot = { x + r, y + h - r, w - 2 * r, r };
     SDL_RenderFillRect(renderer, &rBot);
 }
@@ -455,13 +474,4 @@ Canvas::VerticalAlignment Canvas::getVerticalAlignment(Alignment alignment)
     }
 
     throw std::runtime_error("Unknown Alignment type");
-}
-
-void Canvas::getTextDimensions(std::string text, int* w, int* h) // FYI: upon experimentation, passing w or h as NULL does NOT cause an error!
-{
-    if (TTF_SizeText(font, text.c_str(), w, h) < 0)
-    {
-        std::cout << "TTF_SizeText() failed in TextRendering::GetTextDimensions(std::string text, int *w, int *h)" << std::endl;
-        std::cout << SDL_GetError() << std::endl;
-    }
 }
