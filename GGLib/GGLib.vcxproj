@@ -41,6 +41,7 @@
     <ClInclude Include="engine\include\DragManager.h" />
     <ClInclude Include="engine\include\ui\Combobox.h" />
     <ClInclude Include="engine\include\ui\Label.h" />
+    <ClInclude Include="engine\include\ui\Panel.h" />
     <ClInclude Include="engine\include\ui\Slider.h" />
     <ClInclude Include="engine\include\ui\Button.h" />
     <ClInclude Include="demo\include\Demo.h" />

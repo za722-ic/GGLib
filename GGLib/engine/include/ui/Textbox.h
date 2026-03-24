@@ -1,6 +1,6 @@
 #pragma once
 
-#include <functional>
+#include <algorithm>
 
 #include "UIControl.h"
 
@@ -35,7 +35,8 @@ protected:
 	unsigned int viewportX = 0;
 	unsigned int cursorX = PADDING;
 
-
+	bool forceShiftViewportLeft = false;
+	char erasedChar;
 public:
 
 	// bounds
