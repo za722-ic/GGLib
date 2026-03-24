@@ -1,15 +1,15 @@
 #pragma once
 
 #include "InitsSDL.h"
-#include "GameTimer.h"
-#include "GameWindow.h"
+#include "Timer.h"
+#include "GGWindow.h"
 #include "InputManager.h"
 #include "Canvas.h"
 #include "AssetManager.h"
 #include "AudioManager.h"
 #include "ui/UIManager.h"
 
-class Game
+class GGApp
 {
 private:
 	double dt;
@@ -20,27 +20,27 @@ protected:
 	// TODO: maybe make these private and use getters? will prevent var name clashes at the expense of function name clashes
 	Canvas canvas;
 	InputManager inputManager;
-	GameWindow gameWindow;
+	GGWindow ggWindow;
 	AssetManager assetManager;
 	AudioManager audioManager;
 	UIManager uiManager;
 
 public:
-	Game();
-	~Game();
+	GGApp();
+	~GGApp();
 
-	void gameLoop();
+	void mainLoop();
 
 protected:
 	// -- virtual methods --
-	virtual bool onGameInit() // can be optionally overridden
+	virtual bool onInit() // can be optionally overridden
 	{
 		return true;
 	}
 
-	virtual void onGameLoop() = 0; // must be overridden
+	virtual void onLoop() = 0; // must be overridden
 
-	virtual void onGameQuit() // can be optionally overridden
+	virtual void onQuit() // can be optionally overridden
 	{}
 
 	double deltaTime();
@@ -49,6 +49,6 @@ private:
 	void updateTimers(double deltaTime);
 	
 	// This is here cus Rule Of 3: https://stackoverflow.com/questions/9139103/am-i-violating-rule-of-three
-	Game(Game const&) = delete;
-	Game& operator=(Game const&) = delete;
+	GGApp(GGApp const&) = delete;
+	GGApp& operator=(GGApp const&) = delete;
 };

@@ -1,53 +1,53 @@
 #pragma once // TODO why did I put this here? remove?
 
-#include "GameTimer.h"
+#include "Timer.h"
 
-std::vector<GameTimer*> GameTimer::gameTimers;
+std::vector<Timer*> Timer::timers;
 
-GameTimer::GameTimer(double duration, bool countDown) : timerDuration(duration), isCountingDown(countDown)
+Timer::Timer(double duration, bool countDown) : timerDuration(duration), isCountingDown(countDown)
 {
 	resetTimer();
 
-	gameTimers.push_back(this);
+	timers.push_back(this);
 
 	onTimerTick = NULL;
 	onTimerEnd = NULL;
 }
 
-GameTimer::~GameTimer()
+Timer::~Timer()
 {
-	auto it = std::find(gameTimers.begin(), gameTimers.end(), this);
-	gameTimers.erase(it);
+	auto it = std::find(timers.begin(), timers.end(), this);
+	timers.erase(it);
 }
 
-void GameTimer::startTimer()
+void Timer::startTimer()
 {
 	t = isCountingDown ? timerDuration : 0.0f;
 	isRunning = true;
 	isStarted = true;
 }
 
-void GameTimer::stopTimer()
+void Timer::stopTimer()
 {
 	t = isCountingDown ? 0.0f : timerDuration; // in case t < 0 or > timerDuration after the most recent tick
 	isRunning = false;
 	isStarted = false;
 }
 
-void GameTimer::resetTimer()
+void Timer::resetTimer()
 {
 	t = isCountingDown ? timerDuration : 0.0f;
 	isRunning = false;
 	isStarted = false;
 }
 
-void GameTimer::pauseTimer()
+void Timer::pauseTimer()
 {
 	isRunning = false;
 	if (onTimerPause) onTimerPause();
 }
 
-void GameTimer::unpauseTimer()
+void Timer::unpauseTimer()
 {
 	if (isStarted)
 	{
@@ -56,7 +56,7 @@ void GameTimer::unpauseTimer()
 	}	
 }
 
-void GameTimer::tickTimer(double deltaTime)
+void Timer::tickTimer(double deltaTime)
 {
 	if (isRunning) t += isCountingDown ? -deltaTime : deltaTime;
 	else return;
@@ -72,42 +72,42 @@ void GameTimer::tickTimer(double deltaTime)
 	}
 }
 
-void GameTimer::setOnTimerTick(std::function<void()> func)
+void Timer::setOnTimerTick(std::function<void()> func)
 {
 	onTimerTick = func;
 }
 
-void GameTimer::setOnTimerEnd(std::function<void()> func)
+void Timer::setOnTimerEnd(std::function<void()> func)
 {
 	onTimerEnd = func;
 }
 
-void GameTimer::setOnTimerPause(std::function<void()> func)
+void Timer::setOnTimerPause(std::function<void()> func)
 {
 	onTimerPause = func;
 }
 
-void GameTimer::setOnTimerUnpause(std::function<void()> func)
+void Timer::setOnTimerUnpause(std::function<void()> func)
 {
 	onTimerUnpause = func;
 }
 
-double GameTimer::getT() const
+double Timer::getT() const
 {
 	return t;
 }
 
-double GameTimer::getTms() const
+double Timer::getTms() const
 {
 	return t * 1000.0f;
 }
 
-std::string  GameTimer::getTAsString() const
+std::string  Timer::getTAsString() const
 {
 	return tToString(t);
 }
 
-double GameTimer::getPercentage() const
+double Timer::getPercentage() const
 {
 	if (isCountingDown)
 	{
@@ -119,44 +119,44 @@ double GameTimer::getPercentage() const
 	}
 }
 
-double GameTimer::getInversePercentage() const
+double Timer::getInversePercentage() const
 {
 	return 1 - getPercentage();
 }
 
-bool GameTimer::getIsRunning() const
+bool Timer::getIsRunning() const
 {
 	return isRunning;
 }
 
-bool GameTimer::getIsPaused() const
+bool Timer::getIsPaused() const
 {
 	return isStarted && !isRunning;
 }
 
-bool GameTimer::getIsStarted() const
+bool Timer::getIsStarted() const
 {
 	return isStarted;
 }
 
-double GameTimer::getDuration() const
+double Timer::getDuration() const
 {
 	return timerDuration;
 }
 
-void GameTimer::setDuration(double newDuration)
+void Timer::setDuration(double newDuration)
 {
 	timerDuration = newDuration;
 	t = isCountingDown ? timerDuration : 0.0f;
 }
 
-void GameTimer::setCountDown(bool countDown)
+void Timer::setCountDown(bool countDown)
 {
 	isCountingDown = countDown;
 }
 
 
-std::string GameTimer::tToString(double t)
+std::string Timer::tToString(double t)
 {
 	// e.g. if t = 123.1222131 then return "2:03.122"
 	// probably should generalise this at some point for different precisions, and hours & days

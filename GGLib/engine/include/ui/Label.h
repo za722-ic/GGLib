@@ -9,7 +9,7 @@ public:
 	int w, h; // TODO: make use of these --> crop text with ... if out of bounds (how do other libs handle this?)
 	int textPadding;
 
-	std::string labelText;
+	std::string text;
 
 	SDL_Color foreColor;
 
@@ -20,6 +20,11 @@ public:
 	{
 		canvas->setColor(foreColor);
 
-		canvas->drawString(labelText, x, y);
+		canvas->drawString(text, x, y);
+	}
+
+	void setText(std::string newText)
+	{
+		text = newText;
 	}
 };

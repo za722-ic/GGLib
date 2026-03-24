@@ -21,7 +21,7 @@ Aight so experiment showed it's actually text rendering that's slow, so focus on
 */
 
 
-bool Demo::onGameInit()
+bool Demo::onInit()
 {
 	// load assets
 	if (!demoAssetManager->loadResources())
@@ -31,10 +31,9 @@ bool Demo::onGameInit()
 	}
 
 	// set up window
-	gameWindow.setTitle("Demo");
-	gameWindow.setFullScreen(false);
-	gameWindow.setResizable(true);
-	gameWindow.setMouseHidden(false);
+	ggWindow.setTitle("Demo");
+	ggWindow.setResizable(true);
+	ggWindow.setSize(1280, 720);
 
 	// tell canvas to use loaded font
 	canvas.setFont(demoAssetManager->getFont());
@@ -49,10 +48,10 @@ bool Demo::onGameInit()
 	return true;
 }
 
-void Demo::onGameQuit()
+void Demo::onQuit()
 {}
 
-void Demo::onGameLoop()
+void Demo::onLoop()
 {
 	// clear screen
 	canvas.setColor(30);
@@ -69,7 +68,16 @@ void Demo::onGameLoop()
 		framesCount = 0;
 		frameTimesAcc = 0.0f;
 	}
-	fpsLabel.labelText = "FPS: " + std::to_string(avgFps);
+	fpsLabel.text = "FPS: " + std::to_string(avgFps);
+
+	// get updated window resolution
+	std::string windowResolutionText = "Window size: " + std::to_string(ggWindow.getWidth()) + "x" + std::to_string(ggWindow.getHeight());
+	resolutionLabel.setText(windowResolutionText);
+
+	// get updated cursor position
+	std::string cursorPosText = "Cursor position: " + std::to_string(inputManager.getMouseX()) + ", " + std::to_string(inputManager.getMouseY());
+	cursorPosLabel.setText(cursorPosText);
+
 
 	// TODO: would be beneficial to abstract this away from the user. problem is you would still need to rely on the user clearing the screen and updating the screen --> how much should the user be able to control ui rendering? ideally as much as they wish, or as little as they wish...
 	canvas.setColor(255); // TODO: this should not be a thing --> ui elements' color should be defined by ui elements
@@ -93,7 +101,7 @@ void Demo::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
 
 	if (key == SDLK_F11)
 	{
-		gameWindow.toggleFullScreen();
+		ggWindow.toggleFullScreen();
 	}
 }
 
@@ -104,12 +112,24 @@ void Demo::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 void Demo::initUI()
 {
 	// (FPS) label
-	fpsLabel.x = 10; fpsLabel.y = 10;
-	fpsLabel.labelText = "FPS ???";
+	fpsLabel.x = 10; 
+	fpsLabel.y = 10;
+	fpsLabel.text = "FPS: ???";
 	fpsLabel.foreColor = { 255, 255, 255 };
 
+	// Resolution label
+	resolutionLabel.x = 10; 
+	resolutionLabel.y = 30;
+	resolutionLabel.text = "Window size: ???";
+	resolutionLabel.foreColor = { 255, 255, 255 };
 
+	// Mouse cursor position label
+	cursorPosLabel.x = 10; 
+	cursorPosLabel.y = 50;
+	cursorPosLabel.text = "Cursor position: ";
+	cursorPosLabel.foreColor = { 255, 255, 255 };
 
+	// root location for the rest of the UI elements
 	const int UI_X = 250;
 	const int UI_Y = 100;
 

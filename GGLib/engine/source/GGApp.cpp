@@ -1,15 +1,15 @@
-#include "Game.h"
+#include "GGApp.h"
 
-Game::Game()
+GGApp::GGApp()
 {
     // initialise SDL
     if (!InitsSDL::initAll()) 
         throw std::runtime_error("Failed to initialse SDL! See console output.");
 
     // create window and renderer
-    std::optional<SDL_Renderer*> rendererOptional = gameWindow.init();
+    std::optional<SDL_Renderer*> rendererOptional = ggWindow.init();
     if (!rendererOptional.has_value())
-        throw std::runtime_error("Failed to create GameWindow! See console output.");
+        throw std::runtime_error("Failed to create application window! See console output.");
 
     SDL_Renderer* renderer = rendererOptional.value();
 
@@ -25,14 +25,14 @@ Game::Game()
     uiManager.init(&inputManager);
 }
 
-Game::~Game()
+GGApp::~GGApp()
 {
     InitsSDL::quitSDL();
 }
 
-void Game::gameLoop() 
+void GGApp::mainLoop() 
 {
-    if (!onGameInit()) throw std::runtime_error("GameInit() failed!"); // can't call in constructor of Game as child classes of Game haven't had their constructor called yet 
+    if (!onInit()) throw std::runtime_error("onInit() failed!"); // can't call in constructor of GGApp as child classes of GGApp haven't had their constructor called yet 
 
     isRunning = true;
 
@@ -50,25 +50,25 @@ void Game::gameLoop()
         // Handle events/user input
         if (!inputManager.pollEvents()) isRunning = false;
 
-        // If we didn't just detect the user quitting: update timers, run game loop and render
+        // If we didn't just detect the user quitting: update timers, run user's main loop code and render
         if (isRunning)
         {
             updateTimers(dt);
-            onGameLoop();
+            onLoop();
         }
     }
 
-    onGameQuit();
+    onQuit();
 }
 
-double Game::deltaTime()
+double GGApp::deltaTime()
 {
     return dt;
 }
 
-void Game::updateTimers(double deltaTime)
+void GGApp::updateTimers(double deltaTime)
 {
-    for (GameTimer *timer : GameTimer::gameTimers)
+    for (Timer *timer : Timer::timers)
     {
         timer->tickTimer(deltaTime);
     }

@@ -1,130 +1,159 @@
-#include "ui/Textbox.h"
+#include "Demo.h"
 
-// bounds
-void Textbox::setBounds(int _x, int _y, int _w, int _h)
-{
-	x = _x;
-	y = _y;
-	w = _w;
-	h = _h;
-}
+/*
+TODO: LAG
 
-// color
-void Textbox::setForeColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
-{
-	foreColor = { r, g, b, a };
-}
-void Textbox::setBackColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
-{
-	backColor = { r, g, b, a };
-}
+Experiment: render 400 rects using SDL_RenderFillRect
+			then render 400 rects using the canvas
 
-// text
-void Textbox::setText(std::string _text)
-{
-	text = _text;
-}
-std::string Textbox::getText() const
-{
-	return text;
-}
+			(*perform it pls)
 
-// rendering
-void Textbox::render(Canvas* canvas)
-{
-	int PADDING = 7;
+Hypothesis: the latter is way slower
 
-	// draw light border if focused
-	if (isFocused)
+Course of action if true: we need a much more optimised sequence of draw calls to the graphics lib.
+						  general outline:
+
+				  +--------------------+                                      +--------------+
+				  | DESCRIPTION OF GUI | ----> (Sequence of draw calls) ----> | GRAPHICS LIB | 
+				  +--------------------+                                      +--------------+
+
+Aight so experiment showed it's actually text rendering that's slow, so focus on that instead --> cache rendering results in controls
+*/
+
+
+bool Demo::onGameInit()
+{
+	// load assets
+	if (!demoAssetManager->loadResources())
 	{
-		canvas->setColor(255);
+		std::cout << "Failed to load resources! See console output. Aborting." << std::endl;
+		return false;
 	}
-	else
-	{
-		canvas->setColor(128);
-	}
-	canvas->drawRect(x, y, w, h, 3);
-	//canvas->renderRoundedRect(x, y, w, h, 5);
 
-	// draw text
-	canvas->setColor(foreColor);
-	canvas->setAlignment(Canvas::Alignment::CENTER_LEFT);
-	canvas->drawString(text, x + PADDING, y + h / 2);
-	canvas->setAlignment(Canvas::Alignment::TOP_LEFT); // TODO: it would be useful if you could push/pop canvas states, rather than having to restore values manually (esp. since the user might not have has TOP_LEFT before this call, and also since we aren't currently restoring the color)
+	// set up window
+	gameWindow.setTitle("Demo");
+	gameWindow.setResizable(true);
+	gameWindow.setSize(1280, 720);
 
-	// draw cursor
-	int tw;
-	canvas->getTextDimensions(text.substr(0, cursorPos), &tw, nullptr);
-	int gw;
-	std::string glyph(text.substr(cursorPos, 1));
-	canvas->getTextDimensions(glyph, &gw, nullptr);
+	// tell canvas to use loaded font
+	canvas.setFont(demoAssetManager->getFont());
 
-	canvas->setColor(255, 0, 0);
-	canvas->fillRect(x + tw, y + h + 5, 3, 3);
+	// subscribe to mouse and keyboard events
+	inputManager.addKeyEventListener(this);
+	inputManager.addMouseEventListener(this);
+
+	// init UI
+	initUI();
+
+	return true;
 }
 
-// mouse events
-void Textbox::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
+void Demo::onGameQuit()
+{}
+
+void Demo::onGameLoop()
 {
-	if (mouseEventType == MouseEventType::LEFT_MOUSE_UP)
-	{
-		// set/unset textbox focus
-		bool isInBounds = (mouseX >= x && mouseX < x + w) && (mouseY >= y && mouseY < y + h);
-		isFocused = isInBounds;
+	// clear screen
+	canvas.setColor(30);
+	canvas.clear();
+
+	// update and draw fps
+	frameTimesAcc += deltaTime();
+	framesCount++;
+	if (frameTimesAcc >= 1)
+{
+		float avgSpf = frameTimesAcc / framesCount;
+		avgFps = 1 / avgSpf;
+
+		framesCount = 0;
+		frameTimesAcc = 0.0f;
 	}
+	fpsLabel.labelText = "FPS: " + std::to_string(avgFps);
+
+	// get updated window resolution
+
+	// get updated cursor position
+	std::string cursorPosText = "Cursor position: " + std::to_string(inputManager.getMouseX()) + std::to_string(inputManager.getMouseY());
+
+	// TODO: would be beneficial to abstract this away from the user. problem is you would still need to rely on the user clearing the screen and updating the screen --> how much should the user be able to control ui rendering? ideally as much as they wish, or as little as they wish...
+	canvas.setColor(255); // TODO: this should not be a thing --> ui elements' color should be defined by ui elements
+	uiManager.renderUI(&canvas);
+
+	// update screen
+	canvas.present();
 }
 
-// key events
-void Textbox::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
+void Demo::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
 {
-	if (!isFocused) return;
-	
+	// The following events are all for when the key is pressed down, not when released
 	if (keyEventType == KEY_UP) return;
-	
-	if (key == SDLK_BACKSPACE) deleteCharAtCursorPos();
+
+	// Exit on ESC key pressed
+	if (key == SDLK_ESCAPE)
+	{
+		isRunning = false;
+		return;
+	}
+
+	if (key == SDLK_F11)
+	{
+		gameWindow.toggleFullScreen();
+	}
 }
 
-void Textbox::onTextInputEvent(std::string text)
+void Demo::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 {
-	if (!isFocused) return;
-
-	insertTextAtCursorPos(text);
-	cursorPos += text.size();
 }
 
-// handling text
-void Textbox::insertTextAtCursorPos(std::string text)
+void Demo::initUI()
 {
-	setText(getText() + text);
+	// (FPS) label
+	fpsLabel.x = 10; 
+	fpsLabel.y = 10;
+	fpsLabel.labelText = "FPS: ???";
+	fpsLabel.foreColor = { 255, 255, 255 };
+
+	// Resolution label
+	resolutionLabel.x = 10; 
+	resolutionLabel.y = 30;
+	resolutionLabel.labelText = "Window size: ???";
+	resolutionLabel.foreColor = { 255, 255, 255 };
+
+	// Mouse cursor position label
+	cursorPosLabel.x = 10; 
+	cursorPosLabel.y = 50;
+	cursorPosLabel.labelText = "Cursor position: ";
+	cursorPosLabel.foreColor = { 255, 255, 255 };
+
+	// root location for the rest of the UI elements
+	const int UI_X = 250;
+	const int UI_Y = 100;
+
+	// checkbox
+	cb.setBounds(UI_X, UI_Y, 170, 30);
+	cb.setText("Checkbox");
+
+	// button
+	btn.setBounds(UI_X, UI_Y + 200, 200, 50);
+	btn.setBackColor(128, 255, 128);
+	btn.setOnMouseEnter([=]() { btn.setBackColor(255, 255, 255); });
+	btn.setOnMouseExit([=]() {btn.setBackColor(128, 255, 128); });
+	btn.setOnClick([=]() { 
+		int i = stoi(btn.getText());
+		i++;
+		btn.setText(std::to_string(i));
+	});
+	btn.setText("0");
+
+	// slider
+	slider.x = UI_X;
+	slider.y = UI_Y + 400;
+	slider.max = 1000;
+
+	// textbox
+	tb.setBounds(UI_X, UI_Y + 600, 200, 40);
+
+	// combobox
+	combobox.setBounds(UI_X, UI_Y + 800, 200, 40);
+
 }
-
-void Textbox::deleteCharAtCursorPos()
-{
-	if (text.empty()) return; // textbox is empty
-
-	text = text.substr(0, text.size() - 1);
-}
-
-void Textbox::moveCursorLeft()
-{
-	if (cursorPos == 0) return;
-	cursorPos--;
-}
-
-void Textbox::moveCursorRight()
-{
-	if (cursorPos == text.size() - 1) return;
-	cursorPos++;
-}
-
-void Textbox::moveCursorToStartOfPrevToken()
-{}
-
-void Textbox::moveCursorToStartOfNextToken()
-{}
-
-void Textbox::moveCursorToStartOfText()
-{}
-
-void Textbox::moveCursorToEndOfText()
-{}

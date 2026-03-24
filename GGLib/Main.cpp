@@ -19,6 +19,6 @@ MAYBE Date/time picker
 int main(int argc, char* args[])
 {
     Demo demo;
-    demo.gameLoop();
+    demo.mainLoop();
     return 0;
 }

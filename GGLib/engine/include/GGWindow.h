@@ -6,9 +6,7 @@
 #include <string>
 #include <optional>
 
-// TODO: make this have any resolution/size
-
-class GameWindow 
+class GGWindow 
 {
 private:
 	SDL_Window* window = nullptr;
@@ -28,10 +26,13 @@ public:
 
 	void setMouseHidden(bool isMouseHidden);
 
+	void setSize(unsigned int width, unsigned int height);
+
+	unsigned int getWidth();
+	unsigned int getHeight();
+
 
 
 private:
-	bool setRenderingResolution(int screenWidth, int screenHeight);
-
-	std::optional<SDL_Window*> createSDLWindow(int width, int height, bool isFullScreen, std::string title);
+	std::optional<SDL_Window*> createSDLWindow(unsigned int width, unsigned int height, bool isFullScreen, std::string title);
 };

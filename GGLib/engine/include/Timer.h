@@ -6,10 +6,10 @@
 #include <sstream>
 #include <iomanip>
 
-class GameTimer
+class Timer
 {
 public:
-	static std::vector<GameTimer*> gameTimers;
+	static std::vector<Timer*> timers;
 
 private:
 	double timerDuration;
@@ -29,7 +29,7 @@ public:
 	/*
 	Use this if you want the timer to count indefinetly
 	*/
-	GameTimer(bool countDown = false) : GameTimer(countDown ? -std::numeric_limits<double>::infinity() : std::numeric_limits<double>::infinity(), countDown)
+	Timer(bool countDown = false) : Timer(countDown ? -std::numeric_limits<double>::infinity() : std::numeric_limits<double>::infinity(), countDown)
 	{}
 
 
@@ -37,9 +37,9 @@ public:
 	Duration (double) - How long the timer should run.
 	countDown (bool - Set true if t should decrease over time. Otherwise t will increase over time.
 	*/
-	GameTimer(double duration, bool countDown = true);
+	Timer(double duration, bool countDown = true);
 
-	~GameTimer();
+	~Timer();
 
 	void startTimer();
 	void stopTimer();
@@ -76,6 +76,6 @@ public:
 private:
 	// This is here cus Rule Of 3: https://stackoverflow.com/questions/9139103/am-i-violating-rule-of-three
 	// Copying timers would be pretty cool though, so if you ever need that then change these functions
-	GameTimer(GameTimer const&) = delete;
-	GameTimer& operator=(GameTimer const&) = delete;
+	Timer(Timer const&) = delete;
+	Timer& operator=(Timer const&) = delete;
 };

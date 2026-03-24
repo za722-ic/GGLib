@@ -27,13 +27,13 @@
     <ClCompile Include="engine\source\Canvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\Game.cpp">
+    <ClCompile Include="engine\source\GGApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\GameTimer.cpp">
+    <ClCompile Include="engine\source\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\GameWindow.cpp">
+    <ClCompile Include="engine\source\GGWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="engine\source\InitsSDL.cpp">
@@ -77,13 +77,13 @@
     <ClInclude Include="engine\include\Canvas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\Game.h">
+    <ClInclude Include="engine\include\GGApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\GameTimer.h">
+    <ClInclude Include="engine\include\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\GameWindow.h">
+    <ClInclude Include="engine\include\GGWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="engine\include\InitsSDL.h">
