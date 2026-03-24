@@ -7,35 +7,31 @@
 #include "ui/Slider.h"
 #include "ui/Textbox.h"
 #include "ui/Combobox.h"
+#include "ui/Label.h"
 
 class Demo: public Game, KeyEventListener, MouseEventListener
 {
 private:
 	std::shared_ptr<DemoAssetManager> demoAssetManager;
 
-	std::vector<Button*> buttons; // TODO: smart pointer
+	Button btn;
 	Checkbox cb;
 	Slider slider;
 	Textbox tb;
 	Combobox combobox;
+	Label fpsLabel;
 
 	float frameTimesAcc;
 	unsigned int framesCount;
 	float avgFps;
-
-	float y = 10;
-	float vy = 200;
-
-	float triRotAngle;
-
-	DragManager dragManager;
-
 
 public:
 	Demo() : demoAssetManager(std::make_shared<DemoAssetManager>(&assetManager))
 	{}
 
 private:
+	void initUI();
+
 	bool onGameInit() override;
 	void onGameLoop() override;
 	void onGameQuit() override;
