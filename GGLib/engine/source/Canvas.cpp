@@ -214,8 +214,8 @@ SDL_Texture* Canvas::drawStringToTexture(std::string text)
 
     // render text to texture
     SDL_Surface* textSurface = NULL;
-    textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
-    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    textSurface = TTF_RenderUTF8_Blended(font, text.c_str(), color );// TODO: there are other quality levels, and a family of functions that are not "RenderUTF8" (though they are not recommended). Play with these (maybe make configurable), and also see if you can do something about ligatures looking weird (in particular "ti" appears bold). Read the docs: https://wiki.libsdl.org/SDL2_ttf/TTF_RenderText_Blended 
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface); 
 
     // error checking
     if (textSurface == NULL || textTexture == NULL)
