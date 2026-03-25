@@ -20,8 +20,6 @@ public:
 	int value = 50;
 	int interval = 1;
 
-	int x=0, y=0;
-	int w=500, h=10;
 	int rKnob=10.0f;     // of knob --> TODO: non circular knobs? or just leave it to the user to override render method if they want to?
 	int rRail=std::min(h,w)/2;
 	int textPadding = rKnob + 10;; // TODO: text should also be able to go on the left. also padding should have a minimum value of r, right? allow negative padding though in case someone is insane --> use setters/getters
@@ -34,6 +32,8 @@ public:
 
 	Slider()
 	{
+		w = 500; h = 10;
+
 		dragManager.setOnClick([&](int mouseX, int mouseY){
 			if (isCoordInSliderBounds(mouseX, mouseY))
 				value = (int)std::roundf(MoreMath::map(mouseX, x, x + w, min, max));

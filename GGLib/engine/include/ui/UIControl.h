@@ -8,6 +8,7 @@
 class UIControl : public MouseEventListener, public KeyEventListener, public TextInputEventListener
 {
 public:
+	int x, y, w, h;
 
 	virtual void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override
 	{}

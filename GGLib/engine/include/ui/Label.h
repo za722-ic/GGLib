@@ -5,8 +5,8 @@
 class Label: public UIControl
 {
 public:
-	int x, y;
-	int w, h; // TODO: make use of these --> crop text with ... if out of bounds (how do other libs handle this?)
+	// TODO: make use of width, height --> crop text with "..." if out of bounds (how do other libs handle this?)
+	
 	int textPadding;
 
 	std::string text;

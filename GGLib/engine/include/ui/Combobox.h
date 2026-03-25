@@ -5,10 +5,6 @@
 class Combobox : UIControl
 {
 protected:
-	int x = 0;
-	int y = 0;
-	int w = 0;
-	int h = 0;
 
 	SDL_Color backColor = {200, 200, 200, 255};
 	SDL_Color foreColor = { 0, 0, 0, 255 };
