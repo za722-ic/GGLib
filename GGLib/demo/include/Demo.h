@@ -14,11 +14,10 @@ class Demo: public GGApp, KeyEventListener, MouseEventListener
 private:
 	std::shared_ptr<DemoAssetManager> demoAssetManager;
 
-	Button btn;
-	Checkbox cb;
-	Slider slider;
-	Textbox tb;
-	Combobox combobox;
+	Button btn0;
+	Button btn1;
+	Button btn2;
+	Button btn3;
 	Label fpsLabel;
 	Label resolutionLabel;
 	Label cursorPosLabel;
