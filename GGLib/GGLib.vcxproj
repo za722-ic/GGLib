@@ -33,7 +33,6 @@
     <ClCompile Include="engine\source\TextFile.cpp" />
     <ClCompile Include="engine\source\ui\Combobox.cpp" />
     <ClCompile Include="engine\source\ui\Textbox.cpp" />
-    <ClCompile Include="engine\source\ui\UIControl.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="demo\source\DemoAssetManager.cpp" />
   </ItemGroup>
@@ -59,7 +58,6 @@
     <ClInclude Include="demo\include\DemoAssetManager.h" />
     <ClInclude Include="engine\include\ui\Textbox.h" />
     <ClInclude Include="engine\include\ui\UIControl.h" />
-    <ClInclude Include="engine\include\ui\UIManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

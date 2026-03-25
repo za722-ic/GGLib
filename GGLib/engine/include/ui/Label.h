@@ -2,7 +2,7 @@
 
 #include "UIControl.h"
 
-class Label: UIControl
+class Label: public UIControl
 {
 public:
 	int x, y;

@@ -7,7 +7,7 @@
 
 #include "UIControl.h"
 
-class Button : UIControl
+class Button : public UIControl
 {
 protected:
 	std::function<void()> onClick;

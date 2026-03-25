@@ -68,20 +68,20 @@ void Demo::onLoop()
 		framesCount = 0;
 		frameTimesAcc = 0.0f;
 	}
-	fpsLabel.text = "FPS: " + std::to_string(avgFps);
+	lblFPS->text = "FPS: " + std::to_string(avgFps);
 
 	// get updated window resolution
 	std::string windowResolutionText = "Window size: " + std::to_string(ggWindow.getWidth()) + "x" + std::to_string(ggWindow.getHeight());
-	resolutionLabel.setText(windowResolutionText);
+	lblWindowSize->setText(windowResolutionText);
 
 	// get updated cursor position
 	std::string cursorPosText = "Cursor position: " + std::to_string(inputManager.getMouseX()) + ", " + std::to_string(inputManager.getMouseY());
-	cursorPosLabel.setText(cursorPosText);
+	lblCursorPos->setText(cursorPosText);
 
 
 	// TODO: would be beneficial to abstract this away from the user. problem is you would still need to rely on the user clearing the screen and updating the screen --> how much should the user be able to control ui rendering? ideally as much as they wish, or as little as they wish...
 	canvas.setColor(255); // TODO: this should not be a thing --> ui elements' color should be defined by ui elements
-	uiManager.renderUI(&canvas);
+	ui.render();
 
 	// update screen
 	canvas.present();
@@ -111,29 +111,41 @@ void Demo::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 
 void Demo::initUI()
 {
+	ui.init(&canvas, &inputManager);
+
 	// (FPS) label
-	fpsLabel.x = 10; 
-	fpsLabel.y = 10;
-	fpsLabel.text = "FPS: ???";
-	fpsLabel.foreColor = { 255, 255, 255 };
+	lblFPS = new Label();
+	lblFPS->x = 10; 
+	lblFPS->y = 10;
+	lblFPS->text = "FPS: ???";
+	lblFPS->foreColor = { 255, 255, 255 };
+	ui.add(lblFPS);
 
-	// Resolution label
-	resolutionLabel.x = 10; 
-	resolutionLabel.y = 30;
-	resolutionLabel.text = "Window size: ???";
-	resolutionLabel.foreColor = { 255, 255, 255 };
+	// resolution label
+	lblWindowSize = new Label();
+	lblWindowSize->x = 10; 
+	lblWindowSize->y = 30;
+	lblWindowSize->text = "Window size: ???";
+	lblWindowSize->foreColor = { 255, 255, 255 };
+	ui.add(lblWindowSize);
 
-	// Mouse cursor position label
-	cursorPosLabel.x = 10; 
-	cursorPosLabel.y = 50;
-	cursorPosLabel.text = "Cursor position: ";
-	cursorPosLabel.foreColor = { 255, 255, 255 };
+	// mouse cursor position label
+	lblCursorPos = new Label();
+	lblCursorPos->x = 10; 
+	lblCursorPos->y = 50;
+	lblCursorPos->text = "Cursor position: ";
+	lblCursorPos->foreColor = { 255, 255, 255 };
+	ui.add(lblCursorPos);
 
-	btn0.setBounds(80,     80    , 80 * 6,  80 * 2); btn0.setBackColor(255, 128, 128); btn0.setText("0");
-	btn1.setBounds(80,     80 * 4, 80 * 6,  80 * 2); btn1.setBackColor(128, 255, 128); btn1.setText("1");
-	btn2.setBounds(80,     80 * 7, 80 * 14, 80    ); btn2.setBackColor(128, 128, 255); btn2.setText("2");
-	btn3.setBounds(80 * 8, 80    , 80 * 7 , 80 * 5); btn3.setBackColor(255, 128, 255); btn3.setText("3");
-
+	// aesthetically positioned buttons
+	Button* btn0 = new Button();
+	Button* btn1 = new Button();
+	Button* btn2 = new Button();
+	Button* btn3 = new Button();
+	btn0->setBounds(80,     80    , 80 * 6,  80 * 2); btn0->setBackColor(255, 128, 128); btn0->setText("0"); ui.add(btn0);
+	btn1->setBounds(80,     80 * 4, 80 * 6,  80 * 2); btn1->setBackColor(128, 255, 128); btn1->setText("1"); ui.add(btn1);
+	btn2->setBounds(80,     80 * 7, 80 * 14, 80    ); btn2->setBackColor(128, 128, 255); btn2->setText("2"); ui.add(btn2);
+	btn3->setBounds(80 * 8, 80    , 80 * 7 , 80 * 5); btn3->setBackColor(255, 128, 255); btn3->setText("3"); ui.add(btn3);
 }
 //void Demo::initUI()
 //{

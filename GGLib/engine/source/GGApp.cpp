@@ -20,9 +20,6 @@ GGApp::GGApp()
 
     // give audioManager pointer to all loaded audio files in assetManaegr
     audioManager.setAudioPtrs(assetManager.getAudioPtrs());
-
-    // give uiManager pointer to input manager so that it can pass input events to ui stuff
-    uiManager.init(&inputManager);
 }
 
 GGApp::~GGApp()

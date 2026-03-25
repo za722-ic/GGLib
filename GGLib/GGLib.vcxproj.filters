@@ -57,9 +57,6 @@
     <ClCompile Include="engine\source\ui\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\ui\UIControl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="engine\source\ui\Textbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -105,9 +102,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="engine\include\ui\Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\ui\UIManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="engine\include\ui\UIControl.h">

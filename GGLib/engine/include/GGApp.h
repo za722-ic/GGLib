@@ -7,7 +7,6 @@
 #include "Canvas.h"
 #include "AssetManager.h"
 #include "AudioManager.h"
-#include "ui/UIManager.h"
 
 class GGApp
 {
@@ -23,7 +22,6 @@ protected:
 	GGWindow ggWindow;
 	AssetManager assetManager;
 	AudioManager audioManager;
-	UIManager uiManager;
 
 public:
 	GGApp();

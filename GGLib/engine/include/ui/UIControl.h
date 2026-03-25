@@ -5,17 +5,9 @@
 #include "InputManager.h"
 #include "Canvas.h"
 
-class UIControl : MouseEventListener, KeyEventListener, TextInputEventListener
+class UIControl : public MouseEventListener, public KeyEventListener, public TextInputEventListener
 {
-// TODO: create explicit init method instead of just having this public
 public:
-	static InputManager *inputManager;
-	static std::vector<UIControl*> uiControls;
-
-	static std::vector<std::weak_ptr<InputManager>> _uiControls;
-
-	UIControl();
-	~UIControl(); // TODO: rule of three
 
 	virtual void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override
 	{}
