@@ -61,6 +61,7 @@ void Canvas::setColor(SDL_Color c)
 
 // ------ getters ------
 
+// TODO: RenderGetLogicalSize is only valid if you actually set the logical size, which we no longer do as we just use the window size, so these return 0: https://wiki.libsdl.org/SDL2/SDL_RenderGetLogicalSize --> in any case, it is confusing for the user to have a separate window/canvas size (maybe just make it so that you can draw on the window, and just merge canvas into window?)
 int Canvas::getWidth()
 {
     int w;

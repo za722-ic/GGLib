@@ -16,15 +16,17 @@ private:
 
 	Canvas* canvas;
 	InputManager* inputManager;
+	GGWindow* window;
 
 public:
 	UI()
 	{}
 
-	void init(Canvas* canvas, InputManager* inputManager)
+	void init(Canvas* canvas, InputManager* inputManager, GGWindow* window)
 	{
 		this->canvas = canvas;
 		this->inputManager = inputManager;
+		this->window = window;
 	}
 
 	void add(UIControl* control)
@@ -47,6 +49,10 @@ public:
 
 	void render()
 	{
+		calculateLayout(); // TODO: instead, only do this when the window is resized (at least by default, with the option from the user to do this manually too i.e, make calculateLayout public in the future maybe)
+
+		canvas->setAlignment(Canvas::Alignment::TOP_LEFT); // TODO: it would be useful if you could push/pop canvas states, rather than having to restore values manually (esp. since the user might not have has TOP_LEFT before this call, and also since we aren't currently restoring the color)
+
 		for (auto child : children) child->render(canvas);
 	}
 
@@ -54,7 +60,50 @@ public:
 	{
 		for (auto child : children) delete child;
 	}
+
+private:
+	
+	enum class LayoutType
+	{
+		GRID	
+	};
+
+	LayoutType layoutType = LayoutType::GRID;
+
+	void calculateLayout()
+	{
+//		switch (layoutType)
+//		{
+//		case LayoutType::GRID: 
+//			calculateGridLayout(); break;
+//		default: 
+//			calculateFreeLayout(); break;
+//		}
+		calculateGridLayout();
+	}
+
+	void calculateGridLayout()
+	{
+		// TODO: for now im just sizing them equally and arranging them in a single column --> need to have adjustable ratios, adjustable cell locations
+		
+		// calculate size of child elements
+		int padding = 50;
+		unsigned int sizePerElement = window->getHeight() / children.size();
+		for (int i = 0; i < children.size(); i++)
+		{
+			children.at(i)->y = sizePerElement * i;
+			children.at(i)->h = sizePerElement;
+			children.at(i)->w = window->getWidth();
+			children.at(i)->x = 0;
+		}
+	}
+	void calculateFreeLayout()
+	{
+		// manually position elements, manually size elements	
+	}
 };
+
+
 
 class Demo: public GGApp, KeyEventListener, MouseEventListener
 {
