@@ -27,6 +27,10 @@ public:
 	void setMouseHidden(bool isMouseHidden);
 
 	void setSize(unsigned int width, unsigned int height);
+	void setMinimumSize(unsigned int width, unsigned int height);
+
+	void setPos(int x, int y);
+	void centerWindowPosition();
 
 	unsigned int getWidth();
 	unsigned int getHeight();

@@ -74,6 +74,24 @@ void GGWindow::setSize(unsigned int width, unsigned int height)
     SDL_SetWindowSize(window, width, height);
 }
 
+void GGWindow::setMinimumSize(unsigned int width, unsigned int height)
+{
+    SDL_SetWindowMinimumSize(window, width, height);
+}
+
+void GGWindow::setPos(int x, int y)
+{
+    SDL_SetWindowPosition(window, x, y);
+}
+
+void GGWindow::centerWindowPosition()
+{
+    setPos(
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED
+    );
+}
+
 bool GGWindow::getFullScreen()
 {
     return SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN_DESKTOP;
