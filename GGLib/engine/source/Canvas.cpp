@@ -192,6 +192,8 @@ void Canvas::drawStringToDimensions(std::string text, int x, int y, int w, int h
 {
     SDL_Texture* textTexture = drawStringToTexture(text);
 
+    if (textTexture == nullptr) return;
+
     // determine offsets based on alignment option and canvas origin
     applyCanvasOrigin(x, y);
     applyCanvasAlignment(x, y, w, h);
@@ -211,7 +213,7 @@ void Canvas::drawStringToDimensions(std::string text, int x, int y, int w, int h
 SDL_Texture* Canvas::drawStringToTexture(std::string text)
 {
     // if string is empty, we have nothing to do!
-    if (text.size() == 0) return nullptr;
+    if (text.empty()) return nullptr;
 
     // render text to texture
     SDL_Surface* textSurface = NULL;
@@ -336,6 +338,7 @@ void Canvas::renderRoundedRect(int x, int y, int w, int h, int r, const unsigned
 
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 
+    // TODO: remove isDebug
     if (isDebug)SDL_SetRenderDrawColor(renderer, 255, 0, 0, 50);
     SDL_Rect rTop = { x + r, y, w - 2 * r, r };
     SDL_RenderFillRect(renderer, &rTop);
