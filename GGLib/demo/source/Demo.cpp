@@ -34,6 +34,7 @@ bool Demo::onInit()
 	ggWindow.setTitle("Demo");
 	ggWindow.setResizable(true);
 	ggWindow.setSize(1280, 720);
+	ggWindow.centerWindowPosition();
 
 	// tell canvas to use loaded font
 	canvas.setFont(demoAssetManager->getFont());
@@ -43,25 +44,27 @@ bool Demo::onInit()
 	inputManager.addMouseEventListener(this);
 
 	// init UI
-	initUI();
+	defineElements();
 
 	return true;
 }
 
 void Demo::onQuit()
-{}
+{
+	root->destroySelfAndChildren();
+}
 
 void Demo::onLoop()
 {
 	// clear screen
-	canvas.setColor(30);
+	canvas.setColor(0x58, 0x5B, 0x65);
 	canvas.clear();
 
 	// update and draw fps
 	frameTimesAcc += deltaTime();
 	framesCount++;
 	if (frameTimesAcc >= 1)
-{
+	{
 		float avgSpf = frameTimesAcc / framesCount;
 		avgFps = 1 / avgSpf;
 
@@ -78,10 +81,13 @@ void Demo::onLoop()
 	std::string cursorPosText = "Cursor position: " + std::to_string(inputManager.getMouseX()) + ", " + std::to_string(inputManager.getMouseY());
 	lblCursorPos->setText(cursorPosText);
 
-
-	// TODO: would be beneficial to abstract this away from the user. problem is you would still need to rely on the user clearing the screen and updating the screen --> how much should the user be able to control ui rendering? ideally as much as they wish, or as little as they wish...
-	canvas.setColor(255); // TODO: this should not be a thing --> ui elements' color should be defined by ui elements
-	ui.render();
+	int padding = 10;
+	root->setWidthAbs(ggWindow.getWidth() - 2*padding);
+	root->setHeightAbs(ggWindow.getHeight() - 2*padding);
+	root->setX(padding);
+	root->setY(padding);
+	root->calculateLayout();
+	root->render(&canvas);
 
 	// update screen
 	canvas.present();
@@ -109,41 +115,135 @@ void Demo::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 }
 
-void Demo::initUI()
+void Demo::defineElements()
 {
-	ui.init(&canvas, &inputManager, &ggWindow);
+	root = new Container();
+	root->setX(0);
+	root->setY(0);
+	root->setColor(0x292929);
+	root->setPadding(10);
+	root->setChildGap(2);
+	root->layoutDirection = LayoutDirection::TOP_TO_BOTTOM;
+	root->setWidthAbs(1280);
+	root->setHeightAbs(720);
 
-	// (FPS) label
+	Container *topbar = new Container;
+	topbar->layoutDirection = LayoutDirection::LEFT_TO_RIGHT;
+	topbar->setHeightAbs(64);
+	topbar->setColor(0x030303);
+	topbar->setPadding(12);
+	topbar->setChildGap(12);
+	topbar->horizontalAlignmentMode = HAlignmentMode::RIGHT;
+	root->add(topbar);
+
+	Container *body = new Container;
+	body->layoutDirection = LayoutDirection::LEFT_TO_RIGHT;
+	body->setPadding(20);
+	body->setChildGap(20);
+	body->setColor(0xf92929);
+	root->add(body);
+
+	Container *bottombar = new Container;
+	bottombar->layoutDirection = LayoutDirection::LEFT_TO_RIGHT;
+	bottombar->setHeightAbs(64);
+	bottombar->setColor(0x030303);
+	bottombar->verticalAlignmentMode = VAlignmentMode::TOP;
+	root->add(bottombar);
+
+
+	Container *sidebar = new Container;
+	sidebar->layoutDirection = LayoutDirection::TOP_TO_BOTTOM;
+	sidebar->verticalAlignmentMode = VAlignmentMode::BOTTOM;
+	sidebar->setWidthAbs(64);
+	sidebar->setPadding(12);
+	sidebar->setChildGap(12);
+	sidebar->setColor(0x030303);
+	body->add(sidebar);
+
+	Container* bodybody = new Container;
+	bodybody->layoutDirection = LayoutDirection::LEFT_TO_RIGHT;
+	bodybody->verticalAlignmentMode = VAlignmentMode::CENTER;
+	bodybody->setChildGap(12);
+	bodybody->setPadding(12);
+	bodybody->setColor(0xc994f7);
+	body->add(bodybody);
+
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		Button *sidebarChild = new Button;
+		sidebarChild->setHeightAbs(32);
+		sidebarChild->setColor(0x392929);
+		sidebar->add(sidebarChild);
+	}
+
+	Control *bbChild1 = new Control;
+	bbChild1->setPreferredWidth(100);
+	bbChild1->setMinWidth(10);
+	bbChild1->setMaxWidth(100);
+	bbChild1->setMaxHeight(100);
+	bbChild1->setColor(0x191919);
+	bodybody->add(bbChild1);
+
+	Control *bbChild2 = new Control;
+	bbChild2->setColor(0x19f919);
+	bbChild2->setMinHeight(300);
+	bbChild2->setMinWidth(10);
+	bodybody->add(bbChild2);
+	
+	Container *bbChild3 = new Container;
+	bbChild3->horizontalAutosize = true;
+	bbChild3->verticalAutosize = true;
+	bbChild3->setPadding(30);
+	bbChild3->setPreferredWidth(100);
+	bbChild3->setColor(0x191919);
+	bodybody->add(bbChild3);
+	
+	Container *bbChild3Child = new Container;
+	bbChild3Child->setWidthAbs(100);
+	bbChild3Child->setHeightAbs(100);
+	bbChild3Child->setColor(0x491919);
+	bbChild3->add(bbChild3Child);
+
+	// FPS label
 	lblFPS = new Label();
-	lblFPS->x = 10; 
-	lblFPS->y = 10;
 	lblFPS->text = "FPS: ???";
 	lblFPS->foreColor = { 255, 255, 255 };
-	ui.add(lblFPS);
-
+	lblFPS->setWidthAbs(200);
+	bottombar->add(lblFPS);
+	
 	// resolution label
 	lblWindowSize = new Label();
-	lblWindowSize->x = 10; 
-	lblWindowSize->y = 30;
 	lblWindowSize->text = "Window size: ???";
 	lblWindowSize->foreColor = { 255, 255, 255 };
-	ui.add(lblWindowSize);
-
+	lblWindowSize->setWidthAbs(300);
+	bottombar->add(lblWindowSize);
+	
 	// mouse cursor position label
 	lblCursorPos = new Label();
-	lblCursorPos->x = 10; 
-	lblCursorPos->y = 50;
 	lblCursorPos->text = "Cursor position: ";
 	lblCursorPos->foreColor = { 255, 255, 255 };
-	ui.add(lblCursorPos);
+	lblCursorPos->setWidthAbs(200);
+	bottombar->add(lblCursorPos);
 
-	// aesthetically positioned buttons
-	Button* btn0 = new Button();
-	Button* btn1 = new Button();
-	Button* btn2 = new Button();
-	Button* btn3 = new Button();
-	btn0->setBounds(80,     80    , 80 * 6,  80 * 2); btn0->setBackColor(255, 128, 128); btn0->setText("0"); ui.add(btn0);
-	btn1->setBounds(80,     80 * 4, 80 * 6,  80 * 2); btn1->setBackColor(128, 255, 128); btn1->setText("1"); ui.add(btn1);
-	btn2->setBounds(80,     80 * 7, 80 * 14, 80    ); btn2->setBackColor(128, 128, 255); btn2->setText("2"); ui.add(btn2);
-	btn3->setBounds(80 * 8, 80    , 80 * 7 , 80 * 5); btn3->setBackColor(255, 128, 255); btn3->setText("3"); ui.add(btn3);
+	for (size_t i = 0; i < 3; i++)
+	{
+		Button *topbarChild = new Button;
+		topbarChild->setWidthAbs(32);
+		topbarChild->setBackColor(0x39, 0x29, 0x29);
+		topbarChild->setOnMouseEnter([=](){	topbarChild->setBackColor(0x29, 0x29, 0x29); });
+		topbarChild->setOnMouseExit([=](){	topbarChild->setBackColor(0x39, 0x29, 0x29); });
+		topbarChild->setOnClick([=]() {	std::cout << "HEJ FROM topbarChild" << i << std::endl; });
+		inputManager.addMouseEventListener(topbarChild);
+		topbar->add(topbarChild);
+	}
+
+	/*
+		TODO: if I add the same element twice, then it obvoiusly breaks because of double deletion(and other stuff)
+
+		someElement->add(child4);
+		someOtherElement->add(child4);
+		
+		but maybe making something like this easier is a worthy consideration for the API
+	*/
 }

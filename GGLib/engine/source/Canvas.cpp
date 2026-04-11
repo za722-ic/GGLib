@@ -1,5 +1,7 @@
 #include "Canvas.h"
 
+// TODO: it would be useful if you could push/pop canvas states, rather than having to restore values manually 
+
 // ------ setters ------
 
 void Canvas::init(SDL_Renderer* newRenderer)

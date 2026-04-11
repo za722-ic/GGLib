@@ -46,11 +46,11 @@ void Button::setOnMouseExit(std::function<void()> func)
 void Button::render(Canvas *canvas)
 {
 	canvas->setColor(backColor);
-	canvas->fillRect(x, y, w, h);
+	canvas->fillRect(screenX, screenY, w, h);
 
 	canvas->setColor(foreColor);
 	canvas->setAlignment(Canvas::Alignment::CENTER_CENTER);
-	canvas->drawString(text, x + w / 2, y + h / 2);
+	canvas->drawString(text, screenX + w / 2, screenY + h / 2);
 	canvas->setAlignment(Canvas::Alignment::TOP_LEFT); // TODO: it would be useful if you could push/pop canvas states, rather than having to restore values manually (esp. since the user might not have has TOP_LEFT before this call, and also since we aren't currently restoring the color)
 }
 
@@ -58,7 +58,7 @@ void Button::render(Canvas *canvas)
 void Button::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 	wasInBounds = isInBounds;
-	isInBounds = (mouseX >= x && mouseX < x + w) && (mouseY >= y && mouseY < y + h);
+	isInBounds = (mouseX >= screenX && mouseX < screenX + w) && (mouseY >= screenY && mouseY < screenY + h);
 
 	if (isInBounds && mouseEventType == MouseEventType::LEFT_MOUSE_UP && onClick)
 	{

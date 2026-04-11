@@ -1,8 +1,8 @@
 #pragma once
 
-#include "UIControl.h"
+#include "Control.h"
 
-class Combobox : UIControl
+class Combobox : Control
 {
 protected:
 

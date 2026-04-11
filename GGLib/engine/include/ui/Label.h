@@ -1,8 +1,8 @@
 #pragma once
 
-#include "UIControl.h"
+#include "Control.h"
 
-class Label: public UIControl
+class Label: public Control
 {
 public:
 	// TODO: make use of width, height --> crop text with "..." if out of bounds (how do other libs handle this?)
@@ -20,7 +20,7 @@ public:
 	{
 		canvas->setColor(foreColor);
 
-		canvas->drawString(text, x, y);
+		canvas->drawString(text, screenX, screenY);
 	}
 
 	void setText(std::string newText)

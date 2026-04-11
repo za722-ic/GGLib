@@ -55,7 +55,7 @@
 
 */
 
-#include "ui/UIControl.h"
+#include "ui/Control.h"
 
 class Panel
 {
@@ -64,7 +64,7 @@ private:
     
 
 public:
-    void add(UIControl uiControl)
+    void add(Control control)
     {
         
     }

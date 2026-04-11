@@ -1,12 +1,12 @@
 #pragma once
 
 #include "DragManager.h"
-#include "UIControl.h"
+#include "Control.h"
 #include "MoreMath.h"
 
 // TODO: template this to support ints or floats or doubles or other numeric types
 
-class Slider : UIControl
+class Slider : Control
 {
 
 private:

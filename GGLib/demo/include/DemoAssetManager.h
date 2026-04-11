@@ -13,7 +13,7 @@ private:
 	//const std::string fontFile = "Beef-d.ttf";
 	//const std::string fontFile = "lemon_milk/LEMONMILK-Bold.otf";
 	const std::string fontFile = "calibri.ttf";
-	const unsigned int fontSize = 16;
+	const unsigned int fontSize = 24;
 	
 
 public:

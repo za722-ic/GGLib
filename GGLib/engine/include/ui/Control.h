@@ -1,15 +1,16 @@
 #pragma once
 
 #include <vector>
+#include <optional>
 
 #include "InputManager.h"
 #include "Canvas.h"
+#include "Element.h"
 
-class UIControl : public MouseEventListener, public KeyEventListener, public TextInputEventListener
+
+class Control : public MouseEventListener, public KeyEventListener, public TextInputEventListener, public Element
 {
 public:
-	int x, y, w, h;
-
 	virtual void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override
 	{}
 
@@ -19,6 +20,8 @@ public:
 	virtual void onTextInputEvent(std::string text) override
 	{}
 
-	virtual void render(Canvas* canvas)
-	{}
+	void accept(Visitor& visitor) override
+	{
+		visitor.visitForControl(this);
+	}
 };

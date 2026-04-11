@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "UIControl.h"
+#include "Control.h"
 
 /*
 TODO:
@@ -15,7 +15,7 @@ TODO:
 */
 
 
-class Textbox : UIControl
+class Textbox : Control
 {
 protected:
 

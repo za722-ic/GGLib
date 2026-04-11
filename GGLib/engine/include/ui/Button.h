@@ -2,12 +2,13 @@
 
 // TODO: this is "dumb" pointer havoc below --> please clean up
 // TODO: the button class should inherit from some "control" class that removes some of the generic mouseeventlistener stuff, and that stipulates rendering, and other stuff
+// TODO: what if some other button (or cvontrol in general) is above this button? then it should not receive mouse events --> they should instead go to the topmost at that location --> need to maintain z order (the last in the list of the paren't controls has the z closest to the user). Also deal with partial occlusion
 
 #include <functional>
 
-#include "UIControl.h"
+#include "Control.h"
 
-class Button : public UIControl
+class Button : public Control
 {
 protected:
 	std::function<void()> onClick;
