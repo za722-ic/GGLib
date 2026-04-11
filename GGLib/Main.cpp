@@ -1,5 +1,5 @@
 #include "Demo.h"
-
+#include "Noise.h"
 
 /*
 TODO:
@@ -18,7 +18,11 @@ MAYBE Date/time picker
 
 int main(int argc, char* args[])
 {
-    Demo demo;
-    demo.mainLoop();
+    //Demo demo;
+    //demo.mainLoop();
+
+    Noise noiseDemo;
+    noiseDemo.mainLoop();
+
     return 0;
 }

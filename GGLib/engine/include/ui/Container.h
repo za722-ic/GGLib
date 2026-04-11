@@ -81,11 +81,10 @@ public: // TODO: protected
 
 	virtual void render(Canvas* canvas) override
 	{
-		// render this element
-		canvas->setColor(color); 
-		canvas->renderRoundedRect(screenX, screenY, w, h, 0);
+		// rener this element
+		Element::render(canvas);
 
-		// render everything else
+		// render its children
 		for (auto child : children)
 		{
 			child->render(canvas);

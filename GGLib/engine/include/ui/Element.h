@@ -16,10 +16,10 @@ class Element
 {
 public: // TODO: protected
 	// x and y are relative to parent. for absolute coordinates, see screenX, screenY
-	int x;
-	int y;
-	int w;
-	int h;
+	int x = 0;
+	int y = 0;
+	int w = 50;
+	int h = 10;
 
 	int preferredWidth;
 	int preferredHeight;
@@ -186,8 +186,16 @@ public:
 
 	virtual void render(Canvas* canvas)
 	{
+		int innerRadius = 12;
+		int borderThickeness = 1;
+		int outerRadius = innerRadius + borderThickeness;
+		SDL_Color borderColor = { 109, 171, 118, color.a }; // TODO: this way of setting alpha is a hack --> move this border rendering to canvas
+
 		// render this element
+		canvas->setColor(borderColor);
+		canvas->renderRoundedRect(screenX, screenY, w, h, outerRadius);
+
 		canvas->setColor(color);
-		canvas->renderRoundedRect(screenX, screenY, w, h, 12);
+		canvas->renderRoundedRect(screenX + borderThickeness, screenY + borderThickeness, w - 2*borderThickeness, h - 2*borderThickeness, innerRadius);
 	}
 };
