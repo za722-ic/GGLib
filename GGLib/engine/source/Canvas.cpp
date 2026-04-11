@@ -280,78 +280,134 @@ void Canvas::drawImage_StrechToFillCanvas(SDL_Texture *image)
 
 
 
-
-// TODO: this does not adhere to applyCanvasAlignment, applyCanvasOrigin
-// TODO: doesnt adhere to naming scheme --> get rid of "render"
-void Canvas::renderRoundedRect(int x, int y, int w, int h, int r, const unsigned int trianglesPerCorner, bool isDebug)
+std::vector<SDL_Vertex> getRoundedRectVertices(int x, int y, int w, int h, int r, int trianglesPerCorner, SDL_Color color)
 {
-    // r cannot be greater than w or h, otherwise the quarter circles that get rendered are too big
-    // TODO: the case where r is greater than w or h makes this look weird --> how does CSS handle it?
-    if (r > w/2) r = w/2;
-    if (r > h/2) r = h/2;
-
     std::vector<SDL_Vertex> verts;
 
-    const float INTERVAL = 0.5f * M_PI / trianglesPerCorner; // angle between triangles in a given corner
 
-    auto appendRoundedCornerVerts = [&](float cx, float cy, float startingAngle)
+
+    // centers of the quarter circles
+    Vec2D cTopRight(x + w - r, y + r);
+    Vec2D cTopLeft(x + r, y + r);
+    Vec2D cBottomLeft (x + r, y + h - r);
+    Vec2D cBottomRight(x + w - r, y + h - r);
+
+    auto appendRoundedCornerVerts = [&](Vec2D center, float startingAngle)
     {
-        float angle = startingAngle;
-
-        for (int i = 0; i < trianglesPerCorner; i++)
+        for (int i = 0; i <= trianglesPerCorner; i++) // using <= because need n + 1 points on circle perimeter for n triangles
         {
-            SDL_Vertex v1 =
+            float theta = MoreMath::map((float)i / trianglesPerCorner, 0, 1, startingAngle, startingAngle + M_PI / 2);
+
+            Vec2D vert(cosf(theta), sinf(theta));
+
+            vert.y *= -1; // in math space, bigger y is higher. in screen space, biger y is lower
+            vert *= r;
+            vert += center;
+
+            SDL_Vertex v =
             {
-                SDL_FPoint{cx + r * cosf(angle), cy + r * sinf(angle)},
+                SDL_FPoint(vert.x, vert.y),
                 color,
-                SDL_FPoint { 0 }
+                SDL_FPoint {0}
             };
 
-            angle += INTERVAL;
-
-            SDL_Vertex v2 =
-            {
-                SDL_FPoint{cx + r * cosf(angle), cy + r * sinf(angle)},
-                color,
-                SDL_FPoint { 0 }
-            };
-
-            SDL_Vertex v3 =
-            {
-                SDL_FPoint{cx, cy},
-                color,
-                SDL_FPoint { 0 }
-            };
-
-            verts.push_back(v1);
-            verts.push_back(v2);
-            verts.push_back(v3);
+            verts.push_back(v);
         }
     };
 
-    appendRoundedCornerVerts(x + w - r, y + h - r, 0); // top right
-    appendRoundedCornerVerts(x + r, y + h - r, 0.5f * M_PI); // top left
-    appendRoundedCornerVerts(x + r, y + r, M_PI); // bottom left
-    appendRoundedCornerVerts(x + w - r, y + r, 1.5f * M_PI); // bottom right
+    appendRoundedCornerVerts(cTopRight, 0.0f);
+    appendRoundedCornerVerts(cTopLeft, M_PI / 2.0f);
+    appendRoundedCornerVerts(cBottomLeft, M_PI);
+    appendRoundedCornerVerts(cBottomRight, 3 * M_PI / 2.0f);
 
-    SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), nullptr, 0);
+    return verts;
+}
 
-    // render rects for everything that's not the corners
+std::vector<SDL_Vertex> interleaveVertices(const std::vector<SDL_Vertex>& v1, const std::vector<SDL_Vertex>& v2)
+{
+    std::vector<SDL_Vertex> result;
 
-    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    for (int i = 0; i < v1.size(); i++) // we expect both vertex lists to be of the same size
+    {
+        result.push_back(v1[i]);
+        result.push_back(v2[i]);
+    }
 
-    // TODO: remove isDebug
-    if (isDebug)SDL_SetRenderDrawColor(renderer, 255, 0, 0, 50);
-    SDL_Rect rTop = { x + r, y, w - 2 * r, r };
-    SDL_RenderFillRect(renderer, &rTop);
+    return result;
+}
 
-    if (isDebug)SDL_SetRenderDrawColor(renderer, 0, 255, 0, 50);
-    SDL_Rect rMid = { x, y + r, w, h - 2 * r };
-    SDL_RenderFillRect(renderer, &rMid);
+std::vector<int> getIndices_TriangleFan(int numVertices)
+{
+    std::vector<int> indices;
 
-    if (isDebug)SDL_SetRenderDrawColor(renderer, 255, 255, 0, 50);
-    SDL_Rect rBot = { x + r, y + h - r, w - 2 * r, r };
-    SDL_RenderFillRect(renderer, &rBot);
+    int numTriangles = numVertices - 2; // true for any polygon
+
+    for (int i = 0; i < numTriangles; i++)
+    {
+        indices.push_back(0); // triangle fan has one common vertex to all triangles
+        indices.push_back(i + 1);
+        indices.push_back(i + 2);
+    }
+
+    return indices;
+}
+
+std::vector<int> getIndices_TriangleStrip(int numVertices)
+{
+    std::vector<int> indices;
+
+    int numTriangles = numVertices - 2; // true for any polygon
+
+    for (int i = 0; i < numTriangles; i++)
+    {
+        indices.push_back(i);
+        indices.push_back(i + 1);
+        indices.push_back(i + 2);
+    }
+
+    // need to add two more triangles to close the triangle fan into a loop
+    // which means connecting the last two vertices (at index numVertices - 1
+    // and numVertices - 2) to the first two vertices (at index 0 and 1)
+    indices.push_back(numVertices - 2);
+    indices.push_back(numVertices - 1);
+    indices.push_back(0);
+
+    indices.push_back(numVertices - 1);
+    indices.push_back(0);
+    indices.push_back(1);
+
+    return indices;
+}
+
+// TODO: this does not adhere to applyCanvasAlignment, applyCanvasOrigin
+void Canvas::drawRoundedRect(int x, int y, int w, int h, int r, int thickness, const unsigned int trianglesPerCorner)
+{
+    int outerRadius = r;
+    int innerRadius = outerRadius - thickness;
+
+    // TODO: hardcoded colors
+    std::vector<SDL_Vertex> vertsOuter = getRoundedRectVertices(x, y, w, h, outerRadius, trianglesPerCorner, {0,0,0,0});
+    std::vector<SDL_Vertex> vertsInner = getRoundedRectVertices(x + thickness, y + thickness, w - 2*thickness, h - 2*thickness, innerRadius, trianglesPerCorner, {0,0,0,128});
+
+    std::vector<SDL_Vertex> verts = interleaveVertices(vertsOuter, vertsInner);
+
+    std::vector<int> indices = getIndices_TriangleStrip(verts.size());
+
+    SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), indices.data(), indices.size());
+}
+
+// TODO: this does not adhere to applyCanvasAlignment, applyCanvasOrigin
+void Canvas::fillRoundedRect(int x, int y, int w, int h, int r, const unsigned int trianglesPerCorner)
+{
+    // // r cannot be greater than w or h, otherwise the quarter circles that get rendered are too big
+    // // TODO: the case where r is greater than w or h makes this look weird --> how does CSS handle it?
+    // if (r > w/2) r = w/2;
+    // if (r > h/2) r = h/2;
+
+    std::vector<SDL_Vertex> verts = getRoundedRectVertices(x, y, w, h, r, trianglesPerCorner, color);
+    std::vector<int> indices = getIndices_TriangleFan(verts.size());
+    
+    SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), indices.data(), indices.size());
 }
 
 // TODO: this does not adhere to applyCanvasAlignment, applyCanvasOrigin

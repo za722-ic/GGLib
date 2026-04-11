@@ -64,7 +64,7 @@ public:
 	void render(Canvas* canvas) override
 	{
 		canvas->setColor(32, 255, 100);
-		canvas->renderRoundedRect(x, y, w, h, rRail); // TODO: make border radius configurable, and make it such that 
+		canvas->fillRoundedRect(x, y, w, h, rRail); // TODO: make border radius configurable, and make it such that 
 
 		if (isRenderValueStr)
 		{

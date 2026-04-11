@@ -193,9 +193,9 @@ public:
 
 		// render this element
 		canvas->setColor(borderColor);
-		canvas->renderRoundedRect(screenX, screenY, w, h, outerRadius);
+		canvas->fillRoundedRect(screenX, screenY, w, h, outerRadius);
 
 		canvas->setColor(color);
-		canvas->renderRoundedRect(screenX + borderThickeness, screenY + borderThickeness, w - 2*borderThickeness, h - 2*borderThickeness, innerRadius);
+		canvas->fillRoundedRect(screenX + borderThickeness, screenY + borderThickeness, w - 2*borderThickeness, h - 2*borderThickeness, innerRadius);
 	}
 };

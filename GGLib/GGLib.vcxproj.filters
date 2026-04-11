@@ -72,6 +72,9 @@
     <ClCompile Include="noise_demo\source\NoiseAssetManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="engine\source\Vec2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\include\AssetManager.h">
@@ -150,6 +153,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="noise_demo\include\NoiseAssetManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\Vec2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

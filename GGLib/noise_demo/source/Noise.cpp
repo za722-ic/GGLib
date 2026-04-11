@@ -67,7 +67,19 @@ void Noise::onLoop()
 	root->setX(padding);
 	root->setY(padding);
 	root->calculateLayout();
-	root->render(&canvas);
+	//root->render(&canvas);
+
+	canvas.setColor(255, 255, 255, 135);
+	int x = 100;
+	int y = 100;
+	int w = 400;
+	int h = 400;
+	int r = 50;
+	int thickness = 20;
+	int numTriangles = 12;
+	int outerRadius = r + thickness;
+	canvas.drawRoundedRect(x-thickness, y-thickness, w+2*thickness, h+2*thickness, outerRadius, thickness, numTriangles);
+	canvas.fillRoundedRect(x, y, w, h, r, numTriangles);
 
 	// update screen
 	canvas.present();

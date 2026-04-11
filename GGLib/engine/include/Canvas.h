@@ -9,6 +9,9 @@
 #include <stdexcept>
 #include <vector>
 
+#include "Vec2D.h"
+#include "MoreMath.h"
+
 class Canvas
 {
 public:
@@ -113,7 +116,9 @@ public:
 	void drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y); // draw a part of an image
 	void drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y, int w, int h);
 
-	void renderRoundedRect(int x, int y, int w, int h, int r, const unsigned int trianglesPerCounter = 8, bool isDebug = false); // TODO: temp isDebug flag
+	void drawRoundedRect(int x, int y, int w, int h, int r, int thickness, const unsigned int trianglesPerCounter = 8);
+	void fillRoundedRect(int x, int y, int w, int h, int r, const unsigned int trianglesPerCounter = 8);
+
 	void renderRegularPolygon(int x, int y, unsigned int numVertices = 3, float rotAngle = 0, float scale = 250.0f);
 
 private:
