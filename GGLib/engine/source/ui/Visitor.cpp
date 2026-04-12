@@ -12,7 +12,19 @@ void Visitor_GetChildren::visitForContainer(Container *container)
 	this->children = container->children;
 }
 
+///////////////////////////////////////////////////
 
+void Visitor_SetInputManager::visitForControl(Control* control)
+{
+	inputManager->addKeyEventListener(control);
+	inputManager->addMouseEventListener(control);
+	inputManager->addTextInputEventListener(control);
+}
+
+void Visitor_SetInputManager::visitForContainer(Container* container)
+{
+	return;
+}
 
 ///////////////////////////////////////////////////
 
@@ -557,3 +569,4 @@ void Visitor_Positions::visitForContainer(Container* container)
 			offsetY += child->h + container->gap;
 	}
 }
+

@@ -1,5 +1,7 @@
 #include "ui/Button.h"
 
+// TODO: it would be useful if you could push/pop canvas states, rather than having to restore values manually (esp. since the user might not have has TOP_LEFT before this call, and also since we aren't currently restoring the color)
+
 // bounds
 void Button::setBounds(int _x, int _y, int _w, int _h)
 {
@@ -43,15 +45,43 @@ void Button::setOnMouseExit(std::function<void()> func)
 	onMouseExit = func;
 }
 
-void Button::render(Canvas *canvas)
+void Button::render(Canvas* canvas)
 {
-	canvas->setColor(backColor);
-	canvas->fillRect(screenX, screenY, w, h);
+	// draw button body
+	if (isMouseDown)
+	{
+		canvas->setColor(backColorOnMouseDown);
+	}
+	else if (isInBounds)
+	{
+		canvas->setColor(backColorOnHover);
+	}
+	else
+	{
+		canvas->setColor(backColor);
+	}
+	canvas->fillRoundedRect(screenX, screenY, w, h, radius);
 
+	// draw button border and shadow
+	int borderRadius = radius + borderThickness;
+	int shadowRadius = borderRadius + shadowThickness;
+	canvas->drawRoundedRect(screenX - borderThickness, 
+							screenY - borderThickness, 
+							w + 2 * borderThickness, 
+							h + 2 * borderThickness, borderRadius, borderThickness, borderColor, borderColor);
+
+	canvas->drawRoundedRect(screenX - borderThickness - shadowThickness,
+		screenY - borderThickness - shadowThickness,
+		w + 2 * borderThickness + 2 * shadowThickness,
+		h + 2 * borderThickness + 2 * shadowThickness,
+		shadowRadius,
+		shadowThickness,
+		{ 0,0,0,96 }, { 0,0,0,0 });
+	
+
+	// draw button text
 	canvas->setColor(foreColor);
-	canvas->setAlignment(Canvas::Alignment::CENTER_CENTER);
-	canvas->drawString(text, screenX + w / 2, screenY + h / 2);
-	canvas->setAlignment(Canvas::Alignment::TOP_LEFT); // TODO: it would be useful if you could push/pop canvas states, rather than having to restore values manually (esp. since the user might not have has TOP_LEFT before this call, and also since we aren't currently restoring the color)
+	canvas->drawString(text, screenX + paddingLeft, screenY + paddingTop);
 }
 
 // mouse events
@@ -60,9 +90,22 @@ void Button::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 	wasInBounds = isInBounds;
 	isInBounds = (mouseX >= screenX && mouseX < screenX + w) && (mouseY >= screenY && mouseY < screenY + h);
 
-	if (isInBounds && mouseEventType == MouseEventType::LEFT_MOUSE_UP && onClick)
+
+	if (isInBounds)
 	{
-		onClick();
+		if (mouseEventType == MouseEventType::LEFT_MOUSE_DOWN)
+		{
+			isMouseDown = true;
+		}
+		else if (mouseEventType == MouseEventType::LEFT_MOUSE_UP)
+		{
+			isMouseDown = false;
+			if (onClick) onClick();
+		}
+	}
+	else
+	{
+		isMouseDown = false;
 	}
 
 	if (!wasInBounds && isInBounds && mouseEventType == MouseEventType::MOUSE_MOVE && onMouseEnter)

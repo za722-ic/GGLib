@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <vector>
 
+#include "InputManager.h"
+
 // TODO: use floats in layouting?
 // TODO: rewrite, and use anchors/docking/other winforms things
 
@@ -19,6 +21,16 @@ public:
 
 	// see: virtual destructor and default TODO
 	virtual ~Visitor() = default;
+};
+
+class Visitor_SetInputManager : public Visitor
+{
+public:
+	InputManager* inputManager = nullptr;
+
+	void visitForControl(Control* control) override;
+
+	void visitForContainer(Container* container) override;
 };
 
 class Visitor_GetChildren : public Visitor
@@ -61,7 +73,6 @@ public:
 
 class Visitor_GrowShrink: public Visitor
 {
-private:
 public:
 	void visitForControl(Control* control) override;
 

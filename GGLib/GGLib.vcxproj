@@ -32,6 +32,7 @@
     <ClCompile Include="engine\source\MoreMath.cpp" />
     <ClCompile Include="engine\source\TextFile.cpp" />
     <ClCompile Include="engine\source\ui\Combobox.cpp" />
+    <ClCompile Include="engine\source\ui\Element.cpp" />
     <ClCompile Include="engine\source\ui\Textbox.cpp" />
     <ClCompile Include="engine\source\ui\Visitor.cpp" />
     <ClCompile Include="engine\source\Vec2D.cpp" />
@@ -44,7 +45,10 @@
     <ClInclude Include="engine\include\ui\Container.h" />
     <ClInclude Include="engine\include\DragManager.h" />
     <ClInclude Include="engine\include\ui\Combobox.h" />
+    <ClInclude Include="engine\include\ui\HorizontalDivider.h" />
     <ClInclude Include="engine\include\ui\Element.h" />
+    <ClInclude Include="engine\include\ui\HorizontalSpacer.h" />
+    <ClInclude Include="engine\include\ui\Toggle.h" />
     <ClInclude Include="engine\include\ui\Visitor.h" />
     <ClInclude Include="engine\include\ui\Label.h" />
     <ClInclude Include="engine\include\ui\Panel.h" />

@@ -6,7 +6,7 @@
 
 // TODO: template this to support ints or floats or doubles or other numeric types
 
-class Slider : Control
+class Slider : public Control
 {
 
 private:
@@ -19,24 +19,29 @@ public:
 	int max = 100;
 	int value = 50;
 	int interval = 1;
+	int rKnob=7;     // of knob --> TODO: non circular knobs? or just leave it to the user to override render method if they want to?
+	int numTriangles = 6;
 
-	int rKnob=10.0f;     // of knob --> TODO: non circular knobs? or just leave it to the user to override render method if they want to?
-	int rRail=std::min(h,w)/2;
-	int textPadding = rKnob + 10;; // TODO: text should also be able to go on the left. also padding should have a minimum value of r, right? allow negative padding though in case someone is insane --> use setters/getters
+	int rRail;
+	int textPadding; // TODO: text should also be able to go on the left OR RIGHT (maybe also top/bottom). also padding should have a minimum value of r, right? allow negative padding though in case someone is insane --> use setters/getters
 
 	bool isMouseHovering = false;
 	bool isRenderValueStr = true;
-	bool isRenderTicks = true;
 
 	bool isSliderBeingDragged = false;
 
 	Slider()
 	{
-		w = 500; h = 10;
+		setHeightAbs(6);
+		setMinWidth(170);
+
+		rRail = std::min(h, w) / 2;
+		textPadding = rKnob + 5;
+		borderThickness = 3;
 
 		dragManager.setOnClick([&](int mouseX, int mouseY){
 			if (isCoordInSliderBounds(mouseX, mouseY))
-				value = (int)std::roundf(MoreMath::map(mouseX, x, x + w, min, max));
+				value = (int)std::roundf(MoreMath::map(mouseX, screenX, screenX + w, min, max));
 		});
 		dragManager.setOnDragStart([&](int mouseX, int mouseY) {
 			isSliderBeingDragged = isCoordInSliderBounds(mouseX, mouseY);
@@ -47,7 +52,7 @@ public:
 				
 			// change slider value based on mouseX
 			// TODO this only applies if slider is horizontal --> vertical sliders? diagonal sliders?
-			value = (int)std::roundf(MoreMath::mapAndClamp(mouseX, x, x + w, min, max));
+			value = (int)std::roundf(MoreMath::mapAndClamp(mouseX, screenX, screenX + w, min, max));
 		});
 		dragManager.setOnDragEnd([&](int mouseX, int mouseY) {
 			isSliderBeingDragged = false;
@@ -63,44 +68,53 @@ public:
 
 	void render(Canvas* canvas) override
 	{
-		canvas->setColor(32, 255, 100);
-		canvas->fillRoundedRect(x, y, w, h, rRail); // TODO: make border radius configurable, and make it such that 
+		int x = screenX;
+		int y = screenY;
 
-		if (isRenderValueStr)
-		{
-			canvas->setColor(255);
-			canvas->setAlignment(Canvas::Alignment::CENTER_LEFT);
-			canvas->drawString(std::to_string(value), x + w + textPadding, y + h / 2);
-			canvas->setAlignment(Canvas::Alignment::TOP_LEFT);
-			canvas->setColor(32, 255, 100);
-		}
+		// draw text
+		int textWidth, textHeight;
+		canvas->getTextDimensions(std::to_string(value), &textWidth, &textHeight);
+		canvas->setColor(255);
+		canvas->drawString(std::to_string(value), x - textWidth - textPadding, y + h / 2 - textHeight / 2);
 
-		if (isRenderTicks)
-		{
-			int i = min + interval;
-			while (i <= max - interval)
-			{
-				int tickX = MoreMath::map(i, min, max, x+rRail, x + w-rRail);
-				canvas->drawLine(tickX, y, tickX, y + h);
+		// calculate knob position
+		int knobMinX = x - rKnob;
+		int knobMaxX = x + w - rKnob;
+		int knobX = MoreMath::map(value, min, max, knobMinX, knobMaxX);
+		int knobY = y + h / 2 - rKnob;
 
-				i += interval;
-			}
-		}
+		// draw slider bar from start to knob
+		int wStartToKnob = knobX - knobMinX;
+		canvas->setColor(32, 225, 100);
+		canvas->fillRoundedRect(x, y, wStartToKnob, h ,rRail); // TODO: make border radius configurable, and make it such that 
+		canvas->drawRoundedRect(x - borderThickness, y - borderThickness, wStartToKnob + 2 * borderThickness, h + 2 * borderThickness, rRail + borderThickness, borderThickness, { 0,0,0,96 }, { 0,0,0,0 }, numTriangles);
+
+		// draw slider bar from knob to end
+		int wKnobToEnd = w - wStartToKnob;
+		canvas->setColor(255, 32, 100);
+		canvas->fillRoundedRect(x + wStartToKnob, y, wKnobToEnd, h ,rRail); // TODO: make border radius configurable, and make it such that 
+		canvas->drawRoundedRect(x + wStartToKnob - borderThickness, y - borderThickness, wKnobToEnd+ 2 * borderThickness, h + 2 * borderThickness, rRail + borderThickness, borderThickness, { 0,0,0,96 }, { 0,0,0,0 }, numTriangles);
+
 
 		if (isMouseHovering)
-			canvas->setColor(128);
+			canvas->setColor(180);
 		else
-			canvas->setColor(32, 100, 80);
+			canvas->setColor(230);
 
-		int knobX = MoreMath::map(value, min, max, x+rRail, x+w-rRail);
-		canvas->renderRegularPolygon(knobX, y+h/2, 16, 0.0f, rKnob);
-		canvas->setColor(32, 150, 100);
-		canvas->renderRegularPolygon(knobX, y+h/2, 16, 0.0f, rKnob*0.7f);
+		canvas->fillRoundedRect(knobX, knobY, 2 * rKnob, 2 * rKnob, rKnob, numTriangles);
+
+		int borderRadius = rKnob + borderThickness;
+		int knobDiameter = 2 * rKnob;
+		canvas->drawRoundedRect(knobX - borderThickness, knobY - borderThickness, knobDiameter + 2 * borderThickness, knobDiameter + 2 * borderThickness, borderRadius, borderThickness, { 0,0,0,96 }, { 0,0,0,0 }, numTriangles);
 	}
 
 private:
 	bool isCoordInSliderBounds(int coordX, int coordY)
 	{
+		// TODO: this is ugly
+        int x = screenX;
+		int y = screenY;
+
 		if (coordY < y || coordY > y + h) return false;
 		if (coordX < x || coordX > x + w) return false;
 		return true;

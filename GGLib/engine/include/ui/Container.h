@@ -44,6 +44,13 @@ public: // TODO: protected
 	{
 		children.push_back(newChild);
 		newChild->parent = this;
+
+		if (inputManager != nullptr)
+		{
+			Visitor_SetInputManager visitor_SetInputManager;
+			visitor_SetInputManager.inputManager = inputManager;
+			newChild->accept(visitor_SetInputManager);
+		}
 	}
 
 	void remove(Control* child)

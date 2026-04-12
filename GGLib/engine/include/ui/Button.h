@@ -10,16 +10,17 @@
 
 class Button : public Control
 {
-protected:
+public:
 	std::function<void()> onClick;
 	std::function<void()> onMouseEnter;
 	std::function<void()> onMouseExit;
 
-	SDL_Color backColor = {200, 200, 200, 255};
+	SDL_Color backColorOnHover = {200,200,200, 255};
+	SDL_Color backColorOnMouseDown = { 180,180,180,255 };
+	SDL_Color backColor = { 230,230,230,255 };
 	SDL_Color foreColor = { 0, 0, 0, 255 };
 
 	std::string text = "";
-
 
 public:
 
@@ -46,5 +47,6 @@ private:
 	// mouse events
 	bool wasInBounds = false; // on prev call
 	bool isInBounds = false;
+	bool isMouseDown = false;
 	void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
 };

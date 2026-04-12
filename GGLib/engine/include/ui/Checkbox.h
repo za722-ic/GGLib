@@ -18,10 +18,15 @@ public:
 		setOnClick([&]() { isChecked = !isChecked; });
 		setOnMouseEnter([&]() {isMouseOver = true; });
 		setOnMouseExit([&]() {isMouseOver = false; });
+
+		setWidthAbs(h); // TODO hack
 	}
 
 	void render(Canvas* canvas) override
 	{
+		int x = screenX;
+		int y = screenY;
+
 		int checkedPadding = 8;
 		int cbThickness = 3;
 

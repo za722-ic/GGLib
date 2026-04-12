@@ -116,7 +116,7 @@ public:
 	void drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y); // draw a part of an image
 	void drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y, int w, int h);
 
-	void drawRoundedRect(int x, int y, int w, int h, int r, int thickness, const unsigned int trianglesPerCounter = 8);
+	void drawRoundedRect(int x, int y, int w, int h, int r, int thickness, SDL_Color innerColor, SDL_Color outerColor, const unsigned int trianglesPerCorner=8);
 	void fillRoundedRect(int x, int y, int w, int h, int r, const unsigned int trianglesPerCounter = 8);
 
 	void renderRegularPolygon(int x, int y, unsigned int numVertices = 3, float rotAngle = 0, float scale = 250.0f);

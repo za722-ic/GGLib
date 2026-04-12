@@ -4,6 +4,7 @@
 
 #include "Visitor.h"
 #include "Canvas.h"
+#include "InputManager.h"
 
 enum class Axis
 {
@@ -53,149 +54,61 @@ public: // TODO: protected
 	bool horizontalAutosize = false;
 	bool verticalAutosize = false;
 
+	bool isVisible = true;
+	int radius = 12;
+	int borderThickness = 0;
+	int shadowThickness = 0;
+	SDL_Color borderColor;
+
+	static InputManager* inputManager; // TODO: is this the best way of doing things (also see add() func of Container)
+
 public:
 	// TODO see: virtual destructors
 	virtual ~Element() {}
 
 	virtual void accept(Visitor& visitor) = 0;
 
-	void setChildGap(int gap)
-	{
-		this->gap = gap;
-	}
+	void setChildGap(int gap);
 
-	void setMinWidth(int minW) { minWidth = minW; }
-	void setMinWidthAuto() { minWidth = std::nullopt; }
-	int getMinWidth()
-	{
-		return minWidth.has_value() ? minWidth.value() : minWidthCalculated;
-	}
+	void setMinWidth(int minW);
+	void setMinWidthAuto();
+	int getMinWidth();
 
-	void setMaxWidth(int maxW) { maxWidth = maxW; }
-	void setMaxWidthAuto() { maxWidth = std::nullopt; }
-	int getMaxWidth()
-	{
-		return maxWidth.has_value() ? maxWidth.value() : maxWidthCalculated;
-	}
+	void setMaxWidth(int maxW);
+	void setMaxWidthAuto();
+	int getMaxWidth();
 
-	void setMinHeight(int minH) { minHeight = minH; }
-	void setMinHeightAuto() { minHeight = std::nullopt; }
-	int getMinHeight()
-	{
-		return minHeight.has_value() ? minHeight.value() : minHeightCalculated;
-	}
+	void setMinHeight(int minH);
+	void setMinHeightAuto();
+	int getMinHeight();
 
-	void setMaxHeight(int maxH) { maxHeight = maxH; }
-	void setMaxHeightAuto() { maxHeight = std::nullopt; }
-	int getMaxHeight()
-	{
-		return maxHeight.has_value() ? maxHeight.value() : maxHeightCalculated;
-	}
+	void setMaxHeight(int maxH);
+	void setMaxHeightAuto();
+	int getMaxHeight();
 
-	// TODO --> this is just setting w/h, not preferredWidth or preferredHeight
-	void setPreferredWidth(int prefW)
-	{
-		//preferredWidth = prefW;  
-		w = prefW;
-	}
-	void setPreferredHeight(int prefH)
-	{
-		//preferredHeight = prefH;  
-		h = prefH;
-	}
-	void setX(int newX) { x = newX; }
-	void setY(int newY) { y = newY; }
+	void setPreferredWidth(int prefW);
+	void setPreferredHeight(int prefH);
+	void setX(int newX);
+	void setY(int newY);
 
-	int getPreferredWidth() { return preferredWidth;  }
-	int getPreferredHeight() { return preferredHeight;  }
-	int getX() { return x; }
-	int getY() { return y; }
+	int getPreferredWidth();
+	int getPreferredHeight();
+	int getX();
+	int getY();
 
-	void setPadding(int padding)
-	{
-		paddingLeft = padding;
-		paddingTop = padding;
-		paddingRight = padding;
-		paddingBottom = padding;
-	}
+	void setPadding(int padding);
+	void setPadding(int left, int right, int top, int bottom);
 
-	void setPadding(int left, int right, int top, int bottom)
-	{
-		this->paddingLeft = left;
-		this->paddingTop = top;
-		this->paddingRight = right;
-		this->paddingBottom = bottom;
-	}
+	void setWidthAbs(int w);
+	void setHeightAbs(int h);
 
-	void setWidthAbs(int w)
-	{
-		setMinWidth(w);
-		setMaxWidth(w);
-		setPreferredWidth(w);
-	}
-	void setHeightAbs(int h)
-	{
-		setMinHeight(h);
-		setMaxHeight(h);
-		setPreferredHeight(h);
-	}
+	bool isAutosize(Axis axis);
+	bool isGrowable(Axis axis);
+	bool isShrinkable(Axis axis);
+	bool isResizable(Axis axis);
 
-	bool isAutosize(Axis axis)
-	{
-		if (axis == Axis::HORIZONTAL) return horizontalAutosize;
-		if (axis == Axis::VERTICAL) return verticalAutosize;
-	}
+	void setColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
+	void setColor(int hexCode);
 
-	bool isGrowable(Axis axis)
-	{
-		if (isAutosize(axis)) return false;
-		if (axis == Axis::HORIZONTAL) return getMinWidth() < getPreferredWidth();
-		if (axis == Axis::VERTICAL) return getMinHeight() < getPreferredHeight();
-	}
-
-	bool isShrinkable(Axis axis)
-	{
-		if (isAutosize(axis)) return false; // TODO check winforms that autosize trumps min/max sizing (cus w/autosize, a control is tied to its min size right?)
-		if (axis == Axis::HORIZONTAL) return getPreferredWidth() < getMaxWidth();
-		if (axis == Axis::VERTICAL) return getPreferredHeight() < getMaxHeight();
-	}
-
-	bool isResizable(Axis axis)
-	{
-		return isGrowable(axis) || isShrinkable(axis);
-	}
-
-
-	void setColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255)
-	{
-		color = { r,g,b,a };
-	}
-
-	void setColor(int hexCode)
-	{
-		// hexCode is 32 bits ARGB, 8 bytes per channel
-
-		//unsigned char a = (hexCode >> 24) & 0xFF;
-		unsigned char a = 255;
-		unsigned char r = (hexCode >> 16) & 0xFF;
-		unsigned char g = (hexCode >> 8) & 0xFF;
-		unsigned char b = (hexCode) & 0xFF;
-
-		setColor(r, g, b, a);
-	}
-
-	virtual void render(Canvas* canvas)
-	{
-		int innerRadius = 12;
-		int borderThickeness = 1;
-		int outerRadius = innerRadius + borderThickeness;
-		SDL_Color borderColor = { 109, 171, 118, color.a }; // TODO: this way of setting alpha is a hack --> move this border rendering to canvas
-
-		// render this element
-		canvas->setColor(borderColor);
-		canvas->fillRoundedRect(screenX, screenY, w, h, outerRadius);
-
-		canvas->setColor(color);
-		canvas->fillRoundedRect(screenX + borderThickeness, screenY + borderThickeness, w - 2*borderThickeness, h - 2*borderThickeness, innerRadius);
-	}
+	virtual void render(Canvas* canvas);
 };

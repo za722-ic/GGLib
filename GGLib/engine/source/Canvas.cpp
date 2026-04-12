@@ -380,14 +380,14 @@ std::vector<int> getIndices_TriangleStrip(int numVertices)
 }
 
 // TODO: this does not adhere to applyCanvasAlignment, applyCanvasOrigin
-void Canvas::drawRoundedRect(int x, int y, int w, int h, int r, int thickness, const unsigned int trianglesPerCorner)
+void Canvas::drawRoundedRect(int x, int y, int w, int h, int r, int thickness, SDL_Color innerColor, SDL_Color outerColor, const unsigned int trianglesPerCorner)
 {
     int outerRadius = r;
     int innerRadius = outerRadius - thickness;
 
     // TODO: hardcoded colors
-    std::vector<SDL_Vertex> vertsOuter = getRoundedRectVertices(x, y, w, h, outerRadius, trianglesPerCorner, {0,0,0,0});
-    std::vector<SDL_Vertex> vertsInner = getRoundedRectVertices(x + thickness, y + thickness, w - 2*thickness, h - 2*thickness, innerRadius, trianglesPerCorner, {0,0,0,128});
+    std::vector<SDL_Vertex> vertsOuter = getRoundedRectVertices(x, y, w, h, outerRadius, trianglesPerCorner, outerColor);
+    std::vector<SDL_Vertex> vertsInner = getRoundedRectVertices(x + thickness, y + thickness, w - 2*thickness, h - 2*thickness, innerRadius, trianglesPerCorner, innerColor);
 
     std::vector<SDL_Vertex> verts = interleaveVertices(vertsOuter, vertsInner);
 
