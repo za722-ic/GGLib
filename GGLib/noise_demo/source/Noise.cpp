@@ -36,11 +36,29 @@ void Noise::onQuit()
 int oldsidebarwidth;
 void Noise::onLoop()
 {
-	// clear screen
-	canvas.setColor(0x2B, 0x5C, 0x32);
-	canvas.clear();
+	// update perlin viewer with user set parameters from UI
+	perlinViewer->velX = sliderVelX->value;
+	perlinViewer->velY = sliderVelY->value;
+	perlinViewer->velZ = sliderVelZ->value;
+	perlinViewer->octaves = sliderOctaves->value;
+	perlinViewer->initialAmplitude = sliderInitialAmplitude->value;
+	perlinViewer->initialFrequency = sliderInitialFrequency->value;
+	perlinViewer->resolutionDivision = sliderResolutionDivision->value;
+	perlinViewer->roundNoise = cbRoundNoise->isChecked;
 
-	// update and draw fps
+	// update perlin noise position based on velocity
+	perlinViewer->updateVelocities(deltaTime());
+
+	// update perlin noise position labels
+	lblPosX->setText(std::to_string(perlinViewer->posX));
+	lblPosY->setText(std::to_string(perlinViewer->posY));
+	lblPosZ->setText(std::to_string(perlinViewer->posZ));
+	// TODO label sizing should be integrated into engine (and text stuff in general)
+	sizeLabel(lblPosX);
+	sizeLabel(lblPosY);
+	sizeLabel(lblPosZ);
+
+	// update fps label
 	frameTimesAcc += deltaTime();
 	framesCount++;
 	if (frameTimesAcc >= 1)
@@ -63,7 +81,12 @@ void Noise::onLoop()
 	std::string cursorPosText = std::to_string(inputManager.getMouseX()) + ", " + std::to_string(inputManager.getMouseY());
 	lblCursorPos->setText(cursorPosText);
 	sizeLabel(lblCursorPos);
+	
+	// clear screen
+	canvas.setColor(0x2B, 0x5C, 0x32);
+	canvas.clear();
 
+	// position and render UI
 	int padding = 0;
 	root->setWidthAbs(ggWindow.getWidth() - 2*padding);
 	root->setHeightAbs(ggWindow.getHeight() - 2*padding);
@@ -71,8 +94,6 @@ void Noise::onLoop()
 	root->setY(padding);
 	root->calculateLayout();
 	root->render(&canvas);
-
-
 
 	// update screen
 	canvas.present();
@@ -123,7 +144,7 @@ Label* Noise::createLabel(std::string labelText)
 
 	return label;
 }
-Slider* Noise::createSlider(int min, int max, int interval, int startingVal)
+Slider* Noise::createSlider(float min, float max, float interval, float startingVal)
 {
 	Slider* slider = new Slider;
 	slider->setWidthAbs(150);
@@ -217,11 +238,11 @@ void Noise::defineElements()
 	sidebar->horizontalAutosize = true;
 	sidebar->setPadding(0);
 	sidebar->setChildGap(26);
-	sidebar->isVisible = true;
-	sidebar->setColor(0xff00ff);
+	sidebar->isVisible = false;
+	// sidebar->setColor(0xff00ff);
 	root->add(sidebar);
 
-	PerlinViewer* perlinViewer = new PerlinViewer;
+	perlinViewer = new PerlinViewer();
 	root->add(perlinViewer);
 
 	// create controls
@@ -231,17 +252,29 @@ void Noise::defineElements()
 	lblPosY = createLabel();
 	lblPosZ = createLabel();
 	lblFPS = createLabel();
-	sliderVelX = createSlider();
-	sliderVelY = createSlider();
-	sliderVelZ = createSlider();
-	sliderOctaves = createSlider();
-	sliderInitialAmplitude = createSlider();
-	sliderInitialFrequency = createSlider();
-	sliderResolutionDivision = createSlider();
-	cbRenderScale = new Toggle();
+	sliderVelX = createSlider(-100, 100, 1, 0);
+	sliderVelY = createSlider(-100, 100, 1, 0);
+	sliderVelZ = createSlider(-100, 100, 1, 0);
+	sliderOctaves = createSlider(1, 8, 1, 1);
+	sliderInitialAmplitude = createSlider(0.1f, 2.0f, 0.1f, 1.0f);
+	sliderInitialFrequency = createSlider(0.1f, 8.0f, 0.1f, 1.0f);
+	sliderResolutionDivision = createSlider(8, 32, 4, 8);
 	cbRoundNoise = new Toggle();
 	btnResetPosition = createResetButton();
+	btnResetPosition->setOnClick([&]() {
+		perlinViewer->posX = 0;
+		perlinViewer->posY = 0;
+		perlinViewer->posZ = 0;
+	});
 	btnResetVelocity = createResetButton();
+	btnResetVelocity->setOnClick([&]() {
+		perlinViewer->velX = 0;
+		perlinViewer->velY = 0;
+		perlinViewer->velZ = 0;
+		sliderVelX->value = 0;
+		sliderVelY->value = 0;
+		sliderVelZ->value = 0;
+	});
 
 	// create position panel
 	Container* pnlPositions = createPanel("Positions", btnResetPosition, { lblPosX, lblPosY, lblPosZ}, { "X", "Y", "Z"});
@@ -252,7 +285,7 @@ void Noise::defineElements()
 	sidebar->add(pnlVelocity);
 
 	// create rendering panel
-	Container* pnlRendering = createPanel("Rendering", nullptr, { sliderResolutionDivision, cbRenderScale, cbRoundNoise, lblFPS}, { "Resolution division", "Render scale", "Round noise", "FPS"});
+	Container* pnlRendering = createPanel("Rendering", nullptr, { sliderResolutionDivision, cbRoundNoise, lblFPS}, { "Resolution division", "Round noise", "FPS"});
 	sidebar->add(pnlRendering);
 
 	// create FBM panel
@@ -264,7 +297,8 @@ void Noise::defineElements()
 	sidebar->add(pnlUI);
 
 
-	root->add(new Scrollable);
+	// TODO
+	//root->add(new Scrollable);
 
 
 }

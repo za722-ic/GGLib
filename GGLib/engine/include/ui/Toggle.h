@@ -6,7 +6,7 @@
 
 class Toggle : public Control
 {
-protected:
+public:
 	std::function<void()> onClick;
 	std::function<void()> onMouseEnter;
 	std::function<void()> onMouseExit;

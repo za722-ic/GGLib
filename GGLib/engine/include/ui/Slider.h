@@ -15,10 +15,11 @@ private:
 public:
 	// TODO: setters, getters
 
-	int min = 0;
-	int max = 100;
-	int value = 50;
-	int interval = 1;
+	float min = 0;
+	float max = 100;
+	float value = 50;
+	float interval = 1;
+
 	int rKnob=7;     // of knob --> TODO: non circular knobs? or just leave it to the user to override render method if they want to?
 	int numTriangles = 6;
 
@@ -49,10 +50,16 @@ public:
 		dragManager.setOnDragContinue([&](int mouseX, int mouseY) {
 			// we only care if the user _started_ dragging within our bounds
 			if (!isSliderBeingDragged) return;
-				
+
 			// change slider value based on mouseX
 			// TODO this only applies if slider is horizontal --> vertical sliders? diagonal sliders?
-			value = (int)std::roundf(MoreMath::mapAndClamp(mouseX, screenX, screenX + w, min, max));
+			// value = (int)std::roundf(MoreMath::mapAndClamp(mouseX, screenX, screenX + w, min, max));
+
+			// TODO: (i) clean up and (ii) the same calculations should go in setOnClick
+			float unsnappedValue = MoreMath::map(mouseX, screenX, screenX + w, min, max);
+			float intervalsFromStart = std::round(((unsnappedValue - min) / interval));
+			float snappedValue = intervalsFromStart * interval + min;
+			value = MoreMath::clamp(snappedValue, min, max);
 		});
 		dragManager.setOnDragEnd([&](int mouseX, int mouseY) {
 			isSliderBeingDragged = false;

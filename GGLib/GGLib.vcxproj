@@ -37,6 +37,7 @@
     <ClCompile Include="engine\source\ui\Textbox.cpp" />
     <ClCompile Include="engine\source\ui\Visitor.cpp" />
     <ClCompile Include="engine\source\Vec2D.cpp" />
+    <ClCompile Include="engine\source\Vec3D.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="demo\source\DemoAssetManager.cpp" />
     <ClCompile Include="noise_demo\include\PerlinViewer.h" />
@@ -72,8 +73,10 @@
     <ClInclude Include="engine\include\ui\Textbox.h" />
     <ClInclude Include="engine\include\ui\Control.h" />
     <ClInclude Include="engine\include\Vec2D.h" />
+    <ClInclude Include="engine\include\Vec3D.h" />
     <ClInclude Include="noise_demo\include\Noise.h" />
     <ClInclude Include="noise_demo\include\NoiseAssetManager.h" />
+    <ClInclude Include="noise_demo\include\Perlin.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

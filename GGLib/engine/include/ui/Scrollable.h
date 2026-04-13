@@ -99,10 +99,6 @@ public:
 		canvas->drawString(std::to_string(viewportY), 0, 1000);
 		canvas->drawString(std::to_string(scrollbarH), 0, 1020);
 
-
-		
-
-
 		SDL_Rect b = { screenX, screenY, w, h };
 		SDL_RenderSetClipRect(canvas->getSDLRenderer(), &b);
 		for (auto child : children)

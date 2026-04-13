@@ -84,6 +84,9 @@
     <ClCompile Include="noise_demo\include\PerlinViewer.h">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="engine\source\Vec3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\include\AssetManager.h">
@@ -174,6 +177,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="engine\include\ui\Toggle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="noise_demo\include\Perlin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\Vec3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

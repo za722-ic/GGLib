@@ -27,10 +27,10 @@ private:
 	Slider* sliderVelX, * sliderVelY, * sliderVelZ;
 	Slider* sliderOctaves, *sliderInitialFrequency, *sliderInitialAmplitude;
 	Slider* sliderResolutionDivision;
-	Toggle* cbRenderScale, *cbRoundNoise;
+	Toggle* cbRoundNoise;
 	Label* lblFPS;
 	Button *btnResetPosition, *btnResetVelocity;
-
+	PerlinViewer* perlinViewer;
 
 	float frameTimesAcc;
 	unsigned int framesCount;
@@ -52,7 +52,7 @@ private:
 	void sizeLabel(Label* label);
 	void sizeButton(Button* button);
 	Label* createLabel(std::string labelText = "-");
-	Slider* createSlider(int min = 0, int max = 100, int interval = 1, int startingVal = 30);
+	Slider* createSlider(float min = 0, float max = 100, float interval = 1, float startingVal = 30);
 	Container *createPanel(std::string panelTitle, Button *btnReset, std::vector<Control*> controls, std::vector<std::string> controlLabels);
 	Button* createResetButton();
 	void defineElements();
