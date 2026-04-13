@@ -30,6 +30,13 @@ public:
 	virtual void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) = 0;
 };
 
+class ScrollEventListener
+{
+public:
+	virtual void onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY) = 0;
+};
+
+
 class KeyEventListener
 {
 public:
@@ -48,6 +55,7 @@ private:
 	std::list<MouseEventListener*> mouseEventListeners;
 	std::list<KeyEventListener*> keyEventListeners;
 	std::list<TextInputEventListener*> textInputEventListeners;
+	std::list<ScrollEventListener*> scrollEventListeners;
 
 	// most recently polled mouse position (in logical coords)
 	int mouseX, mouseY;
@@ -68,6 +76,9 @@ public:
 	void addTextInputEventListener(TextInputEventListener* textInputEventListener);
 	void removeTextInputEventListener(TextInputEventListener* textInputEventListener);
 
+	void addScrollEventListener(ScrollEventListener* scrollEventListener);
+	void removeScrollEventListener(ScrollEventListener* scrollEventListener);
+
 	const Uint8* getKeyboardState();
 	int getMouseX();
 	int getMouseY();
@@ -76,6 +87,7 @@ private:
 	void notifyKeyEventListeners(KeyEventType keyEventType, SDL_Keycode key); // TODO abstract away usage of "SDL"_Keycode --> make your own (just alias it using typedef)? It shouldn't be SDL's.
 	void notifyMouseEventListeners(MouseEventType mouseEventType);
 	void notifyTextInputEventListeners(const std::string text);
+	void notifyScrollEventListeners(int mouseX, int mouseY, float scrollX, float scrollY);
 
 	void pollMousePosition();
 };

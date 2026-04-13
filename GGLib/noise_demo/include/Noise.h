@@ -12,7 +12,9 @@
 #include "ui/HorizontalSpacer.h"
 #include "ui/HorizontalDivider.h"
 #include "ui/Toggle.h"
+#include "ui/Scrollable.h"
 
+#include "PerlinViewer.h"
 
 class Noise: public GGApp, KeyEventListener, MouseEventListener
 {

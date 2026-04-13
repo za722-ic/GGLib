@@ -98,16 +98,3 @@ public: // TODO: protected
 		}
 	}
 };
-
-
-
-
-
-
-
-
-
-
-
-
-

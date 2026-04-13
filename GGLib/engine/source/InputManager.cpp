@@ -27,6 +27,12 @@ bool InputManager::pollEvents()
 		if (e.type == SDL_MOUSEBUTTONUP && e.button.button == SDL_BUTTON_RIGHT)
 			notifyMouseEventListeners(RIGHT_MOUSE_UP);
 
+		// mouse scroll event
+		if (e.type == SDL_MOUSEWHEEL)
+		{
+			notifyScrollEventListeners(e.wheel.mouseX, e.wheel.mouseY, e.wheel.preciseX, e.wheel.preciseY);
+		}
+
 		// key board events
 		if (e.type == SDL_KEYDOWN)
 		{
@@ -79,6 +85,16 @@ void InputManager::removeTextInputEventListener(TextInputEventListener* textInpu
 	textInputEventListeners.remove(textInputEventListener);
 }
 
+void InputManager::addScrollEventListener(ScrollEventListener* scrollEventListener)
+{
+	scrollEventListeners.push_back(scrollEventListener);
+}
+
+void InputManager::removeScrollEventListener(ScrollEventListener* scrollEventListener)
+{
+	scrollEventListeners.remove(scrollEventListener);
+}
+
 const Uint8* InputManager::getKeyboardState()
 {
 	SDL_PumpEvents(); // NOTE: as per the documentation here: https://wiki.libsdl.org/SDL2/SDL_GetKeyboardState I should cal SDL_PumpEvents before SDL_GetKeyboardState. But as per here: https://wiki.libsdl.org/SDL2/SDL_PumpEvents SDL_PollEvent() above already calls this implicitly. I do it here anyway just to be safe.
@@ -118,6 +134,14 @@ void InputManager::notifyTextInputEventListeners(std::string text)
 	for (TextInputEventListener* textInputEventListenerPtr : textInputEventListeners)
 	{		
 		textInputEventListenerPtr->onTextInputEvent(text);
+	}
+}
+
+void InputManager::notifyScrollEventListeners(int mouseX, int mouseY, float scrollX, float scrollY)
+{
+	for (ScrollEventListener* scrollEventListenerPtr: scrollEventListeners)
+	{		
+		scrollEventListenerPtr->onScrollEvent(mouseX, mouseY, scrollX, scrollY);
 	}
 }
 

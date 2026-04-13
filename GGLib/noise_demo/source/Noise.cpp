@@ -72,6 +72,8 @@ void Noise::onLoop()
 	root->calculateLayout();
 	root->render(&canvas);
 
+
+
 	// update screen
 	canvas.present();
 }
@@ -132,7 +134,6 @@ Slider* Noise::createSlider(int min, int max, int interval, int startingVal)
 
 	return slider;
 }
-
 Container* Noise::createPanel(std::string panelTitle, Button* btnReset, std::vector<Control*> controls, std::vector<std::string> controlLabels)
 {
 	Container* panel = new Container;
@@ -180,7 +181,6 @@ Container* Noise::createPanel(std::string panelTitle, Button* btnReset, std::vec
 
 	return panel;
 }
-
 Button* Noise::createResetButton()
 {
 	Button* btnReset = new Button;
@@ -217,14 +217,11 @@ void Noise::defineElements()
 	sidebar->horizontalAutosize = true;
 	sidebar->setPadding(0);
 	sidebar->setChildGap(26);
-	sidebar->isVisible = false;
+	sidebar->isVisible = true;
+	sidebar->setColor(0xff00ff);
 	root->add(sidebar);
 
-	Control* perlinViewer = new Control;
-	perlinViewer->setColor(0x407848);
-	perlinViewer->borderColor = { 38, 84, 44, 255 };
-	perlinViewer->borderThickness = 4;
-	perlinViewer->shadowThickness = 6;
+	PerlinViewer* perlinViewer = new PerlinViewer;
 	root->add(perlinViewer);
 
 	// create controls
@@ -246,8 +243,6 @@ void Noise::defineElements()
 	btnResetPosition = createResetButton();
 	btnResetVelocity = createResetButton();
 
-	inputManager.addMouseEventListener(sliderOctaves);
-
 	// create position panel
 	Container* pnlPositions = createPanel("Positions", btnResetPosition, { lblPosX, lblPosY, lblPosZ}, { "X", "Y", "Z"});
 	sidebar->add(pnlPositions);
@@ -267,4 +262,12 @@ void Noise::defineElements()
 	// create UI debug panel 
 	Container* pnlUI = createPanel("UI", nullptr, { lblWindowSize, lblCursorPos }, { "Window size", "Cursor position"});
 	sidebar->add(pnlUI);
+
+
+	root->add(new Scrollable);
+
+
 }
+
+
+

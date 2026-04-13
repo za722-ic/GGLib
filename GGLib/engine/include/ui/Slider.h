@@ -66,6 +66,12 @@ public:
 		isMouseHovering = isCoordInSliderBounds(mouseX, mouseY);
 	}
 
+	void onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY) override
+	{
+		if (isCoordInSliderBounds(mouseX, mouseY))
+			value = MoreMath::clamp(value + interval*scrollY, min, max);
+	}
+
 	void render(Canvas* canvas) override
 	{
 		int x = screenX;
@@ -109,14 +115,11 @@ public:
 	}
 
 private:
+	// TODO: shoiuld this just get placed in Element?
 	bool isCoordInSliderBounds(int coordX, int coordY)
 	{
-		// TODO: this is ugly
-        int x = screenX;
-		int y = screenY;
-
-		if (coordY < y || coordY > y + h) return false;
-		if (coordX < x || coordX > x + w) return false;
+		if (coordY < screenY || coordY > screenY + h) return false;
+		if (coordX < screenX || coordX > screenX + w) return false;
 		return true;
 	}
 };

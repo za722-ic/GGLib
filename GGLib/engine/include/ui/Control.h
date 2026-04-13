@@ -8,7 +8,7 @@
 #include "Element.h"
 
 
-class Control : public MouseEventListener, public KeyEventListener, public TextInputEventListener, public Element
+class Control : public MouseEventListener, public KeyEventListener, public TextInputEventListener, public ScrollEventListener, public Element
 {
 public:
 	virtual void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override
@@ -18,6 +18,9 @@ public:
 	{}
 
 	virtual void onTextInputEvent(std::string text) override
+	{}
+
+	virtual void onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY) override
 	{}
 
 	void accept(Visitor& visitor) override

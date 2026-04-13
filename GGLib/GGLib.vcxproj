@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="demo\source\Demo.cpp" />
+    <ClCompile Include="engine\include\ui\Scrollable.h" />
     <ClCompile Include="engine\source\AssetManager.cpp" />
     <ClCompile Include="engine\source\AudioManager.cpp" />
     <ClCompile Include="engine\source\ui\Button.cpp" />
@@ -38,6 +39,7 @@
     <ClCompile Include="engine\source\Vec2D.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="demo\source\DemoAssetManager.cpp" />
+    <ClCompile Include="noise_demo\include\PerlinViewer.h" />
     <ClCompile Include="noise_demo\source\Noise.cpp" />
     <ClCompile Include="noise_demo\source\NoiseAssetManager.cpp" />
   </ItemGroup>

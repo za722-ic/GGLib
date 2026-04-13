@@ -14,11 +14,14 @@ void Visitor_GetChildren::visitForContainer(Container *container)
 
 ///////////////////////////////////////////////////
 
+// TODO: not all controls need to listen to all events.
+// TODO: we need to remove controls when they are destroyed --> need another vistor for that
 void Visitor_SetInputManager::visitForControl(Control* control)
 {
 	inputManager->addKeyEventListener(control);
 	inputManager->addMouseEventListener(control);
 	inputManager->addTextInputEventListener(control);
+	inputManager->addScrollEventListener(control);
 }
 
 void Visitor_SetInputManager::visitForContainer(Container* container)
