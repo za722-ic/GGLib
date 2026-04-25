@@ -1,21 +1,12 @@
 #pragma once
 
 #include "GGApp.h"
-#include "DemoAssetManager.h"
-#include "ui/Checkbox.h"
-#include "ui/Button.h"
-#include "ui/Slider.h"
-#include "ui/Textbox.h"
-#include "ui/Combobox.h"
-#include "ui/Label.h"
-#include "ui/Container.h"
-
-
+#include "AssetManagerWrapper.h"
 
 class Demo: public GGApp, KeyEventListener, MouseEventListener
 {
 private:
-	std::shared_ptr<DemoAssetManager> demoAssetManager;
+	std::shared_ptr<AssetManagerWrapper> demoAssetManager;
 
 	Label *lblFPS, *lblWindowSize, *lblCursorPos;
 	Container* root;
@@ -25,7 +16,7 @@ private:
 	float avgFps;
 
 public:
-	Demo() : demoAssetManager(std::make_shared<DemoAssetManager>(&assetManager))
+	Demo() : demoAssetManager(std::make_shared<AssetManagerWrapper>(&assetManager))
 	{}
 
 private:

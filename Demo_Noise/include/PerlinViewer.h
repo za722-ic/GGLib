@@ -56,6 +56,8 @@ public:
 		// call super
 		Element::render(canvas);
 
+		return; // TODO temp for profiling
+
 		// regenerate texture if the control's area has changed
 		isDirty = (w != oldW) || (h != oldH) || (resolutionDivision != oldResolutionDivision);
 		oldW = w;

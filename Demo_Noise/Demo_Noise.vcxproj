@@ -19,85 +19,50 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\ui\Scrollable.h" />
-    <ClCompile Include="source\AssetManager.cpp" />
-    <ClCompile Include="source\AudioManager.cpp" />
-    <ClCompile Include="source\ui\Button.cpp" />
-    <ClCompile Include="source\Canvas.cpp" />
-    <ClCompile Include="source\GGApp.cpp" />
-    <ClCompile Include="source\Timer.cpp" />
-    <ClCompile Include="source\GGWindow.cpp" />
-    <ClCompile Include="source\InitsSDL.cpp" />
-    <ClCompile Include="source\InputManager.cpp" />
-    <ClCompile Include="source\MoreMath.cpp" />
-    <ClCompile Include="source\TextFile.cpp" />
-    <ClCompile Include="source\ui\Combobox.cpp" />
-    <ClCompile Include="source\ui\Element.cpp" />
-    <ClCompile Include="source\ui\Textbox.cpp" />
-    <ClCompile Include="source\ui\Visitor.cpp" />
-    <ClCompile Include="source\Vec2D.cpp" />
-    <ClCompile Include="source\Vec3D.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="source\Noise.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\UI.h" />
-    <ClInclude Include="include\ui\Container.h" />
-    <ClInclude Include="include\DragManager.h" />
-    <ClInclude Include="include\ui\Combobox.h" />
-    <ClInclude Include="include\ui\HorizontalDivider.h" />
-    <ClInclude Include="include\ui\Element.h" />
-    <ClInclude Include="include\ui\HorizontalSpacer.h" />
-    <ClInclude Include="include\ui\Toggle.h" />
-    <ClInclude Include="include\ui\Visitor.h" />
-    <ClInclude Include="include\ui\Label.h" />
-    <ClInclude Include="include\ui\Panel.h" />
-    <ClInclude Include="include\ui\Slider.h" />
-    <ClInclude Include="include\ui\Button.h" />
-    <ClInclude Include="include\AssetManager.h" />
-    <ClInclude Include="include\AudioManager.h" />
-    <ClInclude Include="include\Canvas.h" />
-    <ClInclude Include="include\ui\Checkbox.h" />
-    <ClInclude Include="include\GGApp.h" />
-    <ClInclude Include="include\Timer.h" />
-    <ClInclude Include="include\GGWindow.h" />
-    <ClInclude Include="include\InitsSDL.h" />
-    <ClInclude Include="include\InputManager.h" />
-    <ClInclude Include="include\MoreMath.h" />
-    <ClInclude Include="include\TextFile.h" />
-    <ClInclude Include="include\ui\Textbox.h" />
-    <ClInclude Include="include\ui\Control.h" />
-    <ClInclude Include="include\Vec2D.h" />
-    <ClInclude Include="include\Vec3D.h" />
+    <ClInclude Include="include\Noise.h" />
+    <ClInclude Include="include\AssetManagerWrapper.h" />
+    <ClInclude Include="include\Perlin.h" />
+    <ClInclude Include="include\PerlinViewer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GGLib\GGLib.vcxproj">
+      <Project>{052b065e-41c2-4445-a5c9-e028eff94bd2}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{052b065e-41c2-4445-a5c9-e028eff94bd2}</ProjectGuid>
-    <RootNamespace>GGLib</RootNamespace>
+    <ProjectGuid>{a678d7a7-7397-44ae-9441-b4c90bfa689e}</ProjectGuid>
+    <RootNamespace>Demo_Noise</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>GGLib</ProjectName>
+    <ProjectName>Demo_Noise</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -125,22 +90,13 @@
     <LibraryPath>D:\visual_cpp_dev_lib\SDL2_image-2.8.2\lib\x64;D:\visual_cpp_dev_lib\SDL2_mixer-2.8.0\lib\x64;D:\visual_cpp_dev_lib\SDL2_ttf-2.22.0\lib\x64;D:\visual_cpp_dev_lib\SDL2-2.30.4\lib\x64;$(LibraryPath)</LibraryPath>
     <IncludePath>D:\visual_cpp_dev_lib\SDL2_image-2.8.2\include;D:\visual_cpp_dev_lib\SDL2_mixer-2.8.0\include;D:\visual_cpp_dev_lib\SDL2_ttf-2.22.0\include;D:\visual_cpp_dev_lib\SDL2-2.30.4\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>D:\visual_cpp_dev_lib\SDL2_image-2.8.2\include;D:\visual_cpp_dev_lib\SDL2_mixer-2.8.0\include;D:\visual_cpp_dev_lib\SDL2_ttf-2.22.0\include;D:\visual_cpp_dev_lib\SDL2-2.30.4\include;$(IncludePath)</IncludePath>
-    <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
-    <LibraryPath>D:\visual_cpp_dev_lib\SDL2_image-2.8.2\lib\x64;D:\visual_cpp_dev_lib\SDL2_mixer-2.8.0\lib\x64;D:\visual_cpp_dev_lib\SDL2_ttf-2.22.0\lib\x64;D:\visual_cpp_dev_lib\SDL2-2.30.4\lib\x64;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include/;$(ProjectDir)include/ui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)GGLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,8 +111,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include/;$(ProjectDir)include/ui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)GGLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -169,7 +124,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include/;$(ProjectDir)include/ui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)GGLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -186,13 +141,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include/;$(ProjectDir)include/ui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)GGLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

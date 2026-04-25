@@ -15,174 +15,144 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="source\AssetManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\AssetManager.cpp">
+    <ClCompile Include="source\AudioManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\AudioManager.cpp">
+    <ClCompile Include="source\Canvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\Canvas.cpp">
+    <ClCompile Include="source\GGApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\GGApp.cpp">
+    <ClCompile Include="source\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\Timer.cpp">
+    <ClCompile Include="source\GGWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\GGWindow.cpp">
+    <ClCompile Include="source\InitsSDL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\InitsSDL.cpp">
+    <ClCompile Include="source\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\InputManager.cpp">
+    <ClCompile Include="source\MoreMath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\MoreMath.cpp">
+    <ClCompile Include="source\TextFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\TextFile.cpp">
+    <ClCompile Include="source\ui\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="demo\source\DemoAssetManager.cpp">
+    <ClCompile Include="source\ui\Textbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="demo\source\Demo.cpp">
+    <ClCompile Include="source\ui\Combobox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\ui\Button.cpp">
+    <ClCompile Include="source\ui\Visitor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\ui\Textbox.cpp">
+    <ClCompile Include="source\Vec2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\ui\Combobox.cpp">
+    <ClCompile Include="source\ui\Element.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\source\ui\Visitor.cpp">
+    <ClCompile Include="include\ui\Scrollable.h">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="noise_demo\source\Noise.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="noise_demo\source\NoiseAssetManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\source\Vec2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\source\ui\Element.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\include\ui\Scrollable.h">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="noise_demo\include\PerlinViewer.h">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\source\Vec3D.cpp">
+    <ClCompile Include="source\Vec3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="engine\include\AssetManager.h">
+    <ClInclude Include="include\AssetManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\AudioManager.h">
+    <ClInclude Include="include\AudioManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\Canvas.h">
+    <ClInclude Include="include\Canvas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\GGApp.h">
+    <ClInclude Include="include\GGApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\Timer.h">
+    <ClInclude Include="include\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\GGWindow.h">
+    <ClInclude Include="include\GGWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\InitsSDL.h">
+    <ClInclude Include="include\InitsSDL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\InputManager.h">
+    <ClInclude Include="include\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\MoreMath.h">
+    <ClInclude Include="include\MoreMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\TextFile.h">
+    <ClInclude Include="include\TextFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="demo\include\DemoAssetManager.h">
+    <ClInclude Include="include\ui\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="demo\include\Demo.h">
+    <ClInclude Include="include\ui\Control.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\ui\Button.h">
+    <ClInclude Include="include\ui\Checkbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\ui\Control.h">
+    <ClInclude Include="include\DragManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\ui\Checkbox.h">
+    <ClInclude Include="include\ui\Slider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\DragManager.h">
+    <ClInclude Include="include\ui\Label.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\ui\Slider.h">
+    <ClInclude Include="include\ui\Textbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\ui\Label.h">
+    <ClInclude Include="include\ui\Combobox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\ui\Textbox.h">
+    <ClInclude Include="include\ui\Panel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\ui\Combobox.h">
+    <ClInclude Include="include\ui\Container.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\ui\Panel.h">
+    <ClInclude Include="include\ui\Element.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\ui\Container.h">
+    <ClInclude Include="include\ui\Visitor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\ui\Element.h">
+    <ClInclude Include="include\Vec2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\ui\Visitor.h">
+    <ClInclude Include="include\ui\HorizontalSpacer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="noise_demo\include\Noise.h">
+    <ClInclude Include="include\ui\HorizontalDivider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="noise_demo\include\NoiseAssetManager.h">
+    <ClInclude Include="include\ui\Toggle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\Vec2D.h">
+    <ClInclude Include="include\Vec3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\ui\HorizontalSpacer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\ui\HorizontalDivider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\ui\Toggle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="noise_demo\include\Perlin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\Vec3D.h">
+    <ClInclude Include="include\UI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

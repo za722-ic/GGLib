@@ -3,7 +3,7 @@
 bool Noise::onInit()
 {
 	// load assets
-	if (!noiseAssetManager->loadResources())
+	if (!assetManagerWrapper->loadResources())
 	{
 		std::cout << "Failed to load resources! See console output. Aborting." << std::endl;
 		return false;
@@ -16,7 +16,7 @@ bool Noise::onInit()
 	ggWindow.centerWindowPosition();
 
 	// tell canvas to use loaded font
-	canvas.setFont(noiseAssetManager->getFont());
+	canvas.setFont(assetManagerWrapper->getFont());
 
 	// subscribe to mouse and keyboard events
 	inputManager.addKeyEventListener(this);
@@ -262,6 +262,7 @@ void Noise::defineElements()
 	cbRoundNoise = new Toggle();
 	btnResetPosition = createResetButton();
 	btnResetPosition->setOnClick([&]() {
+		// TODO: so apparently the memory address at which some object is located can change, but the pointer will not change to that updated location, so it will be an invalid pointer --> seriously reconsider how we represent the UI hierarchy in memory!
 		perlinViewer->posX = 0;
 		perlinViewer->posY = 0;
 		perlinViewer->posZ = 0;
@@ -299,9 +300,4 @@ void Noise::defineElements()
 
 	// TODO
 	//root->add(new Scrollable);
-
-
 }
-
-
-

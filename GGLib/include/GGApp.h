@@ -7,6 +7,7 @@
 #include "Canvas.h"
 #include "AssetManager.h"
 #include "AudioManager.h"
+#include "UI.h"
 
 class GGApp
 {

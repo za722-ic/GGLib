@@ -1,6 +1,0 @@
-Attributions for the various resources used:
-
--- Font --
-Name:   Beef'd.ttf
-Author: Extram Studios
-Source: https://www.dafont.com/beefd.font
