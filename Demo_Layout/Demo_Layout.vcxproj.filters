@@ -29,11 +29,5 @@
     <ClInclude Include="include\Demo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AssetManagerWrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

@@ -23,8 +23,6 @@
     <ClCompile Include="source\Demo.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AssetManagerWrapper.h" />
-    <ClInclude Include="Demo.h" />
     <ClInclude Include="include\AssetManagerWrapper.h" />
     <ClInclude Include="include\Demo.h" />
   </ItemGroup>
