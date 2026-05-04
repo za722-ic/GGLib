@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SDL.h>
+
 #include <cmath>
 #include <string>
 #include <sstream>
@@ -45,5 +47,7 @@ struct Vec2D
 	// linearly interpolate from this vector to end by amount
 	Vec2D lerp(Vec2D const& end, float amount) const;
 
-	std::string toString();
+	std::string toString() const;
+
+	SDL_Vertex toSDLVertex(const SDL_Color& color) const;
 };

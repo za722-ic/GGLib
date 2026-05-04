@@ -163,6 +163,78 @@ void Canvas::drawLine(int x1, int y1, int x2, int y2)
     SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
 }
 
+Vec2D deCasteljau_Cubic(const Vec2D& p0, const Vec2D& p1, const Vec2D& p2, const Vec2D& p3, const float t)
+{
+    Vec2D B(0);
+
+    B += p0 * 1.0f * std::pow(t, 0) * std::pow(1 - t, 3);
+    B += p1 * 3.0f * std::pow(t, 1) * std::pow(1 - t, 2);
+    B += p2 * 3.0f * std::pow(t, 2) * std::pow(1 - t, 1);
+    B += p3 * 1.0f * std::pow(t, 3) * std::pow(1 - t, 0);
+
+    return B;
+}
+
+Vec2D deCasteljau_Cubic_Derivative(const Vec2D& p0, const Vec2D& p1, const Vec2D& p2, const Vec2D& p3, const float t)
+{
+    Vec2D dB(0);
+
+    dB += p0 * (-3.0f) * std::pow(1 - t, 2);
+    dB += p1 * (3.0f) * (std::pow(1 - t, 2) - 2 * t * (1 - t));
+    dB += p2 * (3.0f) * (2 * t * (1 - t) - t * t);
+    dB += p3 * (3.0f) * (t * t);
+
+    dB.normalize();
+
+    return dB;
+}
+
+void Canvas::drawCubicBezier(Vec2D p0, Vec2D p1, Vec2D p2, Vec2D p3, int thickness, int resolution)
+{
+    std::vector<SDL_Vertex> vertices;
+
+    // used to calculate vertices
+    // we can't just evaluate the Bezier function B(t), as the resulting line would have thickeness=1
+    // to support arbitrary thickness, we have to extrude the line out
+    // this function calculates points on the extruded lines
+    auto calcExtrudedPoints = [&](int segmentIndex)
+    {
+        // convert segment index to a parametric t-value for the Bezier function B
+        float t =  (float)segmentIndex / resolution;
+
+        // evaluate the Bezier function B at t to get some 2d position on the curve --> B(t)
+        Vec2D B = deCasteljau_Cubic(p0, p1, p2, p3, t);
+
+        // evaluate the derivative at at --> dB(t)/dt
+        // this gives the tangent direction of the curve B at location t along the curve
+        Vec2D tangent = deCasteljau_Cubic_Derivative(p0, p1, p2, p3, t);
+
+        // calculate the direction of the normals, which is the tangent rotated by 90deg
+        Vec2D normal(-tangent.y, tangent.x);
+
+        // calculate the extruded points
+        // these points start at B, and extend in the direction of the normal
+        Vec2D BL = B + normal * (thickness / 2);
+        Vec2D BR = B - normal * (thickness / 2);
+
+        vertices.push_back(BL.toSDLVertex(color));
+        vertices.push_back(BR.toSDLVertex(color));
+    };
+
+    // calculate vertices
+    for (int i = 0; i < resolution; i++)
+    {
+        calcExtrudedPoints(i);
+        calcExtrudedPoints(i + 1);
+    }
+
+    // calculate indices
+    auto indices = getIndices_TriangleStrip(vertices.size());
+
+    // render
+    SDL_RenderGeometry(renderer, nullptr, vertices.data(), vertices.size(), indices.data(), indices.size());
+}
+
 void Canvas::drawString(std::string text, int x, int y)
 {
     int w, h;
@@ -280,10 +352,9 @@ void Canvas::drawImage_StrechToFillCanvas(SDL_Texture *image)
 
 
 
-std::vector<SDL_Vertex> getRoundedRectVertices(int x, int y, int w, int h, int r, int trianglesPerCorner, SDL_Color color)
+std::vector<SDL_Vertex> Canvas::getRoundedRectVertices(int x, int y, int w, int h, int r, int trianglesPerCorner, SDL_Color color)
 {
     std::vector<SDL_Vertex> verts;
-
 
 
     // centers of the quarter circles
@@ -323,7 +394,7 @@ std::vector<SDL_Vertex> getRoundedRectVertices(int x, int y, int w, int h, int r
     return verts;
 }
 
-std::vector<SDL_Vertex> interleaveVertices(const std::vector<SDL_Vertex>& v1, const std::vector<SDL_Vertex>& v2)
+std::vector<SDL_Vertex> Canvas::interleaveVertices(const std::vector<SDL_Vertex>& v1, const std::vector<SDL_Vertex>& v2)
 {
     std::vector<SDL_Vertex> result;
 
@@ -336,7 +407,7 @@ std::vector<SDL_Vertex> interleaveVertices(const std::vector<SDL_Vertex>& v1, co
     return result;
 }
 
-std::vector<int> getIndices_TriangleFan(int numVertices)
+std::vector<int> Canvas::getIndices_TriangleFan(int numVertices)
 {
     std::vector<int> indices;
 
@@ -352,7 +423,7 @@ std::vector<int> getIndices_TriangleFan(int numVertices)
     return indices;
 }
 
-std::vector<int> getIndices_TriangleStrip(int numVertices)
+std::vector<int> Canvas::getIndices_TriangleStrip(int numVertices)
 {
     std::vector<int> indices;
 
@@ -364,6 +435,14 @@ std::vector<int> getIndices_TriangleStrip(int numVertices)
         indices.push_back(i + 1);
         indices.push_back(i + 2);
     }
+
+
+    return indices;
+}
+
+std::vector<int> Canvas::getIndices_TriangleStrip_Loop(int numVertices)
+{
+    std::vector<int> indices = getIndices_TriangleStrip(numVertices);
 
     // need to add two more triangles to close the triangle fan into a loop
     // which means connecting the last two vertices (at index numVertices - 1
@@ -391,7 +470,7 @@ void Canvas::drawRoundedRect(int x, int y, int w, int h, int r, int thickness, S
 
     std::vector<SDL_Vertex> verts = interleaveVertices(vertsOuter, vertsInner);
 
-    std::vector<int> indices = getIndices_TriangleStrip(verts.size());
+    std::vector<int> indices = getIndices_TriangleStrip_Loop(verts.size());
 
     SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), indices.data(), indices.size());
 }

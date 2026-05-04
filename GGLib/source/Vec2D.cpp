@@ -72,9 +72,20 @@ Vec2D Vec2D::lerp(Vec2D const& end, float amount) const
 	return *this + (end - *this) * amount;
 }
 
-std::string Vec2D::toString()
+std::string Vec2D::toString() const
 {
 	std::ostringstream outStr;
 	outStr << std::fixed << std::setprecision(2) << x << ", " << y;
 	return outStr.str();
+}
+
+SDL_Vertex Vec2D::toSDLVertex(const SDL_Color& color) const
+{
+	SDL_Vertex sdlVertex =
+	{
+		SDL_FPoint(x, y),
+		color,
+		SDL_FPoint {0}
+	};
+	return sdlVertex;
 }

@@ -103,6 +103,8 @@ public:
 
 	void drawLine(int x1, int y1, int x2, int y2);
 
+	void drawCubicBezier(Vec2D p0, Vec2D p1, Vec2D p2, Vec2D p3, int thickness, int resolution);
+
 	void drawString            (std::string text, int x, int y              );
 	void drawStringToWidth     (std::string text, int x, int y, int w       );
 	void drawStringToHeight    (std::string text, int x, int y, int h       );
@@ -131,4 +133,12 @@ private:
 	void applyCanvasAlignment(int &x, int &y, int w, int h);
 	HorizontalAlignment getHorizontaAlignment(Alignment alignment);
 	VerticalAlignment getVerticalAlignment(Alignment alignment);
+
+	std::vector<SDL_Vertex> getRoundedRectVertices(int x, int y, int w, int h, int r, int trianglesPerCorner, SDL_Color color);
+	std::vector<SDL_Vertex> interleaveVertices(const std::vector<SDL_Vertex>& v1, const std::vector<SDL_Vertex>& v2);
+	std::vector<int> getIndices_TriangleFan(int numVertices);
+	std::vector<int> getIndices_TriangleStrip(int numVertices);
+	std::vector<int> getIndices_TriangleStrip_Loop(int numVertices);
+
+
 };
