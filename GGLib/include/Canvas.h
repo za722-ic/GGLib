@@ -8,6 +8,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#include <cassert>
 
 #include "Vec2D.h"
 #include "MoreMath.h"
@@ -55,15 +56,27 @@ private:
 	// coorrdinates are interpreted as relative to this point
 	int originX = 0, originY = 0;
 
-	// why not just set the sdl instead of storing it? because if someone sets the canvas color, then manually sets the sdl color, we should only use the original color they gave to the canvas. so we cannot rely on sdl to store it for us
+	// why not just set the sdl renderer color instead of storing it? because if someone sets the canvas color, then manually sets the sdl color, we should only use the original color they gave to the canvas. so we cannot rely on sdl to store it for us
 	SDL_Color color = { 255,255,255,255 };
 
 public:
 
-	// --- setters ---
-
+	/*
+	+----------------------------------+
+    |		MISC                       |
+	+----------------------------------+
+	*/
+	void clear();
+	void present();
 	void init(SDL_Renderer* renderer);
 
+
+
+	/*
+	+----------------------------------+
+    |		SETTERS                    |
+	+----------------------------------+
+	*/
 	void setFont(TTF_Font* font);
 
 	void setAlignment(Alignment alignment);
@@ -79,8 +92,12 @@ public:
 
 
 	
-	// --- getters ---
-
+	/*
+	+----------------------------------+
+    |		GETTERS                    |
+	+----------------------------------+
+	*/
+	// TODO: do these even work? Compare against GGWindow width/height (and whatever else I have) --> there should just be one source of truth
 	int getWidth();
 	int getHeight();
 
@@ -88,11 +105,51 @@ public:
 	SDL_Renderer* getSDLRenderer(); // TODO: this is terrible (and temporary!). Raw pointer to renderer should not be exposed. 
 
 
-	// --- draw funtions ---
 
-	void clear();
+	/*
+	+----------------------------------+
+    |		TEXT                       |
+	+----------------------------------+
+	*/
+	void drawString            (std::string text, int x, int y              );
+	void drawStringToWidth     (std::string text, int x, int y, int w       );
+	void drawStringToHeight    (std::string text, int x, int y, int h       );
+	void drawStringToDimensions(std::string text, int x, int y, int w, int h);
+	SDL_Texture* drawStringToTexture(std::string text); // TODO: this returns a raw pointer to an SDL_Texture, which the user of this function must manually destroy using SDL_DestroyTexture(textTexture); --> create a wrapper class that does this automagically
+	void getTextDimensions(std::string text, int* w, int* h);
+	
 
-	void present();
+
+	/*
+	+----------------------------------+
+    |		IMAGES                     |
+	+----------------------------------+
+	*/
+	void drawImage(SDL_Texture *image, int x, int y, int w, int h);
+	void drawImage(SDL_Texture *image, int x, int y);
+	void drawImage_StrechToFillCanvas(SDL_Texture *image); // draw image, stretching to entire canvas
+	void drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y); // draw a part of an image
+	void drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y, int w, int h);
+
+
+
+	/*
+	+----------------------------------+
+    |		SHAPES                     |
+	+----------------------------------+
+	*/
+	void drawRoundedRect(int x, int y, int w, int h, int r, int thickness, SDL_Color innerColor, SDL_Color outerColor, const unsigned int trianglesPerCorner=8);
+	void fillRoundedRect(int x, int y, int w, int h, int r, const unsigned int trianglesPerCounter = 8);
+
+	// TODO: use this to draw/fill regular polygons, circles, ellipses
+	// TODO: use applyCanvasOrigin, applyCanvasAlignment in _all_ drawing functions
+	// TODO: mark all draw functions as const
+    // TODO: itd be nice if we could actually draw the chord, or draw lines to the center (so like an outline of fillArc, rather than strictly just an arc -- see p5.js' arc function's MODE parameter)
+	void drawArc(int x, int y, int w, int h, float startAngle, float endAngle, int numTriangles, int thickness = 4);
+	void fillArc(int x, int y, int w, int h, float startAngle, float endAngle, int numTriangles, bool isChord = false);
+
+	// TODO: remove
+	void renderRegularPolygon(int x, int y, unsigned int numVertices = 3, float rotAngle = 0, float scale = 250.0f);
 
 	void drawRect(int x, int y, int w, int h);
 	void drawRect(const SDL_Rect& rect);
@@ -103,25 +160,7 @@ public:
 
 	void drawLine(int x1, int y1, int x2, int y2);
 
-	void drawCubicBezier(Vec2D p0, Vec2D p1, Vec2D p2, Vec2D p3, int thickness, int resolution);
-
-	void drawString            (std::string text, int x, int y              );
-	void drawStringToWidth     (std::string text, int x, int y, int w       );
-	void drawStringToHeight    (std::string text, int x, int y, int h       );
-	void drawStringToDimensions(std::string text, int x, int y, int w, int h);
-	SDL_Texture* drawStringToTexture(std::string text); // TODO: this returns a raw pointer to an SDL_Texture, which the user of this function must manually destroy using SDL_DestroyTexture(textTexture); --> create a wrapper class that does this automagically
-	void getTextDimensions(std::string text, int* w, int* h);
-	
-	void drawImage(SDL_Texture *image, int x, int y, int w, int h);
-	void drawImage(SDL_Texture *image, int x, int y);
-	void drawImage_StrechToFillCanvas(SDL_Texture *image); // draw image, stretching to entire canvas
-	void drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y); // draw a part of an image
-	void drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y, int w, int h);
-
-	void drawRoundedRect(int x, int y, int w, int h, int r, int thickness, SDL_Color innerColor, SDL_Color outerColor, const unsigned int trianglesPerCorner=8);
-	void fillRoundedRect(int x, int y, int w, int h, int r, const unsigned int trianglesPerCounter = 8);
-
-	void renderRegularPolygon(int x, int y, unsigned int numVertices = 3, float rotAngle = 0, float scale = 250.0f);
+	void drawCubicBezier(Vec2D p0, Vec2D p1, Vec2D p2, Vec2D p3, int thickness, int numSegments); // more segments == smoother curves and worse performance
 
 private:
 
@@ -134,11 +173,14 @@ private:
 	HorizontalAlignment getHorizontaAlignment(Alignment alignment);
 	VerticalAlignment getVerticalAlignment(Alignment alignment);
 
-	std::vector<SDL_Vertex> getRoundedRectVertices(int x, int y, int w, int h, int r, int trianglesPerCorner, SDL_Color color);
+	std::vector<SDL_Vertex> getRoundedRectVertices(int x, int y, int w, int h, int r, int trianglesPerCorner, SDL_Color color); // TODO: rename to generateRoundedRectVertices
+
+	// TODO: refactor the implementation of these two functions as there is a lot of duplicate code
+	std::vector<SDL_Vertex> generateArcVertices(int x, int y, int w, int h, float startAngle, float endAngle, int numTriangles, bool isChord);
+	std::vector<SDL_Vertex> generateArcNormals(int x, int y, int w, int h, float startAngle, float endAngle, int numTriangles, int thickness);
+
 	std::vector<SDL_Vertex> interleaveVertices(const std::vector<SDL_Vertex>& v1, const std::vector<SDL_Vertex>& v2);
 	std::vector<int> getIndices_TriangleFan(int numVertices);
 	std::vector<int> getIndices_TriangleStrip(int numVertices);
 	std::vector<int> getIndices_TriangleStrip_Loop(int numVertices);
-
-
 };

@@ -189,7 +189,7 @@ Vec2D deCasteljau_Cubic_Derivative(const Vec2D& p0, const Vec2D& p1, const Vec2D
     return dB;
 }
 
-void Canvas::drawCubicBezier(Vec2D p0, Vec2D p1, Vec2D p2, Vec2D p3, int thickness, int resolution)
+void Canvas::drawCubicBezier(Vec2D p0, Vec2D p1, Vec2D p2, Vec2D p3, int thickness, int numSegments)
 {
     std::vector<SDL_Vertex> vertices;
 
@@ -200,7 +200,7 @@ void Canvas::drawCubicBezier(Vec2D p0, Vec2D p1, Vec2D p2, Vec2D p3, int thickne
     auto calcExtrudedPoints = [&](int segmentIndex)
     {
         // convert segment index to a parametric t-value for the Bezier function B
-        float t =  (float)segmentIndex / resolution;
+        float t =  (float)segmentIndex / numSegments;
 
         // evaluate the Bezier function B at t to get some 2d position on the curve --> B(t)
         Vec2D B = deCasteljau_Cubic(p0, p1, p2, p3, t);
@@ -222,7 +222,7 @@ void Canvas::drawCubicBezier(Vec2D p0, Vec2D p1, Vec2D p2, Vec2D p3, int thickne
     };
 
     // calculate vertices
-    for (int i = 0; i < resolution; i++)
+    for (int i = 0; i < numSegments; i++)
     {
         calcExtrudedPoints(i);
         calcExtrudedPoints(i + 1);
@@ -375,14 +375,7 @@ std::vector<SDL_Vertex> Canvas::getRoundedRectVertices(int x, int y, int w, int 
             vert *= r;
             vert += center;
 
-            SDL_Vertex v =
-            {
-                SDL_FPoint(vert.x, vert.y),
-                color,
-                SDL_FPoint {0}
-            };
-
-            verts.push_back(v);
+            verts.push_back(vert.toSDLVertex(color));
         }
     };
 
@@ -396,9 +389,13 @@ std::vector<SDL_Vertex> Canvas::getRoundedRectVertices(int x, int y, int w, int 
 
 std::vector<SDL_Vertex> Canvas::interleaveVertices(const std::vector<SDL_Vertex>& v1, const std::vector<SDL_Vertex>& v2)
 {
+    // we expect both vertex lists to be of the same size
+    // TODO: maybe just add the remaining vertices at the end e.g, 121212222
+    assert(v1.size() == v2.size());
+
     std::vector<SDL_Vertex> result;
 
-    for (int i = 0; i < v1.size(); i++) // we expect both vertex lists to be of the same size
+    for (int i = 0; i < v1.size(); i++) 
     {
         result.push_back(v1[i]);
         result.push_back(v2[i]);
@@ -464,7 +461,6 @@ void Canvas::drawRoundedRect(int x, int y, int w, int h, int r, int thickness, S
     int outerRadius = r;
     int innerRadius = outerRadius - thickness;
 
-    // TODO: hardcoded colors
     std::vector<SDL_Vertex> vertsOuter = getRoundedRectVertices(x, y, w, h, outerRadius, trianglesPerCorner, outerColor);
     std::vector<SDL_Vertex> vertsInner = getRoundedRectVertices(x + thickness, y + thickness, w - 2*thickness, h - 2*thickness, innerRadius, trianglesPerCorner, innerColor);
 
@@ -488,6 +484,140 @@ void Canvas::fillRoundedRect(int x, int y, int w, int h, int r, const unsigned i
     
     SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), indices.data(), indices.size());
 }
+
+std::vector<SDL_Vertex> Canvas::generateArcVertices(int x, int y, int w, int h, float startAngle, float endAngle, int numTriangles, bool isChord)
+{
+    /*
+        Starts at start angle
+        Draws anti-clockwise until end angle
+    */
+
+    // special case: there is no arc to draw, so abort early
+    if (endAngle == startAngle) return {};
+
+    // radii
+    int rHor = w / 2;
+    int rVer = h / 2;
+    
+    // TAU
+    const float TWO_PI = 2.0f * M_PI;
+
+    // special case: there is no arc to draw, so abort early
+    while (endAngle <= startAngle) endAngle += TWO_PI;
+    while (std::abs(endAngle - startAngle) > TWO_PI) endAngle -= TWO_PI;
+
+    // calculate angularDist
+    const float angularDist = endAngle - startAngle;
+
+    // calculate angularInterval between vertices
+    const float angularInterval = angularDist / numTriangles;
+
+
+
+
+
+    // vertices of the shape
+    std::vector<SDL_Vertex> vertices;
+
+    // center of shape
+    Vec2D center(x + rHor, y + rVer);
+    if (!isChord) vertices.push_back(center.toSDLVertex(color));
+    
+    // calculate vertices on the curved part of the arc's perimeter
+    for (int i = 0; i <= numTriangles; i++)
+    {
+        float angle = startAngle + (i * angularInterval);
+
+        Vec2D v(rHor * std::cos(angle), rVer * std::sin(angle));
+        v.y *= -1; // in math space, y grows upwards. in screen space, y grows downwards
+        v += center;
+
+        vertices.push_back(v.toSDLVertex(color));
+    }
+
+    return vertices;
+}
+
+std::vector<SDL_Vertex> Canvas::generateArcNormals(int x, int y, int w, int h, float startAngle, float endAngle, int numTriangles, int thickness)
+{
+
+    /*
+        Starts at start angle
+        Draws anti-clockwise until end angle
+    */
+
+    // special case: there is no arc to draw, so abort early
+    if (endAngle == startAngle) return {};
+
+    // radii
+    int rHor = w / 2;
+    int rVer = h / 2;
+
+    // TAU
+    const float TWO_PI = 2.0f * M_PI;
+
+    // ensure endAngle > startAngle and angularDist is withing 
+    while (endAngle <= startAngle) endAngle += TWO_PI;
+    while (std::abs(endAngle - startAngle) > TWO_PI) endAngle -= TWO_PI;
+
+    // calculate angularDist
+    const float angularDist = endAngle - startAngle;
+
+    // special case: there is no arc to draw, so abort early
+    if (angularDist == 0.0f) return {};
+
+    // calculate angularInterval between vertices
+    const float angularInterval = angularDist / numTriangles;
+
+
+
+
+    // vertices of the shape
+    std::vector<SDL_Vertex> vertices;
+
+    // center of shape
+    Vec2D center(x + rHor, y + rVer);
+    
+    // calculate vertices on the curved part of the arc's perimeter
+    for (int i = 0; i <= numTriangles; i++)
+    {
+        float angle = startAngle + (i * angularInterval);
+
+        Vec2D v(rHor * std::cos(angle), rVer * std::sin(angle));
+        v.y *= -1; // in math space, y grows upwards. in screen space, y grows downwards
+        v += center;
+
+        Vec2D n(rVer * std::cos(angle), -rHor * sin(angle));
+        n.normalize();
+        n *= thickness;
+        
+        Vec2D innerV = v - n;
+
+        vertices.push_back(innerV.toSDLVertex(color));
+    }
+
+    return vertices;
+}
+
+void Canvas::drawArc(int x, int y, int w, int h, float startAngle, float endAngle, int numTriangles, int thickness)
+{
+    auto outerVertices = generateArcVertices(x, y, w, h, startAngle, endAngle, numTriangles, true);
+    auto innerVertices = generateArcNormals(x, y, w, h, startAngle, endAngle, numTriangles, thickness);
+    
+    auto interleavedVertices = interleaveVertices(outerVertices, innerVertices);
+    auto indices = getIndices_TriangleStrip(interleavedVertices.size());
+
+    SDL_RenderGeometry(renderer, nullptr, interleavedVertices.data(), interleavedVertices.size(), indices.data(), indices.size());
+}
+
+void Canvas::fillArc(int x, int y, int w, int h, float startAngle, float endAngle, int numTriangles, bool isChord)
+{
+    auto vertices = generateArcVertices(x, y, w, h, startAngle, endAngle, numTriangles, isChord);
+    auto indices = getIndices_TriangleFan(vertices.size());
+
+    SDL_RenderGeometry(renderer, nullptr, vertices.data(), vertices.size(), indices.data(), indices.size());
+}
+
 
 // TODO: this does not adhere to applyCanvasAlignment, applyCanvasOrigin
 // TODO: x y here specify the center bby default, not the top-left --> how does p5.js handle this? top left of bounding box?
