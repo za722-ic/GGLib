@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include <list>
 #include <memory>
@@ -61,9 +61,12 @@ private:
 	int mouseX, mouseY;
 
 	SDL_Renderer* renderer = nullptr;
+	SDL_Window* window = nullptr;
 
 public:
 	void init(SDL_Renderer* renderer);
+
+	~InputManager();
 
 	bool pollEvents();
 

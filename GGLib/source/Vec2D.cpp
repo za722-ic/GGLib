@@ -84,7 +84,7 @@ SDL_Vertex Vec2D::toSDLVertex(const SDL_Color& color) const
 	SDL_Vertex sdlVertex =
 	{
 		SDL_FPoint(x, y),
-		color,
+		SDL_FColor(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f),
 		SDL_FPoint {0}
 	};
 	return sdlVertex;

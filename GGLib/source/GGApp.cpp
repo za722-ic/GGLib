@@ -14,12 +14,14 @@ GGApp::GGApp()
     SDL_Renderer* renderer = rendererOptional.value();
 
     // pass renderer to: canvas, asset manager, input manager
+    audioManager.init();
     canvas.init(renderer);
-    assetManager.init(renderer);
+    assetManager.init(renderer, audioManager.getMixer()); // give asset manager pointer to MIX_Mixer instance that was created in audioManager
     inputManager.init(renderer);
 
-    // give audioManager pointer to all loaded audio files in assetManaegr
+    // give audioManager pointer to all loaded audio files in assetManaegr, 
     audioManager.setAudioPtrs(assetManager.getAudioPtrs());
+
 }
 
 GGApp::~GGApp()

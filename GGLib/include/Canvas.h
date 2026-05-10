@@ -1,8 +1,10 @@
 #pragma once
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <memory>
 #include <string>
 #include <iostream>
@@ -128,8 +130,8 @@ public:
 	void drawImage(SDL_Texture *image, int x, int y, int w, int h);
 	void drawImage(SDL_Texture *image, int x, int y);
 	void drawImage_StrechToFillCanvas(SDL_Texture *image); // draw image, stretching to entire canvas
-	void drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y); // draw a part of an image
-	void drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y, int w, int h);
+	void drawImageRegion(SDL_Texture* image, const SDL_FRect& region, int x, int y); // draw a part of an image
+	void drawImageRegion(SDL_Texture* image, const SDL_FRect& region, int x, int y, int w, int h);
 
 
 

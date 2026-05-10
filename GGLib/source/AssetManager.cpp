@@ -3,7 +3,7 @@
 AssetManager::AssetManager()
 {
     fontPtrs = std::make_shared<std::unordered_map<std::string, TTF_Font*>>();
-    audioPtrs = std::make_shared<std::unordered_map<std::string, Mix_Chunk*>>();
+    audioPtrs = std::make_shared<std::unordered_map<std::string, MIX_Audio*>>();
     texturePtrs = std::make_shared<std::unordered_map<std::string, SDL_Texture*>>();
     textFilePtrs = std::make_shared<std::unordered_map<std::string, TextFile*>>();
 }
@@ -11,12 +11,12 @@ AssetManager::AssetManager()
 AssetManager::~AssetManager()
 {
     freeMap<TTF_Font*   >(fontPtrs,     [this](std::string fileName){  unloadFont(fileName);     });
-    freeMap<Mix_Chunk*  >(audioPtrs,    [this](std::string fileName){  unloadAudio(fileName);    });
+    freeMap<MIX_Audio*  >(audioPtrs,    [this](std::string fileName){  unloadAudio(fileName);    });
     freeMap<SDL_Texture*>(texturePtrs,  [this](std::string fileName){  unloadTexture(fileName);  });
     freeMap<TextFile*   >(textFilePtrs, [this](std::string fileName){  unloadTextFile(fileName); });
 }
 
-void AssetManager::init(SDL_Renderer* newRenderer)
+void AssetManager::init(SDL_Renderer* newRenderer, MIX_Mixer* mixer)
 {
     renderer = newRenderer;
 }
@@ -73,7 +73,7 @@ bool AssetManager::loadAudio(std::string fileName)
 
     std::string filePath = getFilePath(fileName);
 
-    Mix_Chunk* audioPtr = Mix_LoadWAV((filePath).c_str());
+    MIX_Audio* audioPtr = MIX_LoadAudio(mixer, (filePath).c_str(), true); // setting predecode to true - more memory usage as we decode to uncompressed audio immediately on load, but no need to decode during runtime which decreases CPU usage (I THINK)
 
     if (audioPtr == nullptr)
     {
@@ -85,7 +85,7 @@ bool AssetManager::loadAudio(std::string fileName)
 
     return true;
 }
-std::optional<Mix_Chunk*> AssetManager::getAudio(std::string fileName) const
+std::optional<MIX_Audio*> AssetManager::getAudio(std::string fileName) const
 {
     if (!audioPtrs->contains(fileName)) return std::nullopt;
     return audioPtrs->at(fileName);
@@ -94,11 +94,11 @@ void AssetManager::unloadAudio(std::string fileName)
 {
     if (!audioPtrs->contains(fileName)) return;
 
-    Mix_FreeChunk((*audioPtrs)[fileName]);
+    MIX_DestroyAudio((*audioPtrs)[fileName]);
 
     audioPtrs->erase(fileName);
 }
-std::weak_ptr<std::unordered_map<std::string, Mix_Chunk*>> AssetManager::getAudioPtrs() const
+std::weak_ptr<std::unordered_map<std::string, MIX_Audio*>> AssetManager::getAudioPtrs() const
 {
     return audioPtrs;
 }
