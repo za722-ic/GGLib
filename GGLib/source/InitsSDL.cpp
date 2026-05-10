@@ -3,7 +3,7 @@
 bool InitsSDL::initSDL()
 {
     // Initialise SDL
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
+    if (!SDL_Init(SDL_INIT_VIDEO))
     {
         std::cout << "SDL_Init failed" << std::endl << SDL_GetError() << std::endl;
         return false;
@@ -14,9 +14,9 @@ bool InitsSDL::initSDL()
 bool InitsSDL::initTTF()
 {
     // Initialise SDL_TTF
-    if (TTF_Init() == -1)
+    if (!TTF_Init())
     {
-        std::cout << "TTF_Init failed" << std::endl << TTF_GetError() << std::endl;
+        std::cout << "TTF_Init failed" << std::endl << SDL_GetError() << std::endl;
         return false;
     }
     return true;
@@ -25,39 +25,29 @@ bool InitsSDL::initTTF()
 bool InitsSDL::initMixer()
 {
     // Initialise SDL_mixer
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
+    if (!MIX_Init())
     {
-        std::cout << "Mix_OpenAudio failed" << std::endl << Mix_GetError() << std::endl;
+        std::cout << "MIX_Init failed" << std::endl << SDL_GetError() << std::endl;
         return false;
     }
     return true;
 }
 
-bool InitsSDL::initImage()
-{
-    // Initialise SDL_image
-    int flags = IMG_INIT_PNG;
-    if (IMG_Init(flags) != flags)
-    {
-        std::cout << "IMG_Init failed to initialse for PNG" << std::endl << IMG_GetError() << std::endl;
-        return false;
-    }
-    return true;
-}
 
 bool InitsSDL::initAll()
 {
     if (!initSDL()) return false;
     if (!initTTF()) return false;
     if (!initMixer()) return false;
-    if (!initImage()) return false;
+
+    //if (!initImage()) return false; // unnecessary as of SDL3. leaving this here so that you know: https://github.com/libsdl-org/SDL_image/blob/main/docs/README-migration.md
+    
     return true;
 }
 
 void InitsSDL::quitSDL()
 {
-    IMG_Quit();
-    Mix_Quit();
+    MIX_Quit();
     TTF_Quit();
     SDL_Quit();
 }

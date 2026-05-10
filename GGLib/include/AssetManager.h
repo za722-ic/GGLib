@@ -1,9 +1,9 @@
 #pragma once
 
-#include <SDL.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
-#include <SDL_image.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
+#include <SDL3_mixer/SDL_mixer.h>
+#include <SDL3_image/SDL_image.h>
 
 #include <string>
 #include <iostream>
@@ -20,17 +20,18 @@ private:
     std::string baseAssetPath = "resources/";
 
     std::shared_ptr<std::unordered_map<std::string, TTF_Font*>> fontPtrs;
-    std::shared_ptr<std::unordered_map<std::string, Mix_Chunk*>> audioPtrs;
+    std::shared_ptr<std::unordered_map<std::string, MIX_Audio*>> audioPtrs;
     std::shared_ptr<std::unordered_map<std::string, SDL_Texture*>> texturePtrs;
     std::shared_ptr<std::unordered_map<std::string, TextFile*>> textFilePtrs;
 
     SDL_Renderer* renderer = nullptr; // used when loading textures
+    MIX_Mixer* mixer = nullptr; // used when loading audio
 
 public:
     AssetManager();
     ~AssetManager();
 
-    void init(SDL_Renderer* renderer);
+    void init(SDL_Renderer* renderer, MIX_Mixer* mixer);
 
     void setBaseAssetPath(std::string newBaseAssetPath);
 
@@ -40,9 +41,9 @@ public:
     std::weak_ptr<std::unordered_map<std::string, TTF_Font*>> getFontPtrs() const;
 
     bool loadAudio(std::string fileName);
-    std::optional<Mix_Chunk*> getAudio(std::string fileName) const;
+    std::optional<MIX_Audio*> getAudio(std::string fileName) const;
     void unloadAudio(std::string fileName);
-    std::weak_ptr<std::unordered_map<std::string, Mix_Chunk*>> getAudioPtrs() const;
+    std::weak_ptr<std::unordered_map<std::string, MIX_Audio*>> getAudioPtrs() const;
 
     bool loadTexture(std::string fileName);
     std::optional<SDL_Texture*> getTexture(std::string fileName) const;

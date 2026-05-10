@@ -67,14 +67,16 @@ void Canvas::setColor(SDL_Color c)
 int Canvas::getWidth()
 {
     int w;
-    SDL_RenderGetLogicalSize(renderer, &w, NULL);
+    SDL_RendererLogicalPresentation presentation = SDL_LOGICAL_PRESENTATION_DISABLED;
+    SDL_GetRenderLogicalPresentation(renderer, &w, NULL, &presentation);
     return w;
 }
 
 int Canvas::getHeight()
 {
     int h;
-    SDL_RenderGetLogicalSize(renderer, NULL, &h);
+    SDL_RendererLogicalPresentation presentation = SDL_LOGICAL_PRESENTATION_DISABLED;
+    SDL_GetRenderLogicalPresentation(renderer, NULL, &h, &presentation);
     return h;
 }
 
@@ -108,8 +110,8 @@ void Canvas::drawRect(int x, int y, int w, int h)
     applyCanvasOrigin(x, y);
     applyCanvasAlignment(x, y, w, h);
 
-	SDL_Rect rect{ x, y, w, h };
-	SDL_RenderDrawRect(renderer, &rect);
+	SDL_FRect rect{ x, y, w, h };
+    SDL_RenderRect(renderer, &rect);
 }
 
 void Canvas::drawRect(const SDL_Rect& rect)
@@ -124,10 +126,10 @@ void Canvas::drawRect(int x, int y, int w, int h, int thickness)
     applyCanvasAlignment(x, y, w, h);
 
     // use 4 rectangles for each of the 4 sides of the rect
-	SDL_Rect top    { x,                 y, w,         thickness         };
-    SDL_Rect left   { x,                 y, thickness, h                 };
-    SDL_Rect right  { x + w - thickness, y, thickness, h                 };
-    SDL_Rect bottom { x,                 y + h - thickness, w, thickness };
+	SDL_FRect top    { x,                 y, w,         thickness         };
+    SDL_FRect left   { x,                 y, thickness, h                 };
+    SDL_FRect right  { x + w - thickness, y, thickness, h                 };
+    SDL_FRect bottom { x,                 y + h - thickness, w, thickness };
 
 	SDL_RenderFillRect(renderer, &top);
 	SDL_RenderFillRect(renderer, &left);
@@ -146,7 +148,7 @@ void Canvas::fillRect(int x, int y, int w, int h)
     applyCanvasOrigin(x, y);
     applyCanvasAlignment(x, y, w, h);
     
-    SDL_Rect rect{ x, y, w, h };
+    SDL_FRect rect{ x, y, w, h };
 	SDL_RenderFillRect(renderer, &rect);
 }
 
@@ -160,7 +162,7 @@ void Canvas::drawLine(int x1, int y1, int x2, int y2)
     setSDLColorToCanvasColor();
     applyCanvasOrigin(x1, y1);
     applyCanvasOrigin(x2, y2);
-    SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
+    SDL_RenderLine(renderer, x1, y1, x2, y2);
 }
 
 Vec2D deCasteljau_Cubic(const Vec2D& p0, const Vec2D& p1, const Vec2D& p2, const Vec2D& p3, const float t)
@@ -273,8 +275,8 @@ void Canvas::drawStringToDimensions(std::string text, int x, int y, int w, int h
     applyCanvasAlignment(x, y, w, h);
 
     // render texture to canvas
-    SDL_Rect textRect = { x, y, w, h };
-    if (SDL_RenderCopy(renderer, textTexture, NULL, &textRect) < 0)
+    SDL_FRect textRect = { x, y, w, h };
+    if (!SDL_RenderTexture(renderer, textTexture, NULL, &textRect))
     {
         std::cout << "Error in RenderText: SDL_RenderCopy failed" << std::endl << SDL_GetError() << std::endl;
         return;
@@ -291,7 +293,7 @@ SDL_Texture* Canvas::drawStringToTexture(std::string text)
 
     // render text to texture
     SDL_Surface* textSurface = NULL;
-    textSurface = TTF_RenderUTF8_Blended(font, text.c_str(), color );// TODO: there are other quality levels, and a family of functions that are not "RenderUTF8" (though they are not recommended). Play with these (maybe make configurable), and also see if you can do something about ligatures looking weird (in particular "ti" appears bold). Read the docs: https://wiki.libsdl.org/SDL2_ttf/TTF_RenderText_Blended 
+    textSurface = TTF_RenderText_Blended(font, text.c_str(), 0, color );// TODO: there are other quality levels, and a family of functions that are not "RenderUTF8" (though they are not recommended). Play with these (maybe make configurable), and also see if you can do something about ligatures looking weird (in particular "ti" appears bold). Read the docs: https://wiki.libsdl.org/SDL2_ttf/TTF_RenderText_Blended 
     SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface); 
 
     // error checking
@@ -302,7 +304,7 @@ SDL_Texture* Canvas::drawStringToTexture(std::string text)
     }
 
     // free surface used to render text
-    SDL_FreeSurface(textSurface);
+    SDL_DestroySurface(textSurface);
 
     // return texture
     return textTexture;
@@ -310,7 +312,7 @@ SDL_Texture* Canvas::drawStringToTexture(std::string text)
 
 void Canvas::getTextDimensions(std::string text, int* w, int* h) // FYI: upon experimentation, passing w or h as NULL does NOT cause an error!
 {
-    if (TTF_SizeText(font, text.c_str(), w, h) < 0)
+    if (!TTF_GetStringSize(font, text.c_str(), 0, w, h))
     {
         std::cout << "TTF_SizeText() failed in TextRendering::GetTextDimensions(std::string text, int *w, int *h)" << std::endl;
         std::cout << SDL_GetError() << std::endl;
@@ -321,33 +323,33 @@ void Canvas::drawImage(SDL_Texture* image, int x, int y, int w, int h)
 {
     applyCanvasOrigin(x, y);
     applyCanvasAlignment(x, y, w, h);
-    SDL_Rect rect{ x, y, w, h };
-    SDL_RenderCopy(renderer, image, NULL, &rect);
+    SDL_FRect rect{ x, y, w, h };
+    SDL_RenderTexture(renderer, image, NULL, &rect);
 }
 
 void Canvas::drawImage(SDL_Texture* image, int x, int y)
 {
-    int w, h;
-    SDL_QueryTexture(image, NULL, NULL, &w, &h);
+    float w, h;
+    SDL_GetTextureSize(image, &w, &h);
     drawImage(image, x, y, w, h);
 }
 
-void Canvas::drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y)
+void Canvas::drawImageRegion(SDL_Texture* image, const SDL_FRect& region, int x, int y)
 {
     drawImageRegion(image, region, x, y, region.w, region.h);
 }
 
-void Canvas::drawImageRegion(SDL_Texture* image, const SDL_Rect& region, int x, int y, int w, int h)
+void Canvas::drawImageRegion(SDL_Texture* image, const SDL_FRect& region, int x, int y, int w, int h)
 {
     applyCanvasOrigin(x, y);
     applyCanvasAlignment(x, y, w, h);
-    SDL_Rect rect{ x, y, w, h };
-    SDL_RenderCopy(renderer, image, &region, &rect);
+    SDL_FRect rect{ x, y, w, h };
+    SDL_RenderTexture(renderer, image, &region, &rect);
 }
 
 void Canvas::drawImage_StrechToFillCanvas(SDL_Texture *image)
 {
-    SDL_RenderCopy(renderer, image, NULL, NULL);
+    SDL_RenderTexture(renderer, image, NULL, NULL);
 }
 
 
@@ -631,32 +633,17 @@ void Canvas::renderRegularPolygon(int x, int y, unsigned int numVertices, float 
     {
         float angle = rotAngle + INTERVAL * i;
 
-        SDL_Vertex v1 =
-        {
-            SDL_FPoint{x + scale * cosf(angle), y + scale * sinf(angle)},
-            color,
-            SDL_FPoint { 0 }
-        };
+        Vec2D v1(x + scale * cosf(angle), y + scale * sinf(angle));
 
         angle = rotAngle + INTERVAL * (i + 1);
 
-        SDL_Vertex v2 =
-        {
-            SDL_FPoint{x + scale * cosf(angle), y + scale * sinf(angle)},
-            color,
-            SDL_FPoint { 0 }
-        };
+        Vec2D v2(x + scale * cosf(angle), y + scale * sinf(angle));
 
-        SDL_Vertex v3 =
-        {
-            SDL_FPoint{(float)x, (float)y},
-            color,
-            SDL_FPoint { 0 }
-        };
+        Vec2D v3(x, y);
 
-        verts.push_back(v1);
-        verts.push_back(v2);
-        verts.push_back(v3);
+        verts.push_back(v1.toSDLVertex(color));
+        verts.push_back(v2.toSDLVertex(color));
+        verts.push_back(v3.toSDLVertex(color));
     }
 
     SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), nullptr, 0);

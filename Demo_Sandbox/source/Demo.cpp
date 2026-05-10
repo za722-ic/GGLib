@@ -33,8 +33,8 @@ void Demo::onQuit()
 }
 
 float duration = 10.0;
-float endAngle = 2*M_PI;
-float vel = 2*M_PI / 10;
+float endAngle = 2* 3.14159265359f;
+float vel = 2* 3.14159265359f / 10;
 void Demo::onLoop()
 {
 	// clear screen

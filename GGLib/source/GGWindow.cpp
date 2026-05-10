@@ -9,7 +9,7 @@ std::optional<SDL_Renderer*> GGWindow::init()
         window = windowOptional.value();
 
     // Create renderer
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    renderer = SDL_CreateRenderer(window, NULL);
     if (renderer == NULL)
     {
         std::cout << "SDL_CreateRenderer failed" << std::endl << SDL_GetError() << std::endl;
@@ -17,7 +17,7 @@ std::optional<SDL_Renderer*> GGWindow::init()
     }
 
     // Enable alpha blending
-    if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) < 0)
+    if (!SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND))
     {
         std::cout << "SDL_SetRenderDrawBlendMode failed" << std::endl << SDL_GetError() << std::endl;
         return std::nullopt;
@@ -25,7 +25,7 @@ std::optional<SDL_Renderer*> GGWindow::init()
 
     // Populate screenWidth, screenHeight (the dimensions of the display)
     int screenWidth, screenHeight;
-    if (SDL_GetRendererOutputSize(renderer, &screenWidth, &screenHeight) < 0)
+    if (!SDL_GetCurrentRenderOutputSize(renderer, &screenWidth, &screenHeight))
     {
         std::cout << "SDL_GetRendererOutputSize failed" << std::endl << SDL_GetError() << std::endl;
         return std::nullopt;
@@ -50,23 +50,24 @@ void GGWindow::setTitle(std::string title)
 
 void GGWindow::setFullScreen(bool isFullScreen)
 {
-    Uint32 flags = isFullScreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
-    SDL_SetWindowFullscreen(window, flags);
+//    Uint32 flags = isFullScreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
+//    SDL_SetWindowFullscreen(window, flags);
 }
 
 void GGWindow::setResizable(bool isResizable)
 {
     // TODO: this interacts poorly with setFullScreen
-    SDL_SetWindowResizable(window, (SDL_bool)isResizable);
+    SDL_SetWindowResizable(window, isResizable);
 }
 
 void GGWindow::setMouseHidden(bool isMouseHidden)
 {
-    
-    if (SDL_ShowCursor(!isMouseHidden)  < 0)
-    { 
-        std::cout << "SDL_ShowCursor failed" << std::endl << SDL_GetError() << std::endl;
-    }
+    bool isSuccess;
+
+    if (isMouseHidden) isSuccess = SDL_HideCursor();
+    else               isSuccess = SDL_ShowCursor();
+
+    if (!isSuccess) std::cout << "SDL_ShowCursor failed" << std::endl << SDL_GetError() << std::endl;
 }
 
 void GGWindow::setSize(unsigned int width, unsigned int height)
@@ -94,7 +95,8 @@ void GGWindow::centerWindowPosition()
 
 bool GGWindow::getFullScreen()
 {
-    return SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN_DESKTOP;
+//    return SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN_DESKTOP;
+    return false;
 }
 
 unsigned int GGWindow::getWidth()
@@ -118,10 +120,10 @@ void GGWindow::toggleFullScreen()
 
 std::optional<SDL_Window*> GGWindow::createSDLWindow(unsigned int width, unsigned int height, bool isFullScreen, std::string title)
 {
-    Uint32 flags = SDL_WINDOW_SHOWN; 
-    if (isFullScreen) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+    Uint32 flags = 0; 
+//    if (isFullScreen) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 
-    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+    window = SDL_CreateWindow(title.c_str(), width, height, flags);
 
     if (window == NULL)
     {

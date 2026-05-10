@@ -1,9 +1,11 @@
 #pragma once
 
-#define _USE_MATH_DEFINES // TODO: microsoft only i think --> i did this to get M_PI, but maybe just have a bunch of constants defined in MoreMath? For portability. See: https://learn.microsoft.com/en-us/cpp/c-runtime-library/math-constants?view=msvc-170
+// TODO: microsoft only i think --> i did this to get M_PI, but maybe just have a bunch of constants defined in MoreMath? For portability. See: https://learn.microsoft.com/en-us/cpp/c-runtime-library/math-constants?view=msvc-170
+#define _USE_MATH_DEFINES 
+#include <cmath>
 #include <vector>
 #include <numeric>
-#include <cmath>
+#include <iostream>
 
 #include "Vec2D.h"
 #include "Vec3D.h"
@@ -162,7 +164,8 @@ class Perlin2D : Perlin
 
     Vec2D grad(int hash)
     {
-        double angle = (2 * M_PI) * (hash / 256.0f);
+        const double PI = 3.14159265359;
+        double angle = (2 * PI) * (hash / 256.0f);
         float vecX = (float)cos(angle);
         float vecY = (float)sin(angle);
         return Vec2D(vecX, vecY);

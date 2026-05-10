@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL_mixer.h>
+#include <SDL3_mixer/SDL_mixer.h>
 
 #include <string>
 #include <unordered_map>
@@ -12,11 +12,20 @@
 class AudioManager
 {
 private:
-    std::weak_ptr<std::unordered_map<std::string, Mix_Chunk*>> audioPtrs;
+    std::weak_ptr<std::unordered_map<std::string, MIX_Audio*>> audioPtrs;
+
+    MIX_Mixer* mixer;
+
+    std::vector<MIX_Track*> tracks;
+
+    size_t currTrackIndex = 0;
 
 public:
+    void init();
 
-    void setAudioPtrs(std::weak_ptr<std::unordered_map<std::string, Mix_Chunk*>> newAudioPtrs);
+    MIX_Mixer* getMixer() const;
+
+    void setAudioPtrs(std::weak_ptr<std::unordered_map<std::string, MIX_Audio*>> newAudioPtrs);
 
     void playAudio(std::string fileName);
     

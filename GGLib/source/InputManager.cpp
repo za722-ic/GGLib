@@ -2,8 +2,15 @@
 
 void InputManager::init(SDL_Renderer* newRenderer)
 {
-	SDL_StartTextInput();
+	window = SDL_GetRenderWindow(newRenderer);
 	renderer = newRenderer;
+
+	SDL_StartTextInput(window);
+}
+
+InputManager::~InputManager()
+{
+	SDL_StopTextInput(window);
 }
 
 bool InputManager::pollEvents()
@@ -12,44 +19,44 @@ bool InputManager::pollEvents()
 	while (SDL_PollEvent(&e) != 0)
 	{
 		// quit requested (via application window "X" press)
-		if (e.type == SDL_QUIT)
+		if (e.type == SDL_EVENT_QUIT)
 			return false;
 
 		// mouse events
-		if (e.type == SDL_MOUSEMOTION)
+		if (e.type == SDL_EVENT_MOUSE_MOTION)
 			notifyMouseEventListeners(MOUSE_MOVE);
-		if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
+		if (e.type == SDL_EVENT_MOUSE_BUTTON_DOWN && e.button.button == SDL_BUTTON_LEFT)
 			notifyMouseEventListeners(LEFT_MOUSE_DOWN);
-		if (e.type == SDL_MOUSEBUTTONUP && e.button.button == SDL_BUTTON_LEFT)
+		if (e.type == SDL_EVENT_MOUSE_BUTTON_UP && e.button.button == SDL_BUTTON_LEFT)
 			notifyMouseEventListeners(LEFT_MOUSE_UP);
-		if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_RIGHT)
+		if (e.type == SDL_EVENT_MOUSE_BUTTON_DOWN && e.button.button == SDL_BUTTON_RIGHT)
 			notifyMouseEventListeners(RIGHT_MOUSE_DOWN);
-		if (e.type == SDL_MOUSEBUTTONUP && e.button.button == SDL_BUTTON_RIGHT)
+		if (e.type == SDL_EVENT_MOUSE_BUTTON_UP && e.button.button == SDL_BUTTON_RIGHT)
 			notifyMouseEventListeners(RIGHT_MOUSE_UP);
 
 		// mouse scroll event
-		if (e.type == SDL_MOUSEWHEEL)
+		if (e.type == SDL_EVENT_MOUSE_WHEEL)
 		{
-			notifyScrollEventListeners(e.wheel.mouseX, e.wheel.mouseY, e.wheel.preciseX, e.wheel.preciseY);
+			notifyScrollEventListeners(e.wheel.mouse_x, e.wheel.mouse_y, e.wheel.x, e.wheel.y);
 		}
 
 		// key board events
-		if (e.type == SDL_KEYDOWN)
+		if (e.type == SDL_EVENT_KEY_DOWN)
 		{
 			if (e.key.repeat == 0)
 			{
-				notifyKeyEventListeners(KEY_DOWN, e.key.keysym.sym);
+				notifyKeyEventListeners(KEY_DOWN, e.key.key);
 			}
 			else
 			{
-				notifyKeyEventListeners(KEY_DOWN_REPEAT, e.key.keysym.sym); // if this key has been pressed and held, therefore triggering multiple events
+				notifyKeyEventListeners(KEY_DOWN_REPEAT, e.key.key); // if this key has been pressed and held, therefore triggering multiple events
 			}
 		}
-		if (e.type == SDL_KEYUP)
-			notifyKeyEventListeners(KEY_UP, e.key.keysym.sym);
+		if (e.type == SDL_EVENT_KEY_UP)
+			notifyKeyEventListeners(KEY_UP, e.key.key);
 
 		// text input events
-		if (e.type == SDL_TEXTINPUT)
+		if (e.type == SDL_EVENT_TEXT_INPUT)
 		{
 			notifyTextInputEventListeners(std::string(e.text.text));
 		}
@@ -97,8 +104,9 @@ void InputManager::removeScrollEventListener(ScrollEventListener* scrollEventLis
 
 const Uint8* InputManager::getKeyboardState()
 {
-	SDL_PumpEvents(); // NOTE: as per the documentation here: https://wiki.libsdl.org/SDL2/SDL_GetKeyboardState I should cal SDL_PumpEvents before SDL_GetKeyboardState. But as per here: https://wiki.libsdl.org/SDL2/SDL_PumpEvents SDL_PollEvent() above already calls this implicitly. I do it here anyway just to be safe.
-	return SDL_GetKeyboardState(NULL);
+//	SDL_PumpEvents(); // NOTE: as per the documentation here: https://wiki.libsdl.org/SDL2/SDL_GetKeyboardState I should cal SDL_PumpEvents before SDL_GetKeyboardState. But as per here: https://wiki.libsdl.org/SDL2/SDL_PumpEvents SDL_PollEvent() above already calls this implicitly. I do it here anyway just to be safe.
+//	return SDL_GetKeyboardState(NULL);
+	return nullptr;
 }
 
 int InputManager::getMouseX()
@@ -147,11 +155,11 @@ void InputManager::notifyScrollEventListeners(int mouseX, int mouseY, float scro
 
 void InputManager::pollMousePosition()
 {
-	int windowMouseX, windowMouseY;
+	float windowMouseX, windowMouseY;
 	SDL_GetMouseState(&windowMouseX, &windowMouseY);
 
 	float logicalMouseX, logicalMouseY;
-	SDL_RenderWindowToLogical(renderer, windowMouseX, windowMouseY, &logicalMouseX, &logicalMouseY);
+	SDL_RenderCoordinatesFromWindow(renderer, windowMouseX, windowMouseY, &logicalMouseX, &logicalMouseY);
 
 	mouseX = (int)logicalMouseX;
 	mouseY = (int)logicalMouseY;

@@ -100,7 +100,7 @@ public:
 		canvas->drawString(std::to_string(scrollbarH), 0, 1020);
 
 		SDL_Rect b = { screenX, screenY, w, h };
-		SDL_RenderSetClipRect(canvas->getSDLRenderer(), &b);
+		SDL_SetRenderClipRect(canvas->getSDLRenderer(), &b);
 		for (auto child : children)
 		{
 			child->screenX = this->screenX + child->x - viewportX;
@@ -108,7 +108,7 @@ public:
 
 			child->render(canvas);
 		}
-		SDL_RenderSetClipRect(canvas->getSDLRenderer(), NULL);
+		SDL_SetRenderClipRect(canvas->getSDLRenderer(), NULL);
 	}
 
 	void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override

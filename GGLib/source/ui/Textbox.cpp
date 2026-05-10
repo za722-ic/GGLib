@@ -68,9 +68,9 @@ void Textbox::render(Canvas* canvas)
 	if (!text.empty())
 	{
 		SDL_Texture* tbStringTexture = canvas->drawStringToTexture(text); // TODO no need to re-draw every frame --> cache it and on;y update when the text updates (set a dirty flag when text is modified, and only bother with this if that is set)
-		int textureHeight, textureWidth;
-		SDL_QueryTexture(tbStringTexture, NULL, NULL, &textureWidth, &textureHeight);
-		SDL_Rect viewport = { viewportX, 0, std::min(textureWidth - viewportX, viewportW), textureHeight };
+		float textureHeight, textureWidth;
+		SDL_GetTextureSize(tbStringTexture, &textureWidth, &textureHeight);
+		SDL_FRect viewport = { viewportX, 0, std::min((int)textureWidth - viewportX, viewportW), textureHeight };
 		canvas->drawImageRegion(tbStringTexture, viewport, x + PADDING, y + h / 2); // draw a part of an image
 		SDL_DestroyTexture(tbStringTexture);
 	}
