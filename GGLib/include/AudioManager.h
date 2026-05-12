@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <iostream>
 #include <memory>
+#include <vector>
 
 #include "MoreMath.h"
 

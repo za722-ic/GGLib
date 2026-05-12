@@ -25,12 +25,12 @@ public: // TODO: protected
 	int preferredWidth;
 	int preferredHeight;
 
-	int paddingLeft;
-	int paddingTop;
-	int paddingRight;
-	int paddingBottom;
+	int paddingLeft = 0;
+	int paddingTop = 0;
+	int paddingRight = 0;
+	int paddingBottom = 0;
 
-	int gap;
+	int gap = 0;
 
 	// std::nullopt means auto. auto means defer to the calculated versions of these values, rather than the user defined ones
 	std::optional<int> minWidth = std::nullopt;

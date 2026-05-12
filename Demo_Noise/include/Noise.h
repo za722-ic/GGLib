@@ -21,9 +21,9 @@ private:
 	Button *btnResetPosition, *btnResetVelocity;
 	PerlinViewer* perlinViewer;
 
-	float frameTimesAcc;
-	unsigned int framesCount;
-	float avgFps;
+	float frameTimesAcc = 0.0f;
+	unsigned int framesCount = 0;
+	float avgFps = 0.0f;
 
 public:
 	Noise() : assetManagerWrapper(std::make_shared<AssetManagerWrapper>(&assetManager))

@@ -56,7 +56,7 @@ double Vec3D::dot(Vec3D const& v) const
 
 Vec3D Vec3D::cross(Vec3D const& v) const
 {
-    return Vec3D::Vec3D
+    return Vec3D
     (
         y * v.z - z * v.y,
         z * v.x - x * v.z,

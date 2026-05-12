@@ -270,7 +270,7 @@ void Visitor_GrowShrink::resizeChildrenAlongMainAxis(Container* container)
 void Visitor_GrowShrink::resizeChildrenAlongCrossAxis(Container* container)
 {
 	// find remaining size 
-	int remaining;
+	int remaining = 0;
 	if (container->layoutDirection == LayoutDirection::LEFT_TO_RIGHT)
 	{
 		remaining = container->w;

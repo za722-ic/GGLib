@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Control.h"
+#include "ui/Control.h"
 
 #include "Perlin.h"
 
@@ -11,13 +11,13 @@ private:
 	float viewHeight = 9;
 
 public:
-	float posX;
-	float posY;
-	float posZ;
+	float posX = 0.0f;
+	float posY = 0.0f;
+	float posZ = 0.0f;
 
-	float velX;
-	float velY;
-	float velZ;
+	float velX = 0.0f;
+	float velY = 0.0f;
+	float velZ = 0.0f;
 
 	int resolutionDivision = 8;
 	bool roundNoise = false;
