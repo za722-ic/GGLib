@@ -56,7 +56,7 @@ public:
 		// call super
 		Element::render(canvas);
 
-		return; // TODO temp for profiling
+		//return; // TODO temp for profiling
 
 		// regenerate texture if the control's area has changed
 		isDirty = (w != oldW) || (h != oldH) || (resolutionDivision != oldResolutionDivision);
@@ -99,6 +99,7 @@ private:
 
 		viewHeight = ((float)textureH / textureW) * viewWidth;
 		texture = SDL_CreateTexture(canvas->getSDLRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, textureW, textureH);
+		SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST); // when enlarging the texture for rendering, keep things "pixelated"
 	}
 
 	void drawNoise3D(Canvas *canvas)
