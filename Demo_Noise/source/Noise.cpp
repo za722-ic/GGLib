@@ -256,9 +256,9 @@ void Noise::defineElements()
 	sliderVelY = createSlider(-100, 100, 1, 0);
 	sliderVelZ = createSlider(-100, 100, 1, 0);
 	sliderOctaves = createSlider(1, 8, 1, 1);
-	sliderInitialAmplitude = createSlider(0.1f, 2.0f, 0.1f, 1.0f);
-	sliderInitialFrequency = createSlider(0.1f, 8.0f, 0.1f, 1.0f);
-	sliderResolutionDivision = createSlider(8, 32, 4, 8);
+	sliderInitialAmplitude = createSlider(0.1f, 2.0f, 0.1f, 1.4f);
+	sliderInitialFrequency = createSlider(0.1f, 8.0f, 0.1f, 0.4f);
+	sliderResolutionDivision = createSlider(16, 48, 4, 24);
 	cbRoundNoise = new Toggle();
 	btnResetPosition = createResetButton();
 	btnResetPosition->setOnClick([&]() {
