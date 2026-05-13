@@ -1,5 +1,8 @@
 #include "MoreMath.h"
 
+#include <algorithm>
+#include <random>
+
 float MoreMath::lerp(float a, float b, float t)
 {
 	return a + (b - a) * t;
@@ -40,4 +43,20 @@ float MoreMath::triLerp(float p000, float p001, float p010, float p011, float p1
 	float lerp1 = biLerp(p100, p101, p110, p111, v, w); // bilinear interpolation of right face
 
 	return lerp(lerp0, lerp1, u);
+}
+
+int MoreMath::random(int min, int max) {
+	// this function is adapted from the example here: https://en.cppreference.com/cpp/numeric/random/uniform_int_distribution
+
+
+	// static --> don't want to recreate over-and-over
+	// see example here: https://en.cppreference.com/cpp/numeric/random/random_device
+	// "For practical use random_device is generally only used to a PRNG such as mt19937"
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
+
+	// create uniform distribution
+	std::uniform_int_distribution<int> distrib(min, max);
+
+	return distrib(gen);
 }

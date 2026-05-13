@@ -1,7 +1,5 @@
 #pragma once
 
-#include <algorithm>
-
 namespace MoreMath
 {
 	float lerp(float a, float b, float t);
@@ -20,4 +18,6 @@ namespace MoreMath
 
     // trilinear interpolation (mixing the 8 values at the vertices of a cube)
     float triLerp(float p000, float p001, float p010, float p011, float p100, float p101, float p110, float p111, float u, float v, float w);
+
+    int random(int min, int max);
 }
