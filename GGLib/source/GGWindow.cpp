@@ -117,6 +117,11 @@ void GGWindow::toggleFullScreen()
 {
     setFullScreen(!getFullScreen());
 }
+	
+SDL_Window* GGWindow::getSDLWindow()
+{
+    return window;
+}
 
 std::optional<SDL_Window*> GGWindow::createSDLWindow(unsigned int width, unsigned int height, bool isFullScreen, std::string title)
 {

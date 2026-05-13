@@ -4,11 +4,15 @@
 
 #include "GGApp.h"
 #include "AssetManagerWrapper.h"
+#include "FileDialog.h"
 
 class Demo: public GGApp, KeyEventListener, MouseEventListener
 {
 private:
 	std::shared_ptr<AssetManagerWrapper> demoAssetManager;
+
+	Container* root;
+	OpenFileDialog openFileDialog;
 
 	float frameTimesAcc;
 	unsigned int framesCount;

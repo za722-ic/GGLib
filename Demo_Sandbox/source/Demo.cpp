@@ -32,27 +32,15 @@ void Demo::onQuit()
 {
 }
 
-float duration = 10.0;
-float endAngle = 2* 3.14159265359f;
-float vel = 2* 3.14159265359f / 10;
 void Demo::onLoop()
 {
 	// clear screen
 	canvas.setColor(0x58, 0x5B, 0x65);
 	canvas.clear();
 
-	// update the ring size
-	if (deltaTime() > 0)
-		endAngle -= vel * deltaTime();
-	
-	// draw the ring 
-	canvas.setColor(255, 0, 255, 255);
-	canvas.drawRect(300, 300, 300, 300);
-	canvas.setColor(255,128);
-	canvas.drawArc(300,300, 300, 300, 0, endAngle, 64, 64);
-	canvas.setAlignment(Canvas::Alignment::CENTER_CENTER);
-	canvas.drawString(std::to_string(endAngle), 450, 450);
-	canvas.setAlignment(Canvas::Alignment::TOP_LEFT);
+	// draw UI
+	root->calculateLayout();
+	root->render(&canvas);
 
 	// update screen
 	canvas.present();
@@ -80,6 +68,36 @@ void Demo::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 }
 
+
+
 void Demo::defineElements()
 {
+	// TODO: automate this
+	Element::inputManager = &inputManager;
+
+	// create root container
+	root = new Container;
+	root->setX(0);
+	root->setY(0);
+	root->setWidthAbs(500);
+	root->setHeightAbs(500);
+	root->setColor(0xeeaaaaff);
+	root->setPadding(10);
+	
+	// set up file dialog
+	openFileDialog.onDialogClose = [](const std::vector<std::string> filePaths)
+	{
+		if (filePaths.empty()) std::cout << "NO FILEPATHS" << std::endl;
+		for (auto filePath : filePaths) std::cout << filePath << std::endl;
+	};
+	openFileDialog.acceptMultiple = true;
+
+	// create button to trigger file dialog
+	Button *btnFileDialog = new Button;
+	btnFileDialog->setText("Open file");
+	btnFileDialog->setColor(0xffffffff);
+	btnFileDialog->setOnClick([&](){
+		openFileDialog.showDialog(ggWindow.getSDLWindow());
+	});
+	root->add(btnFileDialog);
 }

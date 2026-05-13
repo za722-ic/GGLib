@@ -39,6 +39,7 @@
     <ClCompile Include="source\Vec3D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\FileDialog.h" />
     <ClInclude Include="include\UI.h" />
     <ClInclude Include="include\ui\Container.h" />
     <ClInclude Include="include\DragManager.h" />

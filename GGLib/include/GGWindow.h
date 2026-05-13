@@ -35,6 +35,8 @@ public:
 	unsigned int getWidth();
 	unsigned int getHeight();
 
+	SDL_Window* getSDLWindow();
+
 
 
 private:
