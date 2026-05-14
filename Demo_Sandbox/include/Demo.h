@@ -12,7 +12,6 @@ private:
 	std::shared_ptr<AssetManagerWrapper> demoAssetManager;
 
 	Container* root;
-	OpenFileDialog openFileDialog;
 
 	float frameTimesAcc;
 	unsigned int framesCount;

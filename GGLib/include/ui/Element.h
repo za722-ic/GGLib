@@ -22,6 +22,9 @@ public: // TODO: protected
 	int w = 50;
 	int h = 10;
 
+	int xAbs = 0;
+	int yAbs = 0;
+
 	int preferredWidth;
 	int preferredHeight;
 
@@ -88,8 +91,8 @@ public:
 
 	void setPreferredWidth(int prefW);
 	void setPreferredHeight(int prefH);
-	void setX(int newX);
-	void setY(int newY);
+	void setXAbs(int newX);
+	void setYAbs(int newY);
 
 	int getPreferredWidth();
 	int getPreferredHeight();

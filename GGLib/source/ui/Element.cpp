@@ -47,8 +47,23 @@ void Element::setPreferredHeight(int prefH)
 	//preferredHeight = prefH;  
 	h = prefH;
 }
-void Element::setX(int newX) { x = newX; }
-void Element::setY(int newY) { y = newY; }
+
+/*
+	TODO: invalidation/dirty flag
+	
+	if you create a button, and set it so that the button moves itself when clicked
+	then it can go from being below the cursor to somewhere where it is not below the cursor
+
+	issue: the button still renders itself as if it is below the cursor (with backColorOnHover)
+	this is resolved as soon as the cursor is moved, but it feels a little off
+
+	for an example of the issue, see Demo_Sandbox in the commit where absolute layouts are added
+
+	this whole thing should be solved with the introduction of invalidation/dirty flags when you implement them later on (hopefully)
+	since e.g., if setXAbs() is called, then you'll invalidate the layout, which will cause fresh layout calculations, which will cause a re-render, without the user moving their mouse first
+*/
+void Element::setXAbs(int newX) { xAbs = newX; }
+void Element::setYAbs(int newY) { yAbs = newY; }
 
 int Element::getPreferredWidth() { return preferredWidth; }
 int Element::getPreferredHeight() { return preferredHeight; }

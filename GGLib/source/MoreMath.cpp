@@ -16,7 +16,11 @@ float MoreMath::map(float val, float domainLower, float domainUpper, float range
 
 float MoreMath::clamp(float val, float min, float max)
 {
-	return std::max(std::min(val, max), min); // there are implications for doing min after max if e.g, the user inputs a min that is greater than max --> in UI layouts, it is usually minWidth and minHeight that get the final say, not maxWidth/maxHeight
+	// why not use std::clamp? because it is undefined for min > max (documentation: https://en.cppreference.com/cpp/algorithm/clamp)
+	// i want it to be well defined that if min > max, return min
+	// this is useful in UI layouts, as it is usually minWidth and minHeight that get the final say, not maxWidth/maxHeight
+	// hence why we std::max is the outermost function call below --> the final comparison is the one against the "min" argument (not to be confused with the std::min function)
+	return std::max(std::min(val, max), min);
 }
 
 float MoreMath::mapAndClamp(float val, float domainLower, float domainUpper, float rangeLower, float rangeUpper)

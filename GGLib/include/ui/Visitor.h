@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <vector>
+#include <cassert>
 
 #include "InputManager.h"
 
@@ -17,7 +18,11 @@ class Visitor
 {
 public:
 	virtual void visitForControl(Control* control) = 0;
-	virtual void visitForContainer(Container* container) = 0;
+
+	void visitForContainer(Container* container);
+
+	virtual void visitForFlexContainer(Container* container) = 0;
+	virtual void visitForAbsoluteContainer(Container* container) = 0;
 
 	// see: virtual destructor and default TODO
 	virtual ~Visitor() = default;
@@ -30,7 +35,10 @@ public:
 
 	void visitForControl(Control* control) override;
 
-	void visitForContainer(Container* container) override;
+	void visitForFlexContainer(Container* container) override;
+
+	void visitForAbsoluteContainer(Container* container) override;
+
 };
 
 class Visitor_GetChildren : public Visitor
@@ -40,7 +48,9 @@ public:
 
 	void visitForControl(Control* control) override;
 
-	void visitForContainer(Container* container) override;
+	void visitForFlexContainer(Container* container) override;
+
+	void visitForAbsoluteContainer(Container* container) override;
 };
 
 class Visitor_DestroySelfAndChildren : public Visitor
@@ -48,7 +58,9 @@ class Visitor_DestroySelfAndChildren : public Visitor
 public:
 	void visitForControl(Control* control) override;
 
-	void visitForContainer(Container* container) override;
+	void visitForFlexContainer(Container* container) override;
+
+	void visitForAbsoluteContainer(Container* container) override;
 };
 
 class Visitor_CalculateMinimumSizing: public Visitor
@@ -59,7 +71,9 @@ public:
 
 	// calculates the minimum size of the container
 	// TODO this is almost copy paste of fit sizing calculations except im using min w/h instead of actual w/h
-	void visitForContainer(Container* container) override;
+	void visitForFlexContainer(Container* container) override;
+
+	void visitForAbsoluteContainer(Container* container) override;
 };
 
 class Visitor_Autosize : public Visitor
@@ -68,7 +82,9 @@ public:
 	void visitForControl(Control* control) override;
 
 	// if the container is set to autosize, then resize it accordingly
-	void visitForContainer(Container* container) override;
+	void visitForFlexContainer(Container* container) override;
+
+	void visitForAbsoluteContainer(Container* container) override;
 };
 
 class Visitor_GrowShrink: public Visitor
@@ -76,7 +92,9 @@ class Visitor_GrowShrink: public Visitor
 public:
 	void visitForControl(Control* control) override;
 
-	void visitForContainer(Container* container) override;
+	void visitForFlexContainer(Container* container) override;
+
+	void visitForAbsoluteContainer(Container* container) override;
 
 	void breadthFirstGrowShrink(Container* root);
 
@@ -94,7 +112,7 @@ private:
 public:
 	void visitForControl(Control* control) override;
 
-	void visitForContainer(Container* container) override;
+	void visitForFlexContainer(Container* container) override;
 
-	void visitForRoot(Element* root, int leftOffset_ = 0, int topOffset_ = 0);
+	void visitForAbsoluteContainer(Container* container) override;
 };
