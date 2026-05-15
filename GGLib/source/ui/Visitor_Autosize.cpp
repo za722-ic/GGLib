@@ -1,6 +1,20 @@
 #include "Visitor.h"
 #include "Container.h"
 #include "Control.h"
+#include "Label.h"
+
+void Visitor_Autosize::visitForLabel(Label* label)
+{
+	auto textDimensions = label->getTextDimensions();
+	if (label->getAutoSizeHorizontal())
+	{
+		label->w = textDimensions.first;
+	}
+	if (label->getAutoSizeHorizontal())
+	{
+		label->h = textDimensions.second;
+	}
+}
 
 void Visitor_Autosize::visitForControl(Control* control)
 {

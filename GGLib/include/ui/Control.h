@@ -23,7 +23,7 @@ public:
 	virtual void onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY) override
 	{}
 
-	void accept(Visitor& visitor) override
+	virtual void accept(Visitor& visitor) override
 	{
 		visitor.visitForControl(this);
 	}

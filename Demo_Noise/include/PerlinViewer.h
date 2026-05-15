@@ -56,7 +56,7 @@ public:
 		// call super
 		Element::render(canvas);
 
-		//return; // TODO temp for profiling
+		return; // TODO for profiling --> add an option to UI to disable rendering
 
 		// regenerate texture if the control's area has changed
 		isDirty = (w != oldW) || (h != oldH) || (resolutionDivision != oldResolutionDivision);

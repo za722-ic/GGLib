@@ -23,17 +23,31 @@ bool Demo::onInit()
 	inputManager.addMouseEventListener(this);
 
 	// init UI
+	Text::init(canvas.getSDLRenderer(), demoAssetManager->getFont());
 	defineElements();
+
 
 	return true;
 }
 
 void Demo::onQuit()
 {
+	Text::close();
 }
 
 void Demo::onLoop()
 {
+	frameTimesAcc += deltaTime();
+	framesCount++;
+	if (frameTimesAcc >= 1.0f)
+	{
+		avgFps = framesCount;
+		ggWindow.setTitle("FPS: " + std::to_string(avgFps) + " | " + std::to_string(oldRenderer));
+
+		frameTimesAcc = 0.0f;
+		framesCount = 0;
+	}
+
 	// clear screen
 	canvas.setColor(0x58, 0x5B, 0x65);
 	canvas.clear();
@@ -64,22 +78,46 @@ void Demo::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
 	{
 		ggWindow.toggleFullScreen();
 	}
+
+	auto ptToPx = [](float pt) { return pt * 1.3333333f; };
+	auto pxToPt = [](float px) { return px / 1.3333333f; };
+	if (key == SDLK_EQUALS || key == SDLK_MINUS)
+	{
+		int incrementMag = 5;
+
+		int increment;
+		if (key == SDLK_EQUALS)
+			increment = +incrementMag;
+		else
+			increment = -incrementMag;
+
+		TTF_Font* font = demoAssetManager->getFont();
+		float fontSize_Pt = TTF_GetFontSize(font);
+		float fontSize_Px = ptToPx(fontSize_Pt);
+		float newFontSize_Px = fontSize_Px + increment;
+		float newFontSize_Pt = pxToPt(newFontSize_Px);
+		TTF_SetFontSize(font, newFontSize_Pt);
+	}
+
+	if (key == SDLK_SPACE)
+	{
+		oldRenderer = !oldRenderer;
+	}
 }
 
 void Demo::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 }
 
-
-
 void Demo::defineElements()
 {
+	
 	// TODO: automate this
 	Element::inputManager = &inputManager;
 
 	// create root container
 	root = new Container;
-	root->setColor(0xeeaaaaff);
+	root->setColor(0x222222ff);
 	root->radius = 0;
 	root->layoutMode = LayoutMode::FLEX;
 	root->horizontalAlignmentMode = HAlignmentMode::CENTER;
@@ -88,61 +126,27 @@ void Demo::defineElements()
 	root->setPadding(60);
 	root->setChildGap(60);
 
-	Container* buffer = new Container;
-	buffer->isVisible = true;
-	buffer->setColor(0xFF00FFFF);
-	root->add(buffer);
-
-	// create button container 
-	Container* absContainer = new Container;
-	absContainer->setColor(0xeeaaeeff);
-	absContainer->layoutMode = LayoutMode::ABSOLUTE;
-	//absContainer->setWidthAbs(1280);
-	//absContainer->setHeightAbs(720);
-	absContainer->horizontalAutosize = true;
-	absContainer->verticalAutosize = true;
-	absContainer->setMinWidth(600);
-	root->add(absContainer);
-
-	Container* absChildThatIsFlexContainer = new Container;
-	absChildThatIsFlexContainer->setColor(0xff0000ff);
-	absChildThatIsFlexContainer->layoutMode = LayoutMode::FLEX;
-	absChildThatIsFlexContainer->setWidthAbs(300);
-	absChildThatIsFlexContainer->setHeightAbs(300);
-	absChildThatIsFlexContainer->setXAbs(0);
-	absChildThatIsFlexContainer->setYAbs(0);
-	absContainer->add(absChildThatIsFlexContainer);
-	
-	
-	// create buttons
-	for (size_t i = 1; i < 3; i++)
+	// create button
+	Button* button = new Button;
+	button->setText("Hello");
+	// button->horizontalAutosize = true;
+	// button->verticalAutosize = true;
+	button->setOnClick([=]()
 	{
-		Button* button = new Button;
-		button->setText(std::to_string(i));
-		button->backColor = { (unsigned char)MoreMath::random(0, 255), (unsigned char)MoreMath::random(0, 255), (unsigned char)MoreMath::random(0, 255), 255 };
+		SDL_Color newColor = { (unsigned char)MoreMath::random(128, 255), (unsigned char)MoreMath::random(128, 255), (unsigned char)MoreMath::random(128, 255), 255 };
+		SDL_Color newColorOnHover = { 0.8f * newColor.r, 0.8f * newColor.g, 0.8f * newColor.b, newColor.a };
+		SDL_Color newColorOnMouseDown= { 0.6f * newColor.r, 0.6f * newColor.g, 0.6f * newColor.b, newColor.a };
+		button->backColor = newColor;
+		button->backColorOnHover = newColorOnHover;
+		button->backColorOnMouseDown = newColorOnMouseDown;
+	});
+	// root->add(button);
 
-		button->setWidthAbs( 300);
-		button->setHeightAbs(300);
-		button->setXAbs(     i*300);
-		button->setYAbs(     i*300);
-
-		button->setOnClick([=]()
-		{
-			button->setXAbs(button->xAbs == 0 ? i*300 : 0);
-		});
-
-		absContainer->add(button);
-	}
-
-	// create buttons
-	for (size_t i = 0; i < 6; i++)
-	{
-		Button* button = new Button;
-		button->setText(std::to_string(i));
-		button->backColor = { 0xFF, 0xA5, 0x00, 0xFF };
-
-		button->setWidthAbs( MoreMath::random(30, 90));
-
-		absChildThatIsFlexContainer->add(button);
-	}
+	Label* label = new Label(loremIpsum);
+	label->setColor(255,255,255,20);
+	label->setTextPadding(20);
+	label->setAlignment(TTF_HORIZONTAL_ALIGN_CENTER);
+	label->setAutoSizeHorizontal(true);
+	label->setAutoSizeVertical(true);
+	root->add(label);
 }

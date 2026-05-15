@@ -22,6 +22,7 @@
     <ClCompile Include="include\ui\Scrollable.h" />
     <ClCompile Include="source\AssetManager.cpp" />
     <ClCompile Include="source\AudioManager.cpp" />
+    <ClCompile Include="source\Text.cpp" />
     <ClCompile Include="source\ui\Button.cpp" />
     <ClCompile Include="source\Canvas.cpp" />
     <ClCompile Include="source\GGApp.cpp" />
@@ -47,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\FileDialog.h" />
+    <ClInclude Include="include\Text.h" />
     <ClInclude Include="include\UI.h" />
     <ClInclude Include="include\ui\Container.h" />
     <ClInclude Include="include\DragManager.h" />

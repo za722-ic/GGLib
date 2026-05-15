@@ -1,6 +1,12 @@
 #include "ui/Visitor.h"
 #include "ui/Container.h"
 #include "ui/Control.h"
+#include "ui/Label.h"
+
+void Visitor_CalculateMinimumSizing::visitForLabel(Label* label)
+{
+	visitForControl(label);
+}
 
 void Visitor_CalculateMinimumSizing::visitForControl(Control* control)
 {

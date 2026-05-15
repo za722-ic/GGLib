@@ -13,10 +13,12 @@
 class Container;
 class Control;
 class Element;
+class Label;
 
 class Visitor
 {
 public:
+	virtual void visitForLabel(Label* label) = 0;
 	virtual void visitForControl(Control* control) = 0;
 
 	void visitForContainer(Container* container);
@@ -33,6 +35,8 @@ class Visitor_SetInputManager : public Visitor
 public:
 	InputManager* inputManager = nullptr;
 
+	void visitForLabel(Label* label) override;
+
 	void visitForControl(Control* control) override;
 
 	void visitForFlexContainer(Container* container) override;
@@ -46,6 +50,8 @@ class Visitor_GetChildren : public Visitor
 public:
 	std::vector<Element*> children;
 
+	void visitForLabel(Label* label) override;
+
 	void visitForControl(Control* control) override;
 
 	void visitForFlexContainer(Container* container) override;
@@ -56,6 +62,8 @@ public:
 class Visitor_DestroySelfAndChildren : public Visitor
 {
 public:
+	void visitForLabel(Label* label) override;
+
 	void visitForControl(Control* control) override;
 
 	void visitForFlexContainer(Container* container) override;
@@ -66,6 +74,8 @@ public:
 class Visitor_CalculateMinimumSizing: public Visitor
 {
 public:
+	void visitForLabel(Label* label) override;
+
 	// nothing to calculate for control minimum size
 	void visitForControl(Control* control) override;
 
@@ -79,6 +89,8 @@ public:
 class Visitor_Autosize : public Visitor
 {
 public:
+	void visitForLabel(Label* label) override;
+
 	void visitForControl(Control* control) override;
 
 	// if the container is set to autosize, then resize it accordingly
@@ -90,6 +102,8 @@ public:
 class Visitor_GrowShrink: public Visitor
 {
 public:
+	void visitForLabel(Label* label) override;
+
 	void visitForControl(Control* control) override;
 
 	void visitForFlexContainer(Container* container) override;
@@ -109,7 +123,10 @@ class Visitor_Positions: public Visitor
 private:
 	int offsetX = 0;
 	int offsetY = 0;
+
 public:
+	void visitForLabel(Label* label) override;
+
 	void visitForControl(Control* control) override;
 
 	void visitForFlexContainer(Container* container) override;

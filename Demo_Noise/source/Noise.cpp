@@ -23,6 +23,7 @@ bool Noise::onInit()
 	inputManager.addMouseEventListener(this);
 
 	// init UI
+	Text::init(canvas.getSDLRenderer(), assetManagerWrapper->getFont()); // TODO: make this a part of the engine?
 	defineElements();
 
 	return true;
@@ -31,9 +32,9 @@ bool Noise::onInit()
 void Noise::onQuit()
 {
 	root->destroySelfAndChildren();
+	Text::close();
 }
 
-int oldsidebarwidth;
 void Noise::onLoop()
 {
 	// update perlin viewer with user set parameters from UI
@@ -69,7 +70,7 @@ void Noise::onLoop()
 		framesCount = 0;
 		frameTimesAcc = 0.0f;
 	}
-	lblFPS->text = std::to_string((int)avgFps);
+	lblFPS->setText(std::to_string((int)avgFps));
 	sizeLabel(lblFPS);
 
 	// get updated window resolution
@@ -90,8 +91,8 @@ void Noise::onLoop()
 	int padding = 0;
 	root->setWidthAbs(ggWindow.getWidth() - 2*padding);
 	root->setHeightAbs(ggWindow.getHeight() - 2*padding);
-	root->setX(padding);
-	root->setY(padding);
+	root->setXAbs(padding);
+	root->setYAbs(padding);
 	root->calculateLayout();
 	root->render(&canvas);
 
@@ -124,7 +125,7 @@ void Noise::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 void Noise::sizeLabel(Label* label)
 {
 	int w, h;
-	canvas.getTextDimensions(label->text, &w, &h);
+	canvas.getTextDimensions(label->getText(), &w, &h);
 	label->setWidthAbs(w);
 	label->setHeightAbs(h);
 }
@@ -137,9 +138,8 @@ void Noise::sizeButton(Button* button)
 }
 Label* Noise::createLabel(std::string labelText)
 {
-	Label* label = new Label;
-	label->text = labelText;
-	label->foreColor = { 255,255,255,255 };
+	Label* label = new Label(labelText);
+	label->setForeColor({ 255,255,255,255 });
 	sizeLabel(label);
 
 	return label;
@@ -223,8 +223,8 @@ void Noise::defineElements()
 	Element::inputManager = &inputManager;
 
 	root = new Container();
-	root->setX(0);
-	root->setY(0);
+	root->setXAbs(0);
+	root->setYAbs(0);
 	root->setPadding(24);
 	root->setChildGap(26);
 	root->layoutDirection = LayoutDirection::LEFT_TO_RIGHT;
