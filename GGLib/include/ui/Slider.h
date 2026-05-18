@@ -84,6 +84,11 @@ public:
 		int x = screenX;
 		int y = screenY;
 
+		//canvas->setColor(255, 0, 0, 128);
+		//canvas->fillRect(x, y, w, h);
+		//return;
+		 
+		
 		// draw text
 		int textWidth, textHeight;
 		canvas->getTextDimensions(std::to_string(value), &textWidth, &textHeight);

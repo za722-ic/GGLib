@@ -143,6 +143,11 @@ void Element::setColor(int hexCode)
 	setColor(r, g, b, a);
 }
 
+void Element::setColor(const SDL_Color& color)
+{
+	this->color = color;
+}
+
 void Element::render(Canvas* canvas)
 {
 	if (!isVisible) return;

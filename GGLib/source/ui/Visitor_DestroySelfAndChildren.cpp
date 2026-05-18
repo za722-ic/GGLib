@@ -1,12 +1,6 @@
 #include "ui/Visitor.h"
 #include "ui/Container.h"
 #include "ui/Control.h"
-#include "ui/Label.h"
-
-void Visitor_DestroySelfAndChildren::visitForLabel(Label* label)
-{
-	visitForControl(label);
-}
 
 void Visitor_DestroySelfAndChildren::visitForControl(Control *control)
 {

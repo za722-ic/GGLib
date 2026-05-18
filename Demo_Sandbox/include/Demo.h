@@ -16,8 +16,6 @@ private:
 	unsigned int framesCount;
 	float avgFps;
 
-	bool oldRenderer = false;
-
 	std::string loremIpsum = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus, ante at dignissim vulputate, diam ex sollicitudin mi, sit amet feugiat leo est vitae nulla. Quisque vestibulum eleifend velit aliquet aliquet. Nullam varius magna augue, eget venenatis lacus tincidunt et. Suspendisse imperdiet tempor odio, vel dapibus mauris tincidunt quis. Nunc id tristique ante, et interdum est. Aliquam erat volutpat. Praesent eget luctus sem. Etiam suscipit dolor quis fermentum luctus. Quisque hendrerit, massa auctor ultricies ullamcorper, nisi ipsum accumsan leo, at porttitor dolor tortor sit amet massa.\n\n";
 
 	std::string loremIpsum2 = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus, ante at dignissim vulputate, diam ex sollicitudin mi, sit amet feugiat leo est vitae nulla. Quisque vestibulum eleifend velit aliquet aliquet. Nullam varius magna augue, eget venenatis lacus tincidunt et. Suspendisse imperdiet tempor odio, vel dapibus mauris tincidunt quis. Nunc id tristique ante, et interdum est. Aliquam erat volutpat. Praesent eget luctus sem. Etiam suscipit dolor quis fermentum luctus. Quisque hendrerit, massa auctor ultricies ullamcorper, nisi ipsum accumsan leo, at porttitor dolor tortor sit amet massa.\n\n"
@@ -47,4 +45,18 @@ private:
 	void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
 
 	void defineElements();
+	Container* createPanel(std::string panelTitle, Button* btnReset, std::vector<Control*> controls, std::vector<std::string> controlLabels);
+	Label* createLabel(std::string labelText);
+	Slider* createSlider(float min, float max, float interval, float startingVal)
+	{
+		Slider* slider = new Slider;
+		slider->setWidthAbs(150);
+		slider->min = min;
+		slider->max = max;
+		slider->interval = interval;
+		slider->value = startingVal;
+
+		return slider;
+	}
+
 };

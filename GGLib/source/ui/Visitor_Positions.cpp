@@ -1,12 +1,6 @@
 #include "Visitor.h"
 #include "Container.h"
 #include "Control.h"
-#include "Label.h"
-
-void Visitor_Positions::visitForLabel(Label* label)
-{
-	visitForControl(label);
-}
 
 void Visitor_Positions::visitForControl(Control* control)
 {

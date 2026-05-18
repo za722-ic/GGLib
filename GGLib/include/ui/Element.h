@@ -25,8 +25,8 @@ public: // TODO: protected
 	int xAbs = 0;
 	int yAbs = 0;
 
-	int preferredWidth;
-	int preferredHeight;
+	int preferredWidth = 0;
+	int preferredHeight = 0;
 
 	int paddingLeft = 0;
 	int paddingTop = 0;
@@ -112,6 +112,7 @@ public:
 
 	void setColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
 	void setColor(int hexCode);
+	void setColor(const SDL_Color& color);
 
 	virtual void render(Canvas* canvas);
 };

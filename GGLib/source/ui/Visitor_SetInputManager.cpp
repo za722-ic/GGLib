@@ -1,12 +1,6 @@
 #include "ui/Visitor.h"
 #include "ui/Container.h"
 #include "ui/Control.h"
-#include "ui/Label.h"
-
-void Visitor_SetInputManager::visitForLabel(Label* label)
-{
-	visitForControl(label);
-}
 
 // TODO: not all controls need to listen to all events.
 // TODO: we need to remove controls when they are destroyed --> need another vistor for that

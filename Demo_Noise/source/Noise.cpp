@@ -54,10 +54,6 @@ void Noise::onLoop()
 	lblPosX->setText(std::to_string(perlinViewer->posX));
 	lblPosY->setText(std::to_string(perlinViewer->posY));
 	lblPosZ->setText(std::to_string(perlinViewer->posZ));
-	// TODO label sizing should be integrated into engine (and text stuff in general)
-	sizeLabel(lblPosX);
-	sizeLabel(lblPosY);
-	sizeLabel(lblPosZ);
 
 	// update fps label
 	frameTimesAcc += deltaTime();
@@ -71,17 +67,14 @@ void Noise::onLoop()
 		frameTimesAcc = 0.0f;
 	}
 	lblFPS->setText(std::to_string((int)avgFps));
-	sizeLabel(lblFPS);
 
 	// get updated window resolution
 	std::string windowResolutionText = std::to_string(ggWindow.getWidth()) + " x " + std::to_string(ggWindow.getHeight());
 	lblWindowSize->setText(windowResolutionText);
-	sizeLabel(lblWindowSize);
 
 	// get updated cursor position
 	std::string cursorPosText = std::to_string(inputManager.getMouseX()) + ", " + std::to_string(inputManager.getMouseY());
 	lblCursorPos->setText(cursorPosText);
-	sizeLabel(lblCursorPos);
 	
 	// clear screen
 	canvas.setColor(0x2B, 0x5C, 0x32);
@@ -122,13 +115,6 @@ void Noise::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 }
 
-void Noise::sizeLabel(Label* label)
-{
-	int w, h;
-	canvas.getTextDimensions(label->getText(), &w, &h);
-	label->setWidthAbs(w);
-	label->setHeightAbs(h);
-}
 void Noise::sizeButton(Button* button)
 {
 	int w, h;
@@ -140,8 +126,9 @@ Label* Noise::createLabel(std::string labelText)
 {
 	Label* label = new Label(labelText);
 	label->setForeColor({ 255,255,255,255 });
-	sizeLabel(label);
-
+	
+	label->labAutosize = true;
+	
 	return label;
 }
 Slider* Noise::createSlider(float min, float max, float interval, float startingVal)
@@ -172,6 +159,7 @@ Container* Noise::createPanel(std::string panelTitle, Button* btnReset, std::vec
 	titleBar->layoutDirection = LayoutDirection::LEFT_TO_RIGHT;
 	titleBar->verticalAlignmentMode = VAlignmentMode::CENTER;
 	titleBar->isVisible = false;
+	titleBar->verticalAutosize = true;
 	
 	titleBar->add(createLabel(panelTitle));
 	if (btnReset != nullptr)
@@ -192,6 +180,7 @@ Container* Noise::createPanel(std::string panelTitle, Button* btnReset, std::vec
 		bar->layoutDirection = LayoutDirection::LEFT_TO_RIGHT;
 		bar->verticalAlignmentMode = VAlignmentMode::CENTER;
 		bar->isVisible = false;
+		bar->verticalAutosize = true;
 
 		bar->add(createLabel(controlLabels[i]));
 		bar->add(new HorizontalSpacer(100));

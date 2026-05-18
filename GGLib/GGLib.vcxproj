@@ -37,12 +37,17 @@
     <ClCompile Include="source\ui\Textbox.cpp" />
     <ClCompile Include="source\ui\Visitor.cpp" />
     <ClCompile Include="source\ui\Visitor_Autosize.cpp" />
+    <ClCompile Include="source\ui\Visitor_Autosize_Horizontal.cpp" />
+    <ClCompile Include="source\ui\Visitor_Autosize_Vertical.cpp" />
     <ClCompile Include="source\ui\Visitor_CalculateMinimumSizing.cpp" />
     <ClCompile Include="source\ui\Visitor_DestroySelfAndChildren.cpp" />
     <ClCompile Include="source\ui\Visitor_GetChildren.cpp" />
     <ClCompile Include="source\ui\Visitor_GrowShrink.cpp" />
+    <ClCompile Include="source\ui\Visitor_GrowShrink_Horizontal.cpp" />
+    <ClCompile Include="source\ui\Visitor_GrowShrink_Vertical.cpp" />
     <ClCompile Include="source\ui\Visitor_Positions.cpp" />
     <ClCompile Include="source\ui\Visitor_SetInputManager.cpp" />
+    <ClCompile Include="source\ui\Visitor_WrapText.cpp" />
     <ClCompile Include="source\Vec2D.cpp" />
     <ClCompile Include="source\Vec3D.cpp" />
   </ItemGroup>

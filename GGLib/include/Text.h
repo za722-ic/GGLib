@@ -27,7 +27,7 @@ public:
 	static void init(SDL_Renderer* renderer, TTF_Font* font);
 	static void close();
 
-	Text(std::string text);
+	Text(std::string text = "");
 	~Text();
 
 	void setColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
