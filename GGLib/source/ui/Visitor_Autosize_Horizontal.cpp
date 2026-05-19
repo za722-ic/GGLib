@@ -1,48 +1,32 @@
-#include "Visitor.h"
-#include "Container.h"
-#include "Control.h"
+#include "UI.h"
+#include "ui/Visitor.h"
 
 void Visitor_Autosize_Horizontal::visitForControl(Control* control)
 {
+}
+
+void Visitor_Autosize_Horizontal::visitForLabel(Label* label)
+{
 	// if autosize enabled, then control width depends on text width
-	//if (control->isAutosize(Axis::HORIZONTAL))
-	//{
-	//	control->tttext->setWrapWidth(0);
-	//	int textWidth = control->tttext->getDimensions().first;
-
-	//	// TODO: see notebook 3. TL;DR setting abs is necessary so that we set minwidth. setting minwidth is necessary because the 
-	//	// parent container will then have the correct minwidth. the parent container having the correct minwidth is necessary because 
-	//	// then it'll clamp to the correct size at the end of the autosize function. this is non-ideal: for one, it takes multiple layout 
-	//	// passes for this to work (one to set the min size, another to clamp to it). also, shouldn't setting width be sufficient during 
-	//	// layout calculations?
-	//	control->setWidthAbs(textWidth + control->paddingLeft + control->paddingRight); 
-	//}
-
-	//// if autosize disabled, then text (wrap) width depends on label width --> will be set in wrap pass
-	//return;
-
-
-	//if (control->isAutosize(Axis::HORIZONTAL))
-	if (control->labAutosize)
+	// (if autosize disabled, then text width (wrapWidth) depends on label width --> will be set in wrap pass)
+	if (label->isAutosize(Axis::HORIZONTAL))
 	{
 		// set wrap width based on max width
-		int wrapWidth = std::max(control->minWidth.value_or(0), control->maxWidth.value_or(INT_MAX)); // if min > max, then use min instead (min always trumps max in UI)
+		// since we're using min/max width here, there is no need to clamp the label width later TODO double check this is true
+		// (ASSUMING horizontal autosize enabled --> if it is disabled, then it'll get clamped during growshink sizing)
+		int wrapWidth = std::max(label->minWidth.value_or(0), label->maxWidth.value_or(INT_MAX)); // if min > max, then use min instead (min always trumps max in UI)
 		if (wrapWidth == INT_MAX) wrapWidth = 0; // note: max width is INT_MAX by default! so if the user hasn't set a max size for the label, there is effectively no wrapping. SDL_TTF happens to interpret a wrapWidth of 0 as no wrapping
-		else wrapWidth -= (control->paddingLeft + control->paddingRight);
-		control->tttext->setWrapWidth(wrapWidth);
+		else wrapWidth -= (label->paddingLeft + label->paddingRight); // TODO negative wrap width possible?
+		label->tttext->setWrapWidth(wrapWidth);
 
 		// calculate text width now that we have set wrap width
-		int textWidth = control->tttext->getDimensions().first;
+		int textWidth = label->tttext->getDimensions().first;
 
-		// label width is can now be set to fit to text width, as per the rule of autosizing
-		int controlWidth = textWidth + control->paddingLeft + control->paddingRight;
-		control->setPreferredWidth(controlWidth); // TODO: see equivalent function is horizontal autosize
-		control->minWidthCalculated = controlWidth;
-		control->maxWidthCalculated = controlWidth;
-
-		// min and max width take precedence over autosizing
-		// this might come into play if e.g., text is very short, so we need to grow the label to at least its min width
-		//control->w = MoreMath::clamp(control->w, control->getMinWidth(), control->getMaxWidth());
+		// label width can now be set to fit to text width, as per the rule of autosizing
+		int labelWidth = textWidth + label->paddingLeft + label->paddingRight;
+		label->minWidthCalculated = labelWidth;
+		label->maxWidthCalculated = labelWidth;
+		label->w = labelWidth;
 	}
 }
 

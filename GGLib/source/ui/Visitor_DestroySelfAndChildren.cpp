@@ -1,10 +1,14 @@
+#include "UI.h"
 #include "ui/Visitor.h"
-#include "ui/Container.h"
-#include "ui/Control.h"
 
 void Visitor_DestroySelfAndChildren::visitForControl(Control *control)
 {
 	delete control;
+}
+
+void Visitor_DestroySelfAndChildren::visitForLabel(Label* label)
+{
+	visitForControl(label);
 }
 
 void Visitor_DestroySelfAndChildren::visitForFlexContainer(Container *container)

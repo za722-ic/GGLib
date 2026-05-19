@@ -104,73 +104,6 @@ void Demo::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 }
 
-Label* Demo::createLabel(std::string labelText)
-{
-	Label* label = new Label(labelText);
-	label->setForeColor({ 255,255,255,255 });
-
-
-	label->labAutosize = true;
-
-	return label;
-}
-Container* Demo::createPanel(std::string panelTitle, Button* btnReset, std::vector<Control*> controls, std::vector<std::string> controlLabels)
-{
-	Container* panel = new Container;
-	panel->layoutDirection = LayoutDirection::TOP_TO_BOTTOM;
-	panel->horizontalAutosize = false;
-	panel->verticalAutosize = true;
-	panel->setColor(0x407848);
-	panel->setPadding(64, 64, 64, 64);
-	panel->setChildGap(10);
-	panel->borderColor = { 38, 84, 44, 255 };
-	panel->borderThickness = 4;
-	panel->shadowThickness = 6;
-
-	Container* titleBar = new Container;
-	titleBar->layoutDirection = LayoutDirection::LEFT_TO_RIGHT;
-	titleBar->verticalAlignmentMode = VAlignmentMode::CENTER;
-	//titleBar->isVisible = false;
-	titleBar->setColor(255, 255, 0, 255);
-	titleBar->verticalAutosize = true;
-
-	titleBar->add(createLabel(panelTitle));
-	if (btnReset != nullptr)
-	{
-		titleBar->add(new HorizontalSpacer(100));
-		titleBar->add(btnReset);
-	}
-
-	panel->add(titleBar);
-
-
-//	return panel;
-
-
-	
-	HorizontalDivider* divider = new HorizontalDivider(1);
-	divider->color = panel->borderColor;
-	panel->add(divider);
-
-	for (int i = 0; i < controls.size(); i++)
-	{
-		Container* bar = new Container;
-		bar->layoutDirection = LayoutDirection::LEFT_TO_RIGHT;
-		bar->verticalAlignmentMode = VAlignmentMode::CENTER;
-		bar->verticalAutosize = true;
-		///bar->isVisible = false;
-		bar->setColor(255, 0, 255, 255);
-
-		bar->add(createLabel(controlLabels[i]));
-		bar->add(new HorizontalSpacer(100));
-		bar->add(controls[i]);
-
-		panel->add(bar);
-	}
-
-	return panel;
-}
-
 void Demo::defineElements()
 {
 	// TODO: automate this
@@ -178,7 +111,7 @@ void Demo::defineElements()
 
 	// create root container
 	root = new Container;
-	root->setColor(200,200,200,255);
+	root->setColor(210,210,180,255);
 	root->radius = 0;
 	root->layoutMode = LayoutMode::FLEX;
 	root->horizontalAlignmentMode = HAlignmentMode::CENTER;
@@ -187,32 +120,37 @@ void Demo::defineElements()
 	root->setPadding(60);
 	root->setChildGap(60);
 
-	auto sliderOctaves = createSlider(1, 8, 1, 1);
-	auto sliderInitialAmplitude = createSlider(0.1f, 2.0f, 0.1f, 1.4f);
-	auto sliderInitialFrequency = createSlider(0.1f, 8.0f, 0.1f, 0.4f);
+	std::vector<unsigned int> colors =
+	{
+		0xcc550000,
+		0xcc2c5f34,
+		0xcc000080
+	};
+	std::vector<SDL_Color> borderColors =
+	{
+		{84,44,37,255},
+		{37,84,44,255},
+		{37,44,84,255}
+	};
+	for (int i = 0; i < 3; i++)
+	{
+		Container* panel = new Container;
+		panel->layoutDirection = LayoutDirection::TOP_TO_BOTTOM;
+		panel->horizontalAutosize = false;
+		panel->verticalAutosize = true;
+		panel->setColor(colors.at(i));
+		panel->setPadding(32);
+		panel->setChildGap(10);
+		panel->borderColor = borderColors.at(i);
+		panel->borderThickness = 4;
+		panel->shadowThickness = 6;
+		root->add(panel);
 
-	
-	// create FBM panel
-	Container* pnlFBM = createPanel("Fractal Brownian Motion", nullptr, { sliderOctaves, sliderInitialFrequency, sliderInitialAmplitude }, { "Octaves", "Initial frequency", "Initial amplitude" });
-	//Container* pnlFBM = createPanel("Fractal Brownian Motion", nullptr, {  }, { });
-	root->add(pnlFBM);
-
-	//Container* alpha = new Container;
-	//alpha->layoutMode = LayoutMode::FLEX;
-	//alpha->setPadding(10);
-	//alpha->horizontalAutosize = false;
-	//alpha->verticalAutosize = false;
-	//alpha->setColor(40, 40, 40, 255);
-	////alpha->setMaxWidth(100);
-	//root->add(alpha);
-
-	//
-	//Label* label = new Label(loremIpsum);
-	//label->setColor(200,0,230);
-	//label->setPadding(20);
-	//label->setAlignment(TTF_HORIZONTAL_ALIGN_CENTER);
-	//label->horizontalAutosize = true;
-	//label->verticalAutosize = true;
-	//label->setMaxWidth(300);
-	//alpha->add(label);
+		Label* label = new Label(loremIpsum);
+		label->verticalAutosize = true;
+		label->setHAlignment(HAlignmentMode::CENTER);
+		label->setVAlignment(VAlignmentMode::CENTER);
+		label->setForeColor({ 255,255,255,165 });
+		panel->add(label);
+	}
 }

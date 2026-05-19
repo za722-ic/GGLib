@@ -80,12 +80,12 @@ std::pair<int, int> Text::getPosition()
 	return std::pair<int, int>(x, y);
 }
 
-void Text::setAlignment(TTF_HorizontalAlignment alignment)
+void Text::setHAlignment(TTF_HorizontalAlignment alignment)
 {
 	TTF_Font *font = TTF_GetTextFont(ttfText);
 	TTF_SetFontWrapAlignment(font, alignment);
 }
-TTF_HorizontalAlignment Text::getAlignment()
+TTF_HorizontalAlignment Text::getHAlignment()
 {
 	return TTF_GetFontWrapAlignment(font);
 }

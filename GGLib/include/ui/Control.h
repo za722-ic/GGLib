@@ -7,18 +7,12 @@
 #include "Canvas.h"
 #include "Element.h"
 
-#include "Text.h"
 
 class Control : public MouseEventListener, public KeyEventListener, public TextInputEventListener, public ScrollEventListener, public Element
 {
 public:
-	std::unique_ptr<Text> tttext = nullptr;
-	bool labAutosize = false;
-
-	Control(std::string textStr = "")
-	{
-		tttext = std::make_unique<Text>(textStr);
-	}
+	Control()
+	{}
 
 public:
 	virtual void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override

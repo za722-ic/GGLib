@@ -7,6 +7,7 @@
 #include <functional>
 
 #include "Control.h"
+#include "Text.h"
 
 class Button : public Control
 {
@@ -21,6 +22,7 @@ public:
 	SDL_Color foreColor = { 0, 0, 0, 255 };
 
 	std::string text = "";
+	
 
 public:
 

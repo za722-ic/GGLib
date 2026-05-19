@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ui/UITypes.h"
+
 #include "ui/Container.h"
 #include "ui/Control.h"
 #include "ui/Element.h"

@@ -1,19 +1,17 @@
+#include "UI.h"
 #include "ui/Visitor.h"
-#include "ui/Container.h"
-#include "ui/Control.h"
 
 void Visitor_WrapText::visitForControl(Control* control)
 {
-	// if autosize disabled, then text (wrap) width depends on label width --> will be set in wrap pass
-	//if (!control->isAutosize(Axis::HORIZONTAL))
-	if (!control->labAutosize)
+}
+
+void Visitor_WrapText::visitForLabel(Label* label)
+{
+	// if autosize disabled, then text width (wrapWidth) depends on label width
+	if (!label->isAutosize(Axis::HORIZONTAL))
 	{
-	
-		control->tttext->setWrapWidth(control->w - control->paddingLeft - control->paddingRight);
+		label->tttext->setWrapWidth(label->w - label->paddingLeft - label->paddingRight);
 	}
-	auto newHeight = control->tttext->getDimensions().second;
-	control->h = newHeight + control->paddingTop + control->paddingBottom;
-	control->h = MoreMath::clamp(control->h, control->getMinHeight(), control->getMaxHeight());
 }
 
 void Visitor_WrapText::visitForFlexContainer(Container* container)

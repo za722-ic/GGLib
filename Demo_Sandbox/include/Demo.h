@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "GGApp.h"
 #include "AssetManagerWrapper.h"
@@ -16,9 +16,9 @@ private:
 	unsigned int framesCount;
 	float avgFps;
 
-	std::string loremIpsum = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus, ante at dignissim vulputate, diam ex sollicitudin mi, sit amet feugiat leo est vitae nulla. Quisque vestibulum eleifend velit aliquet aliquet. Nullam varius magna augue, eget venenatis lacus tincidunt et. Suspendisse imperdiet tempor odio, vel dapibus mauris tincidunt quis. Nunc id tristique ante, et interdum est. Aliquam erat volutpat. Praesent eget luctus sem. Etiam suscipit dolor quis fermentum luctus. Quisque hendrerit, massa auctor ultricies ullamcorper, nisi ipsum accumsan leo, at porttitor dolor tortor sit amet massa.\n\n";
+	std::string loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus, ante at dignissim vulputate, diam ex sollicitudin mi, sit amet feugiat leo est vitae nulla. Quisque vestibulum eleifend velit aliquet aliquet. Nullam varius magna augue, eget venenatis lacus tincidunt et. Suspendisse imperdiet tempor odio, vel dapibus mauris tincidunt quis. Nunc id tristique ante, et interdum est. Aliquam erat volutpat. Praesent eget luctus sem. Etiam suscipit dolor quis fermentum luctus. Quisque hendrerit, massa auctor ultricies ullamcorper, nisi ipsum accumsan leo, at porttitor dolor tortor sit amet massa.";
 
-	std::string loremIpsum2 = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus, ante at dignissim vulputate, diam ex sollicitudin mi, sit amet feugiat leo est vitae nulla. Quisque vestibulum eleifend velit aliquet aliquet. Nullam varius magna augue, eget venenatis lacus tincidunt et. Suspendisse imperdiet tempor odio, vel dapibus mauris tincidunt quis. Nunc id tristique ante, et interdum est. Aliquam erat volutpat. Praesent eget luctus sem. Etiam suscipit dolor quis fermentum luctus. Quisque hendrerit, massa auctor ultricies ullamcorper, nisi ipsum accumsan leo, at porttitor dolor tortor sit amet massa.\n\n"
+	std::string loremIpsum2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus, ante at dignissim vulputate, diam ex sollicitudin mi, sit amet feugiat leo est vitae nulla. Quisque vestibulum eleifend velit aliquet aliquet. Nullam varius magna augue, eget venenatis lacus tincidunt et. Suspendisse imperdiet tempor odio, vel dapibus mauris tincidunt quis. Nunc id tristique ante, et interdum est. Aliquam erat volutpat. Praesent eget luctus sem. Etiam suscipit dolor quis fermentum luctus. Quisque hendrerit, massa auctor ultricies ullamcorper, nisi ipsum accumsan leo, at porttitor dolor tortor sit amet massa.\n\n"
 		"Nunc auctor turpis eget fermentum vulputate.Ut blandit porta ante venenatis bibendum.Sed vel mollis eros.Nullam in faucibus erat.Aenean dictum ipsum nec urna sollicitudin cursus aliquam quis massa.Duis enim felis, laoreet eu gravida eu, mattis nec ligula.Etiam placerat pharetra turpis, ac efficitur massa scelerisque a.Morbi sit amet iaculis libero.Quisque mollis et dui et laoreet.Morbi quam nunc, aliquam vel consectetur sit amet, pellentesque ut elit.\n\n"
 		"Nullam vel nisl id orci ornare suscipit ac nec erat.Nam varius lorem quis tortor lobortis mattis.Nullam condimentum faucibus egestas.Fusce molestie risus quis nibh ultricies, quis auctor massa tincidunt.Nunc aliquet mollis ornare.Proin finibus ligula est, sit amet feugiat est maximus eu.Ut euismod molestie tristique.Curabitur in nunc in erat iaculis sodales.Mauris ut nunc orci.\n\n"
 		"Interdum et malesuada fames ac ante ipsum primis in faucibus.Ut vehicula tortor sapien, id accumsan magna malesuada non.In sit amet viverra odio, non tristique elit.In cursus efficitur justo, vel imperdiet massa fringilla ut.Suspendisse non erat sollicitudin, vulputate tortor ac, rutrum eros.Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.Maecenas in elit suscipit diam posuere pulvinar.Donec magna leo, sollicitudin eget sagittis nec, blandit eu est.Nullam ut nulla velit.Sed luctus faucibus suscipit.Vivamus non metus ultrices, dictum odio eu, semper justo.\n\n"
@@ -29,7 +29,7 @@ private:
 		"Nullam auctor erat nec accumsan porttitor.Curabitur rutrum placerat libero et aliquet.Suspendisse mattis tellus diam, vel tincidunt nulla rutrum sit amet.Proin mollis, ante ut vestibulum efficitur, mi sapien luctus est, at aliquet diam nisl et arcu.Maecenas leo mauris, mollis rhoncus enim non, tristique egestas dolor.Pellentesque dignissim quam dolor, eget malesuada magna accumsan et.Phasellus sagittis porttitor velit, dictum gravida enim hendrerit eget.Donec elementum, mauris a tincidunt dapibus, augue neque viverra mauris, congue tincidunt libero arcu ac nibh.Suspendisse laoreet nibh quis cursus tristique.Morbi sed iaculis justo, sed ultricies ex.Curabitur enim magna, interdum ut nunc non, dictum commodo augue.Cras vel orci euismod, aliquet est vitae, congue metus.Phasellus fringilla sollicitudin libero, ac lacinia justo lacinia ac.\n\n"
 		"Sed aliquam, quam sed sollicitudin cursus, urna urna scelerisque ligula, nec fermentum neque metus non odio.Proin tincidunt luctus augue, vel sagittis mauris.Integer ut lectus in diam tristique feugiat sit amet sed mauris.Suspendisse potenti.Proin justo erat, tincidunt quis metus at, feugiat lacinia elit.Vivamus congue libero quis cursus laoreet.Aliquam auctor erat tellus, nec euismod augue maximus in.Aliquam egestas elit a risus posuere tincidunt.Sed ac ullamcorper velit.Suspendisse pretium nisi at mi eleifend egestas non in augue.\n\n"
 		"Fusce semper ullamcorper turpis viverra condimentum.Mauris ultrices, metus eget vestibulum tempus, metus diam auctor tortor, vulputate porttitor lectus velit sed libero.Suspendisse potenti.Etiam nec fringilla nulla.Vivamus vulputate bibendum iaculis.Etiam ac molestie ligula, eu efficitur massa.Nulla vel massa at ipsum pulvinar facilisis sit amet vitae tellus.Pellentesque ac mattis metus.Vestibulum faucibus tortor eget nunc fringilla, a eleifend nunc dapibus.\n\n"
-		"In ac bibendum felis.Sed pharetra lacus in massa tristique viverra.Aenean pellentesque pellentesque nisl, sed convallis ex congue non.Ut ultrices neque nec fermentum vehicula.Nullam mauris libero, ullamcorper vel faucibus in, pellentesque non massa.Quisque placerat venenatis metus in molestie.Cras viverra rutrum dui at dignissim.\n\n";
+		"In ac bibendum felis.Sed pharetra lacus in massa tristique viverra.Aenean pellentesque pellentesque nisl, sed convallis ex congue non.Ut ultrices neque nec fermentum vehicula.Nullam mauris libero, ullamcorper vel faucibus in, pellentesque non massa.Quisque placerat venenatis metus in molestie.Cras viverra rutrum dui at dignissim.";
 
 public:
 	Demo() : demoAssetManager(std::make_shared<AssetManagerWrapper>(&assetManager))
@@ -45,18 +45,4 @@ private:
 	void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
 
 	void defineElements();
-	Container* createPanel(std::string panelTitle, Button* btnReset, std::vector<Control*> controls, std::vector<std::string> controlLabels);
-	Label* createLabel(std::string labelText);
-	Slider* createSlider(float min, float max, float interval, float startingVal)
-	{
-		Slider* slider = new Slider;
-		slider->setWidthAbs(150);
-		slider->min = min;
-		slider->max = max;
-		slider->interval = interval;
-		slider->value = startingVal;
-
-		return slider;
-	}
-
 };

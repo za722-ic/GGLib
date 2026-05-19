@@ -8,12 +8,10 @@ public:
 	HorizontalSpacer(int minWidth = 0)
 	{
 		setMinWidth(minWidth);
-		setHeightAbs(1);
+		setHeightAbs(0);
 	}
 
 	void render(Canvas* canvas) override
 	{
-		canvas->setColor(255, 0, 0, 128);
-		canvas->fillRect(screenX, screenY, w, h);
 	}
 };

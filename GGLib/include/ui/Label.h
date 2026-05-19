@@ -2,28 +2,33 @@
 
 #include <memory>
 
-#include "Control.h"
-
+#include "ui/Control.h"
+#include "ui/UITypes.h"
 #include "Text.h"
+
 
 class Label: public Control
 {
 public:
+	std::unique_ptr<Text> tttext = nullptr;
+
+	VAlignmentMode verticalAlignmentMode = VAlignmentMode::TOP;
+
+public:
 	// TODO: make use of width, height --> crop text with "..." if out of bounds (how do other libs handle this?)
-	
 
-	Label(std::string textStr = "") : Control(textStr)
+	Label(std::string textStr = "") 
 	{
-		//verticalAutosize = horizontalAutosize = true;
-		//verticalAutosize = true;
-		color = { 255,0,0,128 };
-		radius = 0;
-
-		updatePreferredDimensions();
+		tttext = std::make_unique<Text>(textStr);
 	}
 
 	void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override
 	{}
+
+	void accept(Visitor& visitor) override
+	{
+		visitor.visitForLabel(this);
+	}
 
 	void render(Canvas* canvas) override
 	{
@@ -37,32 +42,70 @@ public:
 		if (clipRect.w <= 0 || clipRect.h <= 0) return;
 
 		SDL_SetRenderClipRect(canvas->getSDLRenderer(), &clipRect);
+		{
+			int textY;
+			if (verticalAlignmentMode == VAlignmentMode::TOP)
+			{
+				textY = clipRect.y;
+			}
+			else if (verticalAlignmentMode == VAlignmentMode::CENTER)
+			{
+				int textH = tttext->getDimensions().second;
+				textY = clipRect.y + clipRect.h / 2 - textH / 2;
+			}
+			else if (verticalAlignmentMode == VAlignmentMode::BOTTOM)
+			{
+				int textH = tttext->getDimensions().second;
+				textY = clipRect.y + clipRect.h - textH;
+			}
+			else
+			{
+				assert(false);
+			}
 
-		// perform text layout
-		//text->setWrapWidth(clipRect.w);
-		tttext->setPosition(clipRect.x, clipRect.y);
+			// text layout
+			tttext->setPosition(clipRect.x, textY);
 
-		// render text
-		tttext->render();
+			// render text
+			tttext->render();
 
+		}
 		SDL_SetRenderClipRect(canvas->getSDLRenderer(), NULL);
 	}
 
 	void setText(std::string newText)
 	{
 		tttext->setText(newText);
-		updatePreferredDimensions();
 	}
 	std::string getText()
 	{
 		return tttext->getText();
 	}
 	
-	void setAlignment(TTF_HorizontalAlignment alignment)
+	void setHAlignment(HAlignmentMode alignment)
 	{
-		tttext->setAlignment(alignment);
-		updatePreferredDimensions();
+		switch (alignment)
+		{
+		case HAlignmentMode::LEFT:
+			tttext->setHAlignment(TTF_HORIZONTAL_ALIGN_LEFT);
+			break;
+		case HAlignmentMode::CENTER:
+			tttext->setHAlignment(TTF_HORIZONTAL_ALIGN_CENTER);
+			break;
+		case HAlignmentMode::RIGHT:
+			tttext->setHAlignment(TTF_HORIZONTAL_ALIGN_RIGHT);
+			break;
+
+		default:
+			assert(false); // something wrong has happened
+		}
 	}
+
+	void setVAlignment(VAlignmentMode alignment)
+	{
+		verticalAlignmentMode = alignment;
+	}
+
 	void setForeColor(SDL_Color color)
 	{
 		tttext->setColor(color.r, color.g, color.b, color.a);
@@ -75,15 +118,5 @@ public:
 	std::pair<int, int> getTextDimensions()
 	{
 		return tttext->getDimensions();
-	}
-
-	
-	
-
-	void updatePreferredDimensions()
-	{
-		auto dim = tttext->getDimensions();
-		setPreferredWidth(dim.first);
-		setPreferredHeight(dim.second);
 	}
 };

@@ -42,8 +42,8 @@ public:
 	void setPosition(int x, int y);
 	std::pair<int, int> getPosition();
 
-	void setAlignment(TTF_HorizontalAlignment alignment);
-	TTF_HorizontalAlignment getAlignment();
+	void setHAlignment(TTF_HorizontalAlignment alignment);
+	TTF_HorizontalAlignment getHAlignment();
 
 	std::pair<int, int> getDimensions();
 

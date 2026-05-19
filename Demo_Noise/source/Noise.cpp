@@ -127,7 +127,8 @@ Label* Noise::createLabel(std::string labelText)
 	Label* label = new Label(labelText);
 	label->setForeColor({ 255,255,255,255 });
 	
-	label->labAutosize = true;
+	label->verticalAutosize = true;
+	label->horizontalAutosize = true;
 	
 	return label;
 }

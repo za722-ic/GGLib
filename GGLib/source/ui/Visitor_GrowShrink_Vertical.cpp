@@ -1,10 +1,14 @@
-#include "Visitor.h"
-#include "Container.h"
-#include "Control.h"
+#include "UI.h"
+#include "ui/Visitor.h"
 
 void Visitor_GrowShrink_Vertical::visitForControl(Control* control)
 {
 	return;
+}
+
+void Visitor_GrowShrink_Vertical::visitForLabel(Label* label)
+{
+	visitForControl(label);
 }
 
 // TODO: document that this grows the children of a container, not the container itself. this has the implication that the root can never be set to grow, which makes sense

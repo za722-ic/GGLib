@@ -1,22 +1,22 @@
-#include "Visitor.h"
-#include "Container.h"
-#include "Control.h"
+#include "UI.h"
+#include "ui/Visitor.h"
 
 void Visitor_Autosize_Vertical::visitForControl(Control* control)
 {
-	// if autosize enabled, then control height depends on text height
-	if (control->isAutosize(Axis::VERTICAL))
+}
+
+void Visitor_Autosize_Vertical::visitForLabel(Label* label)
+{
+	// if autosize enabled, then label height depends on text height
+	if (label->isAutosize(Axis::VERTICAL))
 	{
-		int textHeight = control->tttext->getDimensions().second;
-		// control->setHeightAbs(textHeight + control->paddingBottom + control->paddingTop); // TODO: see equivalent function is horizontal autosize
-		control->h = (textHeight + control->paddingBottom + control->paddingTop); // TODO: see equivalent function is horizontal autosize
+		// set label height based on text height
+		int textHeight = label->tttext->getDimensions().second;
+		label->h = textHeight + label->paddingBottom + label->paddingTop;
 		
-		control->h = MoreMath::clamp(control->h, control->getMinHeight(), control->getMaxHeight());
+		// clamp label height
+		label->h = MoreMath::clamp(label->h, label->getMinHeight(), label->getMaxHeight());
 	}
-
-	return;
-
-
 }
 
 // if the container is set to autosize, then resize it accordingly

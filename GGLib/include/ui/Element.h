@@ -5,12 +5,7 @@
 #include "Visitor.h"
 #include "Canvas.h"
 #include "InputManager.h"
-
-enum class Axis
-{
-	HORIZONTAL,
-	VERTICAL
-};
+#include "ui/UITypes.h"
 
 // TODO implement margin (left top right bottom) (or calculate margin from gap)
 class Element
