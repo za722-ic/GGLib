@@ -11,8 +11,25 @@
 
 namespace GG
 {
-	class Container : public Element
+	class Container : public Element, public ScrollEventListener
 	{
+	public:
+		bool verticalScroll = false;
+
+		float viewportY_percentage = 0.0f;
+		int viewportY = 0;
+		int viewportX = 0;
+		int logicalHeight = 0; // TODO: logical height cannot be smaller than actual viewport h
+
+		int render_scrollbarWidth = 10;
+		int render_scrollbarPaddingVertical = 5;
+		int render_scrollbarPaddingHorizontal = 15;
+		int render_scrollbarMinHeight = 20;
+		int render_scrollbarH;
+		int render_scrollbarY;
+
+		float scrollbarScrollInterval = 50; // px
+
 	public: // TODO: protected
 		std::vector<Element*> children;
 
@@ -36,5 +53,7 @@ namespace GG
 		void calculateLayout();
 
 		virtual void render(Canvas* canvas) override;
+
+		virtual void onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY) override;
 	};
 }

@@ -14,6 +14,7 @@
         alignment = newAlignment;
     }
 
+    // TODO: this is invalid after window resize unless this is re-called each window resize
     void GG::Canvas::setOrigin(int x, int y)
     {
         originX = x;

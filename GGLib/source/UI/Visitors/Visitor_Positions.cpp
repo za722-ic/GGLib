@@ -9,7 +9,7 @@ void GG::Visitor_Positions::visitForLabel(Label* label)
 void GG::Visitor_Positions::visitForControl(Control* control)
 {
 	control->screenX = control->x + offsetX;
-	control->screenY = control->y + offsetY;
+	control->screenY = control->y + offsetY - control->parent->viewportY;
 }
 
 void GG::Visitor_Positions::visitForAbsoluteContainer(Container* container)
@@ -36,6 +36,8 @@ void GG::Visitor_Positions::visitForFlexContainer(Container* container)
 {
 	container->screenX = container->x + offsetX;
 	container->screenY = container->y + offsetY;
+
+	if (container->parent != nullptr) container->screenY -= container->parent->viewportY;
 
 	// TODO refactor alignment calculations
 	// calculate alignment offset ALONG the layout axis

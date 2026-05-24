@@ -18,10 +18,10 @@ void GG::Visitor_SetInputManager::visitForLabel(Label* label)
 
 void GG::Visitor_SetInputManager::visitForFlexContainer(Container* container)
 {
-	return;
+	inputManager->addScrollEventListener(container);
 }
 
 void GG::Visitor_SetInputManager::visitForAbsoluteContainer(Container* container)
 {
-	return;
+	inputManager->addScrollEventListener(container);
 }

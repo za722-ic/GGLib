@@ -50,7 +50,11 @@ void GG::Visitor_Autosize_Vertical::visitForFlexContainer(Container* container)
 
 	// only adjust the size if container is autosize 
 	// TODO: above calculations are redundant if verticalAutoSize is false. this is easy to solve, but the code could be more elegant if the below clamping operation can be skipped... so can it?
-	if (container->verticalAutosize) container->h = totalHeight;
+	if (container->verticalAutosize)
+		container->h = totalHeight;
+
+	if (container->verticalScroll)
+		container->logicalHeight = totalHeight;
 
 	// clamp to between min/max width
 	container->h = MoreMath::clamp(container->h, container->getMinHeight(), container->getMaxHeight());
@@ -63,7 +67,7 @@ void GG::Visitor_Autosize_Vertical::visitForAbsoluteContainer(Container* contain
 
 	// autosize container vertically
 	int maxBottom = 0;
-	if (container->isAutosize(Axis::VERTICAL))
+	if (container->isAutosize(Axis::VERTICAL) || container->verticalScroll)
 	{
 		for (auto child : container->children)
 		{
@@ -71,6 +75,7 @@ void GG::Visitor_Autosize_Vertical::visitForAbsoluteContainer(Container* contain
 		}
 	}
 	container->h = maxBottom;
+	container->logicalHeight = maxBottom;
 
 	// clamp container size to between min/max
 	container->h = MoreMath::clamp(container->h, container->getMinHeight(), container->getMaxHeight());

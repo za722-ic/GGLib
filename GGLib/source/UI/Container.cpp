@@ -89,3 +89,6 @@ void GG::Container::render(Canvas* canvas)
 		child->render(canvas);
 	}
 }
+
+void GG::Container::onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY)
+{}

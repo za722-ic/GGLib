@@ -57,9 +57,13 @@ std::string GG::Text::getText()
 	return strText;
 }
 
-void GG::Text::setWrapWidth(int wrapWidth)
+void GG::Text::setWrapWidth(int newWrapWidth)
 {
-	TTF_SetTextWrapWidth(ttfText, wrapWidth);
+	// only bother if wrap width changed
+	if (getWrapWidth() == newWrapWidth)
+		return;
+
+	TTF_SetTextWrapWidth(ttfText, newWrapWidth);
 
 	calculateDimensions();
 }
