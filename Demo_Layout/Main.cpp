@@ -3,7 +3,7 @@
 int main(int argc, char* args[])
 {
     Demo demo;
-    demo.mainLoop();
+    demo.begin();
 
     return 0;
 }

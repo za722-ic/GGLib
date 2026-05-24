@@ -28,7 +28,7 @@ public:
 	GGApp();
 	~GGApp();
 
-	void mainLoop();
+	void begin();
 
 protected:
 	// -- virtual methods --

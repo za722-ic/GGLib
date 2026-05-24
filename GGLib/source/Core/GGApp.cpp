@@ -29,7 +29,7 @@ GGApp::~GGApp()
     InitsSDL::quitSDL();
 }
 
-void GGApp::mainLoop() 
+void GGApp::begin() 
 {
     if (!onInit()) throw std::runtime_error("onInit() failed!"); // can't call in constructor of GGApp as child classes of GGApp haven't had their constructor called yet 
 
