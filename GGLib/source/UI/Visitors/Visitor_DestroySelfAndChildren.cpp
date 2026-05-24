@@ -1,5 +1,5 @@
 #include "GG/UI/UI.h"
-#include "GG/UI/Visitor.h"
+#include "GG/UI/Visitors/Visitor.h"
 
 void Visitor_DestroySelfAndChildren::visitForControl(Control *control)
 {

@@ -24,10 +24,10 @@
     <ClInclude Include="include\GG\AssetManagement\TextFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\GG\Core\GGApp.h">
+    <ClInclude Include="include\GG\Core\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\GG\Core\GGWindow.h">
+    <ClInclude Include="include\GG\Core\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\GG\Core\InitsSDL.h">
@@ -66,7 +66,7 @@
     <ClInclude Include="include\GG\UI\Element.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\GG\UI\FileDialog.h">
+    <ClInclude Include="include\GG\UI\FileDialogs\FileDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\GG\UI\Controls\HorizontalDivider.h">
@@ -93,7 +93,7 @@
     <ClInclude Include="include\GG\UI\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\GG\UI\Visitor.h">
+    <ClInclude Include="include\GG\UI\Visitors\Visitor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\GG\Utilities\Timer.h">
@@ -103,6 +103,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\GG\Input\InputManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GG\UI\FileDialogs\SaveFileDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GG\UI\FileDialogs\OpenFileDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GG\UI\FileDialogs\OpenFolderDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -119,10 +128,10 @@
     <ClCompile Include="source\AssetManagement\TextFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Core\GGApp.cpp">
+    <ClCompile Include="source\Core\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Core\GGWindow.cpp">
+    <ClCompile Include="source\Core\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Core\InitsSDL.cpp">
@@ -140,37 +149,37 @@
     <ClCompile Include="source\UI\Controls\Textbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\UI\Visitor.cpp">
+    <ClCompile Include="source\UI\Visitors\Visitor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\UI\Visitor_Autosize_Horizontal.cpp">
+    <ClCompile Include="source\UI\Visitors\Visitor_Autosize_Horizontal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\UI\Visitor_Autosize_Vertical.cpp">
+    <ClCompile Include="source\UI\Visitors\Visitor_Autosize_Vertical.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\UI\Visitor_CalculateMinimumSizing.cpp">
+    <ClCompile Include="source\UI\Visitors\Visitor_CalculateMinimumSizing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\UI\Visitor_DestroySelfAndChildren.cpp">
+    <ClCompile Include="source\UI\Visitors\Visitor_DestroySelfAndChildren.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\UI\Visitor_GetChildren.cpp">
+    <ClCompile Include="source\UI\Visitors\Visitor_GetChildren.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\UI\Visitor_GrowShrink_Horizontal.cpp">
+    <ClCompile Include="source\UI\Visitors\Visitor_GrowShrink_Horizontal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\UI\Visitor_GrowShrink_Vertical.cpp">
+    <ClCompile Include="source\UI\Visitors\Visitor_GrowShrink_Vertical.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\UI\Visitor_Positions.cpp">
+    <ClCompile Include="source\UI\Visitors\Visitor_Positions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\UI\Visitor_SetInputManager.cpp">
+    <ClCompile Include="source\UI\Visitors\Visitor_SetInputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\UI\Visitor_WrapText.cpp">
+    <ClCompile Include="source\UI\Visitors\Visitor_WrapText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Input\InputManager.cpp">
@@ -203,7 +212,7 @@
     <ClCompile Include="source\UI\Control.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\UI\FileDialog.cpp">
+    <ClCompile Include="source\UI\FileDialogs\FileDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\UI\Controls\HorizontalDivider.cpp">
@@ -219,6 +228,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\UI\Controls\Toggle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\UI\FileDialogs\OpenFileDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\UI\FileDialogs\OpenFolderDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\UI\FileDialogs\SaveFileDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

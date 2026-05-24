@@ -2,7 +2,7 @@
 
 #include <optional>
 
-#include "GG/UI/Visitor.h"
+#include "GG/UI/Visitors/Visitor.h"
 #include "GG/Rendering/Canvas.h"
 #include "GG/Input/InputManager.h"
 #include "GG/UI/Enums.h"

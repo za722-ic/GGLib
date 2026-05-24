@@ -1,5 +1,5 @@
 #include "GG/UI/UI.h"
-#include "GG/UI/Visitor.h"
+#include "GG/UI/Visitors/Visitor.h"
 
 // TODO: not all controls need to listen to all events.
 // TODO: we need to remove controls when they are destroyed --> need another vistor for that

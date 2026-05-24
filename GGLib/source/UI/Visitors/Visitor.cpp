@@ -1,4 +1,4 @@
-#include "GG/UI/Visitor.h"
+#include "GG/UI/Visitors/Visitor.h"
 #include "GG/UI/Container.h"
 #include "GG/UI/Control.h"
 

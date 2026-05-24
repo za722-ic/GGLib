@@ -9,7 +9,6 @@
 #include "GG/MoreMath/MoreMath.h"
 #include "GG/UI/Element.h"
 
-
 class Container : public Element
 {
 public: // TODO: protected
@@ -24,93 +23,15 @@ public: // TODO: protected
 
 
 	// TODO: if adding a child, hook it up to input manager events (can check if an element is a child using a visitor). likewise, when removing/deleting a child, remove it from listening to events. This would potentially mean a lot of listeners that do nothing, but since we're only adding controls, we can presume its not _too_ wasteful.
-	void add(Element* newChild)
-	{
-		children.push_back(newChild);
-		newChild->parent = this;
+	void add(Element* newChild);
 
-		if (inputManager != nullptr)
-		{
-			Visitor_SetInputManager visitor_SetInputManager;
-			visitor_SetInputManager.inputManager = inputManager;
-			newChild->accept(visitor_SetInputManager);
-		}
-	}
+	void remove(Control* child);
 
-	void remove(Control* child)
-	{
-		std::erase(children, child);
-	}
+	void destroySelfAndChildren();
 
-	void destroySelfAndChildren()
-	{
-		Visitor_DestroySelfAndChildren destroyer;
+	void accept(Visitor& visitor) override;
 
-		accept(destroyer);
-	}
+	void calculateLayout();
 
-	void accept(Visitor& visitor) override
-	{
-		visitor.visitForContainer(this);
-	}
-
-	void calculateLayout()
-	{
-		Visitor_CalculateMinimumSizing visitor_calculateMinimumSizing;
-		accept(visitor_calculateMinimumSizing);
-
-
-
-
-		Visitor_Autosize_Horizontal visitor_Autosize_Horizontal;
-		accept(visitor_Autosize_Horizontal);
-
-		Visitor_GrowShrink_Horizontal visitor_GrowShrink_Horizontal;
-		visitor_GrowShrink_Horizontal.breadthFirstGrowShrink(this);
-
-
-
-		Visitor_WrapText visitor_WrapText;
-		accept(visitor_WrapText);
-
-
-
-		Visitor_Autosize_Vertical visitor_Autosize_Vertical;
-		accept(visitor_Autosize_Vertical);
-
-		Visitor_GrowShrink_Vertical visitor_GrowShrink_Vertical;
-		visitor_GrowShrink_Vertical.breadthFirstGrowShrink(this);
-
-
-
-
-		Visitor_Positions visitor_Positions;
-		accept(visitor_Positions);
-
-
-
-		//Visitor_CalculateMinimumSizing visitor_calculateMinimumSizing;
-		//accept(visitor_calculateMinimumSizing);
-
-		//Visitor_Autosize visitor_Autosize;
-		//accept(visitor_Autosize);
-
-		//Visitor_GrowShrink visitor_GrowShrink;
-		//visitor_GrowShrink.breadthFirstGrowShrink(this);
-
-		//Visitor_Positions visitor_Positions;
-		//accept(visitor_Positions);
-	}
-
-	virtual void render(Canvas* canvas) override
-	{
-		// rener this element
-		Element::render(canvas);
-
-		// render its children
-		for (auto child : children)
-		{
-			child->render(canvas);
-		}
-	}
+	virtual void render(Canvas* canvas) override;
 };

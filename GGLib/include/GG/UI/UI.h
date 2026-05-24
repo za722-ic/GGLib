@@ -2,7 +2,9 @@
 
 #include "GG/UI/Enums.h"
 
-#include "GG/UI/FileDialog.h"
+#include "GG/UI/FileDialogs/OpenFileDialog.h"
+#include "GG/UI/FileDialogs/SaveFileDialog.h"
+#include "GG/UI/FileDialogs/OpenFolderDialog.h"
 
 #include "GG/UI/Container.h"
 #include "GG/UI/Control.h"
