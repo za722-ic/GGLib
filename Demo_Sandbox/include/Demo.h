@@ -1,17 +1,17 @@
 ﻿#pragma once
 
-#include "GG/Core/GGApp.h"
+#include "GG/Core/Application.h"
 #include "GG/Rendering/Text.h"
 
 #include "AssetManagerWrapper.h"
 
 
-class Demo: public GGApp, KeyEventListener, MouseEventListener
+class Demo: public GG::Application, GG::KeyEventListener, GG::MouseEventListener
 {
 private:
 	std::shared_ptr<AssetManagerWrapper> demoAssetManager;
 
-	Container* root; // TODO: maybe make a UI class that inherits Container, but is the only one that has calculateLayout. Since only root containers should have that?
+	GG::Container* root; // TODO: maybe make a UI class that inherits Container, but is the only one that has calculateLayout. Since only root containers should have that?
 
 	float frameTimesAcc;
 	unsigned int framesCount;
@@ -42,8 +42,8 @@ private:
 	void onLoop() override;
 	void onQuit() override;
 
-	void onKeyEvent(KeyEventType keyEventType, SDL_Keycode key) override;
-	void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
+	void onKeyEvent(GG::KeyEventType keyEventType, SDL_Keycode key) override;
+	void onMouseEvent(GG::MouseEventType mouseEventType, int mouseX, int mouseY) override;
 
 	void defineElements();
 };

@@ -1,11 +1,11 @@
 #include "GG/UI/UI.h"
 #include "GG/UI/Visitors/Visitor.h"
 
-void Visitor_Autosize_Vertical::visitForControl(Control* control)
+void GG::Visitor_Autosize_Vertical::visitForControl(Control* control)
 {
 }
 
-void Visitor_Autosize_Vertical::visitForLabel(Label* label)
+void GG::Visitor_Autosize_Vertical::visitForLabel(Label* label)
 {
 	// if autosize enabled, then label height depends on text height
 	if (label->isAutosize(Axis::VERTICAL))
@@ -13,14 +13,14 @@ void Visitor_Autosize_Vertical::visitForLabel(Label* label)
 		// set label height based on text height
 		int textHeight = label->tttext->getDimensions().second;
 		label->h = textHeight + label->paddingBottom + label->paddingTop;
-		
+
 		// clamp label height
 		label->h = MoreMath::clamp(label->h, label->getMinHeight(), label->getMaxHeight());
 	}
 }
 
 // if the container is set to autosize, then resize it accordingly
-void Visitor_Autosize_Vertical::visitForFlexContainer(Container* container)
+void GG::Visitor_Autosize_Vertical::visitForFlexContainer(Container* container)
 {
 	// first, perform autosizing of container's children (depth first order)
 	for (auto child : container->children) child->accept(*this);
@@ -56,7 +56,7 @@ void Visitor_Autosize_Vertical::visitForFlexContainer(Container* container)
 	container->h = MoreMath::clamp(container->h, container->getMinHeight(), container->getMaxHeight());
 }
 
-void Visitor_Autosize_Vertical::visitForAbsoluteContainer(Container* container)
+void GG::Visitor_Autosize_Vertical::visitForAbsoluteContainer(Container* container)
 {
 	// first, perform autosizing of container's children (depth first order)
 	for (auto child : container->children) child->accept(*this);

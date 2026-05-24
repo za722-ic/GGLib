@@ -3,7 +3,7 @@
 // TODO: it would be useful if you could push/pop canvas states, rather than having to restore values manually (esp. since the user might not have has TOP_LEFT before this call, and also since we aren't currently restoring the color)
 
 // bounds
-void Button::setBounds(int _x, int _y, int _w, int _h)
+void GG::Button::setBounds(int _x, int _y, int _w, int _h)
 {
 	x = _x;
 	y = _y;
@@ -12,40 +12,40 @@ void Button::setBounds(int _x, int _y, int _w, int _h)
 }
 
 // color
-void Button::setForeColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+void GG::Button::setForeColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
 	foreColor = { r, g, b, a };
 }
-void Button::setBackColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+void GG::Button::setBackColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
 	backColor = { r, g, b, a };
 }
 
 // text
-void Button::setText(std::string _text)
+void GG::Button::setText(std::string _text)
 {
 	text = _text;
 }
-std::string Button::getText() const
+std::string GG::Button::getText() const
 {
 	return text;
 }
 
 // button events
-void Button::setOnClick(std::function<void()> func)
+void GG::Button::setOnClick(std::function<void()> func)
 {
 	onClick = func;
 }
-void Button::setOnMouseEnter(std::function<void()> func)
+void GG::Button::setOnMouseEnter(std::function<void()> func)
 {
 	onMouseEnter = func;
 }
-void Button::setOnMouseExit(std::function<void()> func)
+void GG::Button::setOnMouseExit(std::function<void()> func)
 {
 	onMouseExit = func;
 }
 
-void Button::render(Canvas* canvas)
+void GG::Button::render(GG::Canvas* canvas)
 {
 	// draw button body
 	if (isMouseDown)
@@ -65,10 +65,10 @@ void Button::render(Canvas* canvas)
 	// draw button border and shadow
 	int borderRadius = radius + borderThickness;
 	int shadowRadius = borderRadius + shadowThickness;
-	canvas->drawRoundedRect(screenX - borderThickness, 
-							screenY - borderThickness, 
-							w + 2 * borderThickness, 
-							h + 2 * borderThickness, borderRadius, borderThickness, borderColor, borderColor);
+	canvas->drawRoundedRect(screenX - borderThickness,
+		screenY - borderThickness,
+		w + 2 * borderThickness,
+		h + 2 * borderThickness, borderRadius, borderThickness, borderColor, borderColor);
 
 	canvas->drawRoundedRect(screenX - borderThickness - shadowThickness,
 		screenY - borderThickness - shadowThickness,
@@ -77,7 +77,7 @@ void Button::render(Canvas* canvas)
 		shadowRadius,
 		shadowThickness,
 		{ 0,0,0,96 }, { 0,0,0,0 });
-	
+
 
 	// draw button text
 	canvas->setColor(foreColor);
@@ -85,7 +85,7 @@ void Button::render(Canvas* canvas)
 }
 
 // mouse events
-void Button::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
+void GG::Button::onMouseEvent(GG::MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 	wasInBounds = isInBounds;
 	isInBounds = (mouseX >= screenX && mouseX < screenX + w) && (mouseY >= screenY && mouseY < screenY + h);
@@ -93,11 +93,11 @@ void Button::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 
 	if (isInBounds)
 	{
-		if (mouseEventType == MouseEventType::LEFT_MOUSE_DOWN)
+		if (mouseEventType == GG::MouseEventType::LEFT_MOUSE_DOWN)
 		{
 			isMouseDown = true;
 		}
-		else if (mouseEventType == MouseEventType::LEFT_MOUSE_UP)
+		else if (mouseEventType == GG::MouseEventType::LEFT_MOUSE_UP)
 		{
 			isMouseDown = false;
 			if (onClick) onClick();
@@ -108,12 +108,12 @@ void Button::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 		isMouseDown = false;
 	}
 
-	if (!wasInBounds && isInBounds && mouseEventType == MouseEventType::MOUSE_MOVE && onMouseEnter)
+	if (!wasInBounds && isInBounds && mouseEventType == GG::MouseEventType::MOUSE_MOVE && onMouseEnter)
 	{
 		onMouseEnter();
 	}
 
-	if (wasInBounds && !isInBounds && mouseEventType == MouseEventType::MOUSE_MOVE && onMouseExit)
+	if (wasInBounds && !isInBounds && mouseEventType == GG::MouseEventType::MOUSE_MOVE && onMouseExit)
 	{
 		onMouseExit();
 	}

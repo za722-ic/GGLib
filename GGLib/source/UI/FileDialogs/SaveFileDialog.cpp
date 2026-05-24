@@ -2,7 +2,7 @@
 
 #include "GG/UI/FileDialogs/SaveFileDialog.h"
 
-void SaveFileDialog::showDialog(SDL_Window* window)
+void GG::SaveFileDialog::showDialog(SDL_Window* window)
 {
 	SDL_ShowSaveFileDialog(
 		FileDialog::dialogCallback,

@@ -2,37 +2,40 @@
 
 #include "GG/UI/Control.h"
 
-class Combobox : Control
+namespace GG
 {
-protected:
+	class Combobox : Control
+	{
+	protected:
 
-	SDL_Color backColor = {200, 200, 200, 255};
-	SDL_Color foreColor = { 0, 0, 0, 255 };
+		SDL_Color backColor = { 200, 200, 200, 255 };
+		SDL_Color foreColor = { 0, 0, 0, 255 };
 
-	std::string text = "Select option";
+		std::string text = "Select option";
 
-	std::vector<std::string> options = { "A", "B", "C" };
+		std::vector<std::string> options = { "A", "B", "C" };
 
-public:
+	public:
 
-	// bounds
-	void setBounds(int _x, int _y, int _w, int _h);
+		// bounds
+		void setBounds(int _x, int _y, int _w, int _h);
 
-	// color
-	void setForeColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
-	void setBackColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
+		// color
+		void setForeColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
+		void setBackColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
 
-	// text
-	void setText(std::string _text);
-	std::string getText() const;
+		// text
+		void setText(std::string _text);
+		std::string getText() const;
 
-	void render(Canvas *canvas) override;
+		void render(Canvas* canvas) override;
 
-private:
+	private:
 
-	// mouse events
-	bool isExpanded = false;
-	int indexToHighlight = -1;
-	bool isInBounds = false;
-	void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
-};
+		// mouse events
+		bool isExpanded = false;
+		int indexToHighlight = -1;
+		bool isInBounds = false;
+		void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
+	};
+}

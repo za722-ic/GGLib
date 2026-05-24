@@ -2,10 +2,13 @@
 
 #include "GG/UI/Control.h"
 
-class HorizontalSpacer: public Control
+namespace GG
 {
-public:
-	HorizontalSpacer(int minWidth = 0);
+	class HorizontalSpacer : public Control
+	{
+	public:
+		HorizontalSpacer(int minWidth = 0);
 
-	void render(Canvas* canvas) override;
-};
+		void render(Canvas* canvas) override;
+	};
+}

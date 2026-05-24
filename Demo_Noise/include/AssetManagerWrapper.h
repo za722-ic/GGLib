@@ -6,7 +6,7 @@
 class AssetManagerWrapper
 {
 private:
-	AssetManager* assetManager;
+	GG::AssetManager* assetManager;
 
 	const std::string baseAssetPath = "resources/";
 
@@ -17,7 +17,7 @@ private:
 public:
 
 	// TODO: use weak ptr instead?
-	AssetManagerWrapper(AssetManager* assetManager) : assetManager(assetManager)
+	AssetManagerWrapper(GG::AssetManager* assetManager) : assetManager(assetManager)
 	{
 		assetManager->setBaseAssetPath(baseAssetPath);
 	}

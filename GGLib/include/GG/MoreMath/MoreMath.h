@@ -1,6 +1,6 @@
 #pragma once
 
-namespace MoreMath
+namespace GG::MoreMath
 {
 	float lerp(float a, float b, float t);
 	

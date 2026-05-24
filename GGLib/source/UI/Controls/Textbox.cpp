@@ -1,7 +1,7 @@
 #include "GG/UI/Controls/Textbox.h"
 
 // bounds
-void Textbox::setBounds(int _x, int _y, int _w, int _h)
+void GG::Textbox::setBounds(int _x, int _y, int _w, int _h)
 {
 	x = _x;
 	y = _y;
@@ -10,27 +10,27 @@ void Textbox::setBounds(int _x, int _y, int _w, int _h)
 }
 
 // color
-void Textbox::setForeColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+void GG::Textbox::setForeColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
 	foreColor = { r, g, b, a };
 }
-void Textbox::setBackColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+void GG::Textbox::setBackColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
 	backColor = { r, g, b, a };
 }
 
 // text
-void Textbox::setText(std::string _text)
+void GG::Textbox::setText(std::string _text)
 {
 	text = _text;
 }
-std::string Textbox::getText() const
+std::string GG::Textbox::getText() const
 {
 	return text;
 }
 
 // rendering
-void Textbox::render(Canvas* canvas)
+void GG::Textbox::render(Canvas* canvas)
 {
 	// draw light border if focused
 	if (isFocused)
@@ -104,7 +104,7 @@ void Textbox::render(Canvas* canvas)
 }
 
 // mouse events
-void Textbox::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
+void GG::Textbox::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 	if (mouseEventType == MouseEventType::LEFT_MOUSE_UP)
 	{
@@ -115,7 +115,7 @@ void Textbox::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY
 }
 
 // key events
-void Textbox::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
+void GG::Textbox::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
 {
 	if (!isFocused) return;
 
@@ -130,7 +130,7 @@ void Textbox::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
 
 }
 
-void Textbox::onTextInputEvent(std::string text)
+void GG::Textbox::onTextInputEvent(std::string text)
 {
 	if (!isFocused) return;
 
@@ -138,20 +138,20 @@ void Textbox::onTextInputEvent(std::string text)
 }
 
 // handling text
-void Textbox::insertTextAtCursorPos(std::string t)
+void GG::Textbox::insertTextAtCursorPos(std::string t)
 {
 	text.insert(cursorPos, t);
 	cursorPos += t.size();
 }
 
-void Textbox::deleteCharAtCursorPos()
+void GG::Textbox::deleteCharAtCursorPos()
 {
 	if (cursorPos >= text.size()) return; // there are no characters to delete to the right of the cursor
 
 	text.erase(cursorPos, 1);
 }
 
-void Textbox::deleteCharBeforeCursorPos()
+void GG::Textbox::deleteCharBeforeCursorPos()
 {
 	if (cursorPos == 0) return; // no characters to the left of the cursor
 
@@ -161,32 +161,32 @@ void Textbox::deleteCharBeforeCursorPos()
 	cursorPos--;
 }
 
-void Textbox::moveCursorLeft()
+void GG::Textbox::moveCursorLeft()
 {
 	if (cursorPos == 0) return;
 	cursorPos--;
 }
 
-void Textbox::moveCursorRight()
+void GG::Textbox::moveCursorRight()
 {
 	if (cursorPos == text.size()) return;
 	cursorPos++;
 }
 
-void Textbox::moveCursorToStartOfPrevToken()
+void GG::Textbox::moveCursorToStartOfPrevToken()
 {
 }
 
-void Textbox::moveCursorToStartOfNextToken()
+void GG::Textbox::moveCursorToStartOfNextToken()
 {
 }
 
-void Textbox::moveCursorToStartOfText()
+void GG::Textbox::moveCursorToStartOfText()
 {
 	cursorPos = 0;
 }
 
-void Textbox::moveCursorToEndOfText()
+void GG::Textbox::moveCursorToEndOfText()
 {
 	cursorPos = text.size();
 }

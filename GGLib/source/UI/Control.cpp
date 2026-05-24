@@ -6,28 +6,29 @@
 #include "GG/Input/InputManager.h"
 #include "GG/Rendering/Canvas.h"
 #include "GG/UI/Element.h"
+#include "GG/UI/Control.h"
 
-Control::Control()
+GG::Control::Control()
 {
 }
 
-void Control::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
+void GG::Control::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 }
 
-void Control::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
+void GG::Control::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
 {
 }
 
-void Control::onTextInputEvent(std::string text)
+void GG::Control::onTextInputEvent(std::string text)
 {
 }
 
-void Control::onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY)
+void GG::Control::onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY)
 {
 }
 
-void Control::accept(Visitor& visitor)
+void GG::Control::accept(Visitor& visitor)
 {
 	visitor.visitForControl(this);
 }

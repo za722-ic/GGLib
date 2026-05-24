@@ -1,6 +1,6 @@
 #include "GG/Input/DragManager.h"
 
-void DragManager::processDrag(MouseEventType mouseEventType, int mouseX, int mouseY)
+void GG::DragManager::processDrag(MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 	bool mouseMoved = (mouseX != prevMouseX) || (mouseY != prevMouseY);
 
@@ -46,22 +46,22 @@ void DragManager::processDrag(MouseEventType mouseEventType, int mouseX, int mou
 	}
 }
 
-void DragManager::setOnClick(std::function<void(int mouseX, int mouseY)> newOnClick) // called when mouse released without moving
+void GG::DragManager::setOnClick(std::function<void(int mouseX, int mouseY)> newOnClick) // called when mouse released without moving
 {
 	onClick = newOnClick;
 }
 
-void DragManager::setOnDragStart(std::function<void(int mouseX, int mouseY)> newOnDragStart) // called first time mouse is moved whilst down
+void GG::DragManager::setOnDragStart(std::function<void(int mouseX, int mouseY)> newOnDragStart) // called first time mouse is moved whilst down
 {
 	onDragStart = newOnDragStart;
 }
 
-void DragManager::setOnDragContinue(std::function<void(int mouseX, int mouseY)> newOnDragContinue) // called each subsequent time mouse is moved whilst down after onDragStart
+void GG::DragManager::setOnDragContinue(std::function<void(int mouseX, int mouseY)> newOnDragContinue) // called each subsequent time mouse is moved whilst down after onDragStart
 {
 	onDragContinue = newOnDragContinue;
 }
 
-void DragManager::setOnDragEnd(std::function<void(int mouseX, int mouseY)> newOnDragEnd) // called when mouse released after moving it whilst mouse down
+void GG::DragManager::setOnDragEnd(std::function<void(int mouseX, int mouseY)> newOnDragEnd) // called when mouse released after moving it whilst mouse down
 {
 	onDragEnd = newOnDragEnd;
 }

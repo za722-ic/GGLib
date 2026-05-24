@@ -5,50 +5,53 @@
 #include <string>
 #include <iostream>
 
-class Text
+namespace GG
 {
-private:
-	// TODO: allow multiple fonts?
-	static TTF_TextEngine* engine;
-	static TTF_Font* font;
+	class Text
+	{
+	private:
+		// TODO: allow multiple fonts?
+		static TTF_TextEngine* engine;
+		static TTF_Font* font;
 
-	TTF_Text* ttfText = nullptr;
-	TTF_HorizontalAlignment horizontalAlignment = TTF_HORIZONTAL_ALIGN_LEFT;
+		TTF_Text* ttfText = nullptr;
+		TTF_HorizontalAlignment horizontalAlignment = TTF_HORIZONTAL_ALIGN_LEFT;
 
-	int x = 0;
-	int y = 0;
+		int x = 0;
+		int y = 0;
 
-	int w = 0;
-	int h = 0;
+		int w = 0;
+		int h = 0;
 
-	std::string strText;
+		std::string strText;
 
-public:
-	static void init(SDL_Renderer* renderer, TTF_Font* font);
-	static void close();
+	public:
+		static void init(SDL_Renderer* renderer, TTF_Font* font);
+		static void close();
 
-	Text(std::string text = "");
-	~Text();
+		Text(std::string text = "");
+		~Text();
 
-	void setColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-	SDL_Color getColor();
+		void setColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+		SDL_Color getColor();
 
-	void setText(std::string text);
-	std::string getText();
+		void setText(std::string text);
+		std::string getText();
 
-	void setWrapWidth(int wrapWidth);
-	int getWrapWidth();
+		void setWrapWidth(int wrapWidth);
+		int getWrapWidth();
 
-	void setPosition(int x, int y);
-	std::pair<int, int> getPosition();
+		void setPosition(int x, int y);
+		std::pair<int, int> getPosition();
 
-	void setHAlignment(TTF_HorizontalAlignment alignment);
-	TTF_HorizontalAlignment getHAlignment();
+		void setHAlignment(TTF_HorizontalAlignment alignment);
+		TTF_HorizontalAlignment getHAlignment();
 
-	std::pair<int, int> getDimensions();
+		std::pair<int, int> getDimensions();
 
-	void render();
+		void render();
 
-private:
-	void calculateDimensions();
-};
+	private:
+		void calculateDimensions();
+	};
+}

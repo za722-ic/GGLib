@@ -9,13 +9,13 @@
 
 #include <iostream>
 
-namespace InitsSDL 
+namespace GG::InitsSDL
 {
-    bool initSDL();
-    bool initTTF();
-    bool initMixer();
+	bool initSDL();
+	bool initTTF();
+	bool initMixer();
 
-    bool initAll();
+	bool initAll();
 
-    void quitSDL();
+	void quitSDL();
 }

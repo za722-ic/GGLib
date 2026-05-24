@@ -1,24 +1,24 @@
 #include "GG/UI/UI.h"
 #include "GG/UI/Visitors/Visitor.h"
 
-void Visitor_GrowShrink_Vertical::visitForControl(Control* control)
+void GG::Visitor_GrowShrink_Vertical::visitForControl(Control* control)
 {
 	return;
 }
 
-void Visitor_GrowShrink_Vertical::visitForLabel(Label* label)
+void GG::Visitor_GrowShrink_Vertical::visitForLabel(Label* label)
 {
 	visitForControl(label);
 }
 
 // TODO: document that this grows the children of a container, not the container itself. this has the implication that the root can never be set to grow, which makes sense
-void Visitor_GrowShrink_Vertical::visitForFlexContainer(Container* container)
+void GG::Visitor_GrowShrink_Vertical::visitForFlexContainer(Container* container)
 {
 	resizeChildrenAlongCrossAxis(container);
 	resizeChildrenAlongMainAxis(container);
 }
 
-void Visitor_GrowShrink_Vertical::visitForAbsoluteContainer(Container* container)
+void GG::Visitor_GrowShrink_Vertical::visitForAbsoluteContainer(Container* container)
 {
 	// none of the children of an absolute container are "resizable"
 	// insofar that absolute containers do not resize their children. they'll go with whatever the user defined height is.
@@ -29,7 +29,7 @@ void Visitor_GrowShrink_Vertical::visitForAbsoluteContainer(Container* container
 	// they will be asked by the breadthFirstGrowShrink() function
 }
 
-void Visitor_GrowShrink_Vertical::breadthFirstGrowShrink(Container* root)
+void GG::Visitor_GrowShrink_Vertical::breadthFirstGrowShrink(Container* root)
 {
 	std::queue<Element*> q;
 	q.push(root);
@@ -51,7 +51,7 @@ void Visitor_GrowShrink_Vertical::breadthFirstGrowShrink(Container* root)
 
 
 
-void Visitor_GrowShrink_Vertical::resizeChildrenAlongCrossAxis(Container* container)
+void GG::Visitor_GrowShrink_Vertical::resizeChildrenAlongCrossAxis(Container* container)
 {
 	// this class is for resizing vertically. this function is for resizing along the cross axis. hence, the cross axis must be vertical. so the main axis must be horizontal.
 	// if the main axis of the container is not horizotal, return
@@ -82,7 +82,7 @@ void Visitor_GrowShrink_Vertical::resizeChildrenAlongCrossAxis(Container* contai
 }
 
 // TODO: this desperately needs refactoring
-void Visitor_GrowShrink_Vertical::resizeChildrenAlongMainAxis(Container* container)
+void GG::Visitor_GrowShrink_Vertical::resizeChildrenAlongMainAxis(Container* container)
 {
 	// this class is for resizing vertically. this function is for resizing along the main axis. hence, the main axis must be vertical 
 	// if the main axis of the container is not vertical, return

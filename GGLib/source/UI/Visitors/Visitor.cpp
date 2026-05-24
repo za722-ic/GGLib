@@ -2,7 +2,7 @@
 #include "GG/UI/Container.h"
 #include "GG/UI/Control.h"
 
-void Visitor::visitForContainer(Container* container)
+void GG::Visitor::visitForContainer(Container* container)
 {
 	switch (container->layoutMode)
 	{

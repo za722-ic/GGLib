@@ -1,6 +1,6 @@
 #include "GG/UI/Controls/Slider.h"
 
-Slider::Slider()
+GG::Slider::Slider()
 {
 	setHeightAbs(6);
 	setMinWidth(170);
@@ -13,9 +13,11 @@ Slider::Slider()
 		if (isCoordInSliderBounds(mouseX, mouseY))
 			value = (int)std::roundf(MoreMath::map(mouseX, screenX, screenX + w, min, max));
 		});
+
 	dragManager.setOnDragStart([&](int mouseX, int mouseY) {
 		isSliderBeingDragged = isCoordInSliderBounds(mouseX, mouseY);
 		});
+
 	dragManager.setOnDragContinue([&](int mouseX, int mouseY) {
 		// we only care if the user _started_ dragging within our bounds
 		if (!isSliderBeingDragged) return;
@@ -30,25 +32,26 @@ Slider::Slider()
 		float snappedValue = intervalsFromStart * interval + min;
 		value = MoreMath::clamp(snappedValue, min, max);
 		});
+
 	dragManager.setOnDragEnd([&](int mouseX, int mouseY) {
 		isSliderBeingDragged = false;
 		});
 }
 
-void Slider::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
+void GG::Slider::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 	dragManager.processDrag(mouseEventType, mouseX, mouseY);
 
 	isMouseHovering = isCoordInSliderBounds(mouseX, mouseY);
 }
 
-void Slider::onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY)
+void GG::Slider::onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY)
 {
 	if (isCoordInSliderBounds(mouseX, mouseY))
 		value = MoreMath::clamp(value + interval * scrollY, min, max);
 }
 
-void Slider::render(Canvas* canvas)
+void GG::Slider::render(Canvas* canvas)
 {
 	int x = screenX;
 	int y = screenY;
@@ -96,7 +99,7 @@ void Slider::render(Canvas* canvas)
 }
 
 // TODO: shoiuld this just get placed in Element?
-bool Slider::isCoordInSliderBounds(int coordX, int coordY)
+bool GG::Slider::isCoordInSliderBounds(int coordX, int coordY)
 {
 	if (coordY < screenY || coordY > screenY + h) return false;
 	if (coordX < screenX || coordX > screenX + w) return false;

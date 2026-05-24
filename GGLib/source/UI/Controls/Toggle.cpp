@@ -1,6 +1,6 @@
 #include "GG/UI/Controls/Toggle.h"
 
-Toggle::Toggle()
+GG::Toggle::Toggle()
 {
 	radius = 10;
 	setHeightAbs(radius * 2);
@@ -11,20 +11,20 @@ Toggle::Toggle()
 	setOnClick([&]() { isChecked = !isChecked;  });
 }
 
-void Toggle::setOnClick(std::function<void()> func)
+void GG::Toggle::setOnClick(std::function<void()> func)
 {
 	onClick = func;
 }
-void Toggle::setOnMouseEnter(std::function<void()> func)
+void GG::Toggle::setOnMouseEnter(std::function<void()> func)
 {
 	onMouseEnter = func;
 }
-void Toggle::setOnMouseExit(std::function<void()> func)
+void GG::Toggle::setOnMouseExit(std::function<void()> func)
 {
 	onMouseExit = func;
 }
 
-void Toggle::render(Canvas* canvas)
+void GG::Toggle::render(Canvas* canvas)
 {
 	// render body
 	if (isChecked)
@@ -64,7 +64,7 @@ void Toggle::render(Canvas* canvas)
 		trianglesPerCorner);
 }
 
-void Toggle::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
+void GG::Toggle::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 	// TODO: the same logic is in button -- refactor
 	wasInBounds = isInBounds;

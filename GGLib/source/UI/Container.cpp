@@ -1,6 +1,6 @@
 #include "GG/UI/Container.h"
 
-void Container::add(Element* newChild)
+void GG::Container::add(Element* newChild)
 {
 	children.push_back(newChild);
 	newChild->parent = this;
@@ -13,24 +13,24 @@ void Container::add(Element* newChild)
 	}
 }
 
-void Container::remove(Control* child)
+void GG::Container::remove(Element* child)
 {
 	std::erase(children, child);
 }
 
-void Container::destroySelfAndChildren()
+void GG::Container::destroySelfAndChildren()
 {
 	Visitor_DestroySelfAndChildren destroyer;
 
 	accept(destroyer);
 }
 
-void Container::accept(Visitor& visitor) override
+void GG::Container::accept(Visitor& visitor)
 {
 	visitor.visitForContainer(this);
 }
 
-void Container::calculateLayout()
+void GG::Container::calculateLayout()
 {
 	Visitor_CalculateMinimumSizing visitor_calculateMinimumSizing;
 	accept(visitor_calculateMinimumSizing);
@@ -78,7 +78,7 @@ void Container::calculateLayout()
 	//accept(visitor_Positions);
 }
 
-virtual void Container::render(Canvas* canvas) override
+void GG::Container::render(Canvas* canvas)
 {
 	// rener this element
 	Element::render(canvas);

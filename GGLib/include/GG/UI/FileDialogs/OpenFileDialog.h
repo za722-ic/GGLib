@@ -2,13 +2,16 @@
 
 #include "GG/UI/FileDialogs/FileDialog.h"
 
-class OpenFileDialog : public FileDialog
+namespace GG
 {
-public:
-	std::vector<FileFilter> filters;
+	class OpenFileDialog : public FileDialog
+	{
+	public:
+		std::vector<FileFilter> filters;
 
-	bool acceptMultiple = false;
+		bool acceptMultiple = false;
 
-public:
-	void showDialog(SDL_Window* window) override;
-};
+	public:
+		void showDialog(SDL_Window* window) override;
+	};
+}

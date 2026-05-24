@@ -1,6 +1,6 @@
 #include "GG/UI/FileDialogs/OpenFolderDialog.h"
 
-void OpenFolderDialog::showDialog(SDL_Window* window)
+void GG::OpenFolderDialog::showDialog(SDL_Window* window)
 {
 	SDL_ShowOpenFolderDialog(
 		FileDialog::dialogCallback,

@@ -1,21 +1,20 @@
 #include "GG/UI/Controls/Label.h"
 
-
-Label::Label(std::string textStr)
+GG::Label::Label(std::string textStr)
 {
 	tttext = std::make_unique<Text>(textStr);
 }
 
-void Label::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
+void GG::Label::onMouseEvent(GG::MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 }
 
-void Label::accept(Visitor& visitor)
+void GG::Label::accept(GG::Visitor& visitor)
 {
 	visitor.visitForLabel(this);
 }
 
-void Label::render(Canvas* canvas)
+void GG::Label::render(GG::Canvas* canvas)
 {
 	// draw back
 	canvas->setColor(color);
@@ -58,16 +57,16 @@ void Label::render(Canvas* canvas)
 	SDL_SetRenderClipRect(canvas->getSDLRenderer(), NULL);
 }
 
-void Label::setText(std::string newText)
+void GG::Label::setText(std::string newText)
 {
 	tttext->setText(newText);
 }
-std::string Label::getText()
+std::string GG::Label::getText()
 {
 	return tttext->getText();
 }
 
-void Label::setHAlignment(HAlignmentMode alignment)
+void GG::Label::setHAlignment(HAlignmentMode alignment)
 {
 	switch (alignment)
 	{
@@ -86,21 +85,21 @@ void Label::setHAlignment(HAlignmentMode alignment)
 	}
 }
 
-void Label::setVAlignment(VAlignmentMode alignment)
+void GG::Label::setVAlignment(VAlignmentMode alignment)
 {
 	verticalAlignmentMode = alignment;
 }
 
-void Label::setForeColor(SDL_Color color)
+void GG::Label::setForeColor(SDL_Color color)
 {
 	tttext->setColor(color.r, color.g, color.b, color.a);
 }
-void Label::setBackColor(SDL_Color color)
+void GG::Label::setBackColor(SDL_Color color)
 {
 	this->color = color;
 }
 
-std::pair<int, int> Label::getTextDimensions()
+std::pair<int, int> GG::Label::getTextDimensions()
 {
 	return tttext->getDimensions();
 }

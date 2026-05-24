@@ -9,29 +9,32 @@
 #include "GG/MoreMath/MoreMath.h"
 #include "GG/UI/Element.h"
 
-class Container : public Element
+namespace GG
 {
-public: // TODO: protected
-	std::vector<Element*> children;
+	class Container : public Element
+	{
+	public: // TODO: protected
+		std::vector<Element*> children;
 
-	LayoutDirection layoutDirection;
+		LayoutDirection layoutDirection;
 
-	VAlignmentMode verticalAlignmentMode;
-	HAlignmentMode horizontalAlignmentMode;
+		VAlignmentMode verticalAlignmentMode;
+		HAlignmentMode horizontalAlignmentMode;
 
-	LayoutMode layoutMode = LayoutMode::FLEX;
+		LayoutMode layoutMode = LayoutMode::FLEX;
 
 
-	// TODO: if adding a child, hook it up to input manager events (can check if an element is a child using a visitor). likewise, when removing/deleting a child, remove it from listening to events. This would potentially mean a lot of listeners that do nothing, but since we're only adding controls, we can presume its not _too_ wasteful.
-	void add(Element* newChild);
+		// TODO: if adding a child, hook it up to input manager events (can check if an element is a child using a visitor). likewise, when removing/deleting a child, remove it from listening to events. This would potentially mean a lot of listeners that do nothing, but since we're only adding controls, we can presume its not _too_ wasteful.
+		void add(Element* newChild);
 
-	void remove(Control* child);
+		void remove(Element* child);
 
-	void destroySelfAndChildren();
+		void destroySelfAndChildren();
 
-	void accept(Visitor& visitor) override;
+		void accept(Visitor& visitor) override;
 
-	void calculateLayout();
+		void calculateLayout();
 
-	virtual void render(Canvas* canvas) override;
-};
+		virtual void render(Canvas* canvas) override;
+	};
+}

@@ -2,9 +2,9 @@
 
 #include "GG/Utilities/Timer.h"
 
-std::vector<Timer*> Timer::timers;
+std::vector<GG::Timer*> GG::Timer::timers;
 
-Timer::Timer(double duration, bool countDown) : timerDuration(duration), isCountingDown(countDown)
+GG::Timer::Timer(double duration, bool countDown) : timerDuration(duration), isCountingDown(countDown)
 {
 	resetTimer();
 
@@ -14,49 +14,49 @@ Timer::Timer(double duration, bool countDown) : timerDuration(duration), isCount
 	onTimerEnd = NULL;
 }
 
-Timer::~Timer()
+GG::Timer::~Timer()
 {
 	auto it = std::find(timers.begin(), timers.end(), this);
 	timers.erase(it);
 }
 
-void Timer::startTimer()
+void GG::Timer::startTimer()
 {
 	t = isCountingDown ? timerDuration : 0.0f;
 	isRunning = true;
 	isStarted = true;
 }
 
-void Timer::stopTimer()
+void GG::Timer::stopTimer()
 {
 	t = isCountingDown ? 0.0f : timerDuration; // in case t < 0 or > timerDuration after the most recent tick
 	isRunning = false;
 	isStarted = false;
 }
 
-void Timer::resetTimer()
+void GG::Timer::resetTimer()
 {
 	t = isCountingDown ? timerDuration : 0.0f;
 	isRunning = false;
 	isStarted = false;
 }
 
-void Timer::pauseTimer()
+void GG::Timer::pauseTimer()
 {
 	isRunning = false;
 	if (onTimerPause) onTimerPause();
 }
 
-void Timer::unpauseTimer()
+void GG::Timer::unpauseTimer()
 {
 	if (isStarted)
 	{
 		isRunning = true;
 		if (onTimerUnpause) onTimerUnpause();
-	}	
+	}
 }
 
-void Timer::tickTimer(double deltaTime)
+void GG::Timer::tickTimer(double deltaTime)
 {
 	if (isRunning) t += isCountingDown ? -deltaTime : deltaTime;
 	else return;
@@ -72,42 +72,42 @@ void Timer::tickTimer(double deltaTime)
 	}
 }
 
-void Timer::setOnTimerTick(std::function<void()> func)
+void GG::Timer::setOnTimerTick(std::function<void()> func)
 {
 	onTimerTick = func;
 }
 
-void Timer::setOnTimerEnd(std::function<void()> func)
+void GG::Timer::setOnTimerEnd(std::function<void()> func)
 {
 	onTimerEnd = func;
 }
 
-void Timer::setOnTimerPause(std::function<void()> func)
+void GG::Timer::setOnTimerPause(std::function<void()> func)
 {
 	onTimerPause = func;
 }
 
-void Timer::setOnTimerUnpause(std::function<void()> func)
+void GG::Timer::setOnTimerUnpause(std::function<void()> func)
 {
 	onTimerUnpause = func;
 }
 
-double Timer::getT() const
+double GG::Timer::getT() const
 {
 	return t;
 }
 
-double Timer::getTms() const
+double GG::Timer::getTms() const
 {
 	return t * 1000.0f;
 }
 
-std::string  Timer::getTAsString() const
+std::string GG::Timer::getTAsString() const
 {
 	return tToString(t);
 }
 
-double Timer::getPercentage() const
+double GG::Timer::getPercentage() const
 {
 	if (isCountingDown)
 	{
@@ -119,44 +119,44 @@ double Timer::getPercentage() const
 	}
 }
 
-double Timer::getInversePercentage() const
+double GG::Timer::getInversePercentage() const
 {
 	return 1 - getPercentage();
 }
 
-bool Timer::getIsRunning() const
+bool GG::Timer::getIsRunning() const
 {
 	return isRunning;
 }
 
-bool Timer::getIsPaused() const
+bool GG::Timer::getIsPaused() const
 {
 	return isStarted && !isRunning;
 }
 
-bool Timer::getIsStarted() const
+bool GG::Timer::getIsStarted() const
 {
 	return isStarted;
 }
 
-double Timer::getDuration() const
+double GG::Timer::getDuration() const
 {
 	return timerDuration;
 }
 
-void Timer::setDuration(double newDuration)
+void GG::Timer::setDuration(double newDuration)
 {
 	timerDuration = newDuration;
 	t = isCountingDown ? timerDuration : 0.0f;
 }
 
-void Timer::setCountDown(bool countDown)
+void GG::Timer::setCountDown(bool countDown)
 {
 	isCountingDown = countDown;
 }
 
 
-std::string Timer::tToString(double t)
+std::string GG::Timer::tToString(double t)
 {
 	// e.g. if t = 123.1222131 then return "2:03.122"
 	// probably should generalise this at some point for different precisions, and hours & days
@@ -170,4 +170,3 @@ std::string Timer::tToString(double t)
 
 	return outStr.str();
 }
-

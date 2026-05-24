@@ -6,34 +6,36 @@
 #include "GG/UI/Enums.h"
 #include "GG/Rendering/Text.h"
 
-
-class Label: public Control
+namespace GG
 {
-public:
-	std::unique_ptr<Text> tttext = nullptr;
+	class Label : public Control
+	{
+	public:
+		std::unique_ptr<Text> tttext = nullptr;
 
-	VAlignmentMode verticalAlignmentMode = VAlignmentMode::TOP;
+		VAlignmentMode verticalAlignmentMode = VAlignmentMode::TOP;
 
-public:
-	// TODO: make use of width, height --> crop text with "..." if out of bounds (how do other libs handle this?)
+	public:
+		// TODO: make use of width, height --> crop text with "..." if out of bounds (how do other libs handle this?)
 
-	Label(std::string textStr = "");
+		Label(std::string textStr = "");
 
-	void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
+		void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
 
-	void accept(Visitor& visitor) override;
+		void accept(Visitor& visitor) override;
 
-	void render(Canvas* canvas) override;
+		void render(Canvas* canvas) override;
 
-	void setText(std::string newText);
-	std::string getText();
-	
-	void setHAlignment(HAlignmentMode alignment);
+		void setText(std::string newText);
+		std::string getText();
 
-	void setVAlignment(VAlignmentMode alignment);
+		void setHAlignment(HAlignmentMode alignment);
 
-	void setForeColor(SDL_Color color);
-	void setBackColor(SDL_Color color);
+		void setVAlignment(VAlignmentMode alignment);
 
-	std::pair<int, int> getTextDimensions();
-};
+		void setForeColor(SDL_Color color);
+		void setBackColor(SDL_Color color);
+
+		std::pair<int, int> getTextDimensions();
+	};
+}

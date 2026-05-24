@@ -1,16 +1,16 @@
 #include "GG/UI/UI.h"
 #include "GG/UI/Visitors/Visitor.h"
 
-void Visitor_CalculateMinimumSizing::visitForControl(Control* control)
+void GG::Visitor_CalculateMinimumSizing::visitForControl(Control* control)
 {
 }
 
-void Visitor_CalculateMinimumSizing::visitForLabel(Label* label)
+void GG::Visitor_CalculateMinimumSizing::visitForLabel(Label* label)
 {
 	visitForControl(label);
 }
 
-void Visitor_CalculateMinimumSizing::visitForFlexContainer(Container* container)
+void GG::Visitor_CalculateMinimumSizing::visitForFlexContainer(Container* container)
 {
 	// calculate size of children first (depth first order)
 	for (auto child : container->children) child->accept(*this);
@@ -58,7 +58,7 @@ void Visitor_CalculateMinimumSizing::visitForFlexContainer(Container* container)
 	}
 }
 
-void Visitor_CalculateMinimumSizing::visitForAbsoluteContainer(Container* container)
+void GG::Visitor_CalculateMinimumSizing::visitForAbsoluteContainer(Container* container)
 {
 	// calculate size of children first (depth first order)
 	for (auto child : container->children) child->accept(*this);

@@ -10,26 +10,29 @@
 
 #include "GG/MoreMath/MoreMath.h"
 
-class AudioManager
+namespace GG
 {
-private:
-    std::weak_ptr<std::unordered_map<std::string, MIX_Audio*>> audioPtrs;
+    class AudioManager
+    {
+    private:
+        std::weak_ptr<std::unordered_map<std::string, MIX_Audio*>> audioPtrs;
 
-    MIX_Mixer* mixer;
+        MIX_Mixer* mixer;
 
-    std::vector<MIX_Track*> tracks;
+        std::vector<MIX_Track*> tracks;
 
-    size_t currTrackIndex = 0;
+        size_t currTrackIndex = 0;
 
-public:
-    void init();
+    public:
+        void init();
 
-    MIX_Mixer* getMixer() const;
+        MIX_Mixer* getMixer() const;
 
-    void setAudioPtrs(std::weak_ptr<std::unordered_map<std::string, MIX_Audio*>> newAudioPtrs);
+        void setAudioPtrs(std::weak_ptr<std::unordered_map<std::string, MIX_Audio*>> newAudioPtrs);
 
-    void playAudio(std::string fileName);
-    
-    void setVolume(float percentage);
-};
+        void playAudio(std::string fileName);
+
+        void setVolume(float percentage);
+    };
+}
 

@@ -1,6 +1,6 @@
 #include "GG/Input/InputManager.h"
 
-void InputManager::init(SDL_Renderer* newRenderer)
+void GG::InputManager::init(SDL_Renderer* newRenderer)
 {
 	window = SDL_GetRenderWindow(newRenderer);
 	renderer = newRenderer;
@@ -8,12 +8,12 @@ void InputManager::init(SDL_Renderer* newRenderer)
 	SDL_StartTextInput(window);
 }
 
-InputManager::~InputManager()
+GG::InputManager::~InputManager()
 {
 	SDL_StopTextInput(window);
 }
 
-bool InputManager::pollEvents()
+bool GG::InputManager::pollEvents()
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e) != 0)
@@ -64,96 +64,96 @@ bool InputManager::pollEvents()
 	return true;
 }
 
-void InputManager::addKeyEventListener(KeyEventListener* keyEventListener)
+void GG::InputManager::addKeyEventListener(GG::KeyEventListener* keyEventListener)
 {
 	keyEventListeners.push_back(keyEventListener);
 }
-void InputManager::removeKeyEventListener(KeyEventListener* keyEventListener)
+void GG::InputManager::removeKeyEventListener(GG::KeyEventListener* keyEventListener)
 {
 	keyEventListeners.remove(keyEventListener);
 }
 
-void InputManager::addMouseEventListener(MouseEventListener* mouseEventListener)
+void GG::InputManager::addMouseEventListener(GG::MouseEventListener* mouseEventListener)
 {
 	mouseEventListeners.push_back(mouseEventListener);
 }
-void InputManager::removeMouseEventListener(MouseEventListener* mouseEventListener)
+void GG::InputManager::removeMouseEventListener(GG::MouseEventListener* mouseEventListener)
 {
-    mouseEventListeners.remove(mouseEventListener);
+	mouseEventListeners.remove(mouseEventListener);
 }
 
-void InputManager::addTextInputEventListener(TextInputEventListener* textInputEventListener)
+void GG::InputManager::addTextInputEventListener(GG::TextInputEventListener* textInputEventListener)
 {
 	textInputEventListeners.push_back(textInputEventListener);
 }
 
-void InputManager::removeTextInputEventListener(TextInputEventListener* textInputEventListener)
+void GG::InputManager::removeTextInputEventListener(GG::TextInputEventListener* textInputEventListener)
 {
 	textInputEventListeners.remove(textInputEventListener);
 }
 
-void InputManager::addScrollEventListener(ScrollEventListener* scrollEventListener)
+void GG::InputManager::addScrollEventListener(GG::ScrollEventListener* scrollEventListener)
 {
 	scrollEventListeners.push_back(scrollEventListener);
 }
 
-void InputManager::removeScrollEventListener(ScrollEventListener* scrollEventListener)
+void GG::InputManager::removeScrollEventListener(GG::ScrollEventListener* scrollEventListener)
 {
 	scrollEventListeners.remove(scrollEventListener);
 }
 
-const Uint8* InputManager::getKeyboardState()
+const Uint8* GG::InputManager::getKeyboardState()
 {
-//	SDL_PumpEvents(); // NOTE: as per the documentation here: https://wiki.libsdl.org/SDL2/SDL_GetKeyboardState I should cal SDL_PumpEvents before SDL_GetKeyboardState. But as per here: https://wiki.libsdl.org/SDL2/SDL_PumpEvents SDL_PollEvent() above already calls this implicitly. I do it here anyway just to be safe.
-//	return SDL_GetKeyboardState(NULL);
+	//	SDL_PumpEvents(); // NOTE: as per the documentation here: https://wiki.libsdl.org/SDL2/SDL_GetKeyboardState I should cal SDL_PumpEvents before SDL_GetKeyboardState. But as per here: https://wiki.libsdl.org/SDL2/SDL_PumpEvents SDL_PollEvent() above already calls this implicitly. I do it here anyway just to be safe.
+	//	return SDL_GetKeyboardState(NULL);
 	return nullptr;
 }
 
-int InputManager::getMouseX()
+int GG::InputManager::getMouseX()
 {
 	return mouseX;
 }
 
-int InputManager::getMouseY()
+int GG::InputManager::getMouseY()
 {
 	return mouseY;
 }
 
-void InputManager::notifyKeyEventListeners(KeyEventType keyEventType, SDL_Keycode key)
+void GG::InputManager::notifyKeyEventListeners(GG::KeyEventType keyEventType, SDL_Keycode key)
 {
-	for (KeyEventListener* keyEventListenerPtr : keyEventListeners)
-	{		
+	for (GG::KeyEventListener* keyEventListenerPtr : keyEventListeners)
+	{
 		keyEventListenerPtr->onKeyEvent(keyEventType, key);
 	}
 }
 
-void InputManager::notifyMouseEventListeners(MouseEventType mouseEventType)
+void GG::InputManager::notifyMouseEventListeners(GG::MouseEventType mouseEventType)
 {
 	pollMousePosition();
 
-	for (MouseEventListener* mouseEventListenerPtr : mouseEventListeners)
+	for (GG::MouseEventListener* mouseEventListenerPtr : mouseEventListeners)
 	{
 		mouseEventListenerPtr->onMouseEvent(mouseEventType, mouseX, mouseY);
 	}
 }
 
-void InputManager::notifyTextInputEventListeners(std::string text)
+void GG::InputManager::notifyTextInputEventListeners(std::string text)
 {
-	for (TextInputEventListener* textInputEventListenerPtr : textInputEventListeners)
-	{		
+	for (GG::TextInputEventListener* textInputEventListenerPtr : textInputEventListeners)
+	{
 		textInputEventListenerPtr->onTextInputEvent(text);
 	}
 }
 
-void InputManager::notifyScrollEventListeners(int mouseX, int mouseY, float scrollX, float scrollY)
+void GG::InputManager::notifyScrollEventListeners(int mouseX, int mouseY, float scrollX, float scrollY)
 {
-	for (ScrollEventListener* scrollEventListenerPtr: scrollEventListeners)
-	{		
+	for (GG::ScrollEventListener* scrollEventListenerPtr : scrollEventListeners)
+	{
 		scrollEventListenerPtr->onScrollEvent(mouseX, mouseY, scrollX, scrollY);
 	}
 }
 
-void InputManager::pollMousePosition()
+void GG::InputManager::pollMousePosition()
 {
 	float windowMouseX, windowMouseY;
 	SDL_GetMouseState(&windowMouseX, &windowMouseY);

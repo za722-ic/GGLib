@@ -1,11 +1,11 @@
 #include "GG/UI/UI.h"
 #include "GG/UI/Visitors/Visitor.h"
 
-void Visitor_Autosize_Horizontal::visitForControl(Control* control)
+void GG::Visitor_Autosize_Horizontal::visitForControl(Control* control)
 {
 }
 
-void Visitor_Autosize_Horizontal::visitForLabel(Label* label)
+void GG::Visitor_Autosize_Horizontal::visitForLabel(Label* label)
 {
 	// if autosize enabled, then control width depends on text width
 	// (if autosize disabled, then text width (wrapWidth) depends on label width --> will be set in wrap pass)
@@ -31,7 +31,7 @@ void Visitor_Autosize_Horizontal::visitForLabel(Label* label)
 }
 
 // if the container is set to autosize, then resize it accordingly
-void Visitor_Autosize_Horizontal::visitForFlexContainer(Container* container)
+void GG::Visitor_Autosize_Horizontal::visitForFlexContainer(Container* container)
 {
 	// first, perform autosizing of container's children (depth first order)
 	for (auto child : container->children) child->accept(*this);
@@ -61,7 +61,7 @@ void Visitor_Autosize_Horizontal::visitForFlexContainer(Container* container)
 
 	// only adjust the size if container is autosize 
 	// TODO: above calculations are redundant if horizontalAutosize is false. this is easy to solve, but the code could be more elegant if the below clamping operation can be skipped... so can it?
-	if (container->horizontalAutosize) 
+	if (container->horizontalAutosize)
 		container->w = totalWidth;
 
 	// clamp to between min/max width
@@ -74,7 +74,7 @@ void Visitor_Autosize_Horizontal::visitForFlexContainer(Container* container)
 // (e.g, if xAbs==50 for some child, it must stay the same after we resize the container. since locations are measured 
 // from the top-left, we cannot move the left or top of the container. so we only look at the container's bottom/right. 
 // hence, we look for the max bottom and max right)
-void Visitor_Autosize_Horizontal::visitForAbsoluteContainer(Container* container)
+void GG::Visitor_Autosize_Horizontal::visitForAbsoluteContainer(Container* container)
 {
 	// first, perform autosizing of container's children (depth first order)
 	for (auto child : container->children) child->accept(*this);

@@ -3,18 +3,18 @@
 #include <algorithm>
 #include <random>
 
-float MoreMath::lerp(float a, float b, float t)
+float GG::MoreMath::lerp(float a, float b, float t)
 {
 	return a + (b - a) * t;
 }
 
-float MoreMath::map(float val, float domainLower, float domainUpper, float rangeLower, float rangeUpper)
+float GG::MoreMath::map(float val, float domainLower, float domainUpper, float rangeLower, float rangeUpper)
 {
 	float frac = (val - domainLower) / (domainUpper - domainLower);
 	return rangeLower + (rangeUpper - rangeLower) * frac;
 }
 
-float MoreMath::clamp(float val, float min, float max)
+float GG::MoreMath::clamp(float val, float min, float max)
 {
 	// why not use std::clamp? because it is undefined for min > max (documentation: https://en.cppreference.com/cpp/algorithm/clamp)
 	// i want it to be well defined that if min > max, return min
@@ -23,17 +23,17 @@ float MoreMath::clamp(float val, float min, float max)
 	return std::max(std::min(val, max), min);
 }
 
-float MoreMath::mapAndClamp(float val, float domainLower, float domainUpper, float rangeLower, float rangeUpper)
+float GG::MoreMath::mapAndClamp(float val, float domainLower, float domainUpper, float rangeLower, float rangeUpper)
 {
 	return clamp(map(val, domainLower, domainUpper, rangeLower, rangeUpper), rangeLower, rangeUpper);
 }
 
-float MoreMath::step(float x, float stepCenter)
+float GG::MoreMath::step(float x, float stepCenter)
 {
 	return x < stepCenter ? 0.0f : 1.0f;
 }
 
-float MoreMath::biLerp(float p00, float p01, float p10, float p11, float u, float v)
+float GG::MoreMath::biLerp(float p00, float p01, float p10, float p11, float u, float v)
 {
 	float lerp0 = lerp(p00, p01, v); // left side
 	float lerp1 = lerp(p10, p11, v); // right side
@@ -41,7 +41,7 @@ float MoreMath::biLerp(float p00, float p01, float p10, float p11, float u, floa
 	return lerp(lerp0, lerp1, u);
 }
 
-float MoreMath::triLerp(float p000, float p001, float p010, float p011, float p100, float p101, float p110, float p111, float u, float v, float w)
+float GG::MoreMath::triLerp(float p000, float p001, float p010, float p011, float p100, float p101, float p110, float p111, float u, float v, float w)
 {
 	float lerp0 = biLerp(p000, p001, p010, p011, v, w); // bilinear interpolation of left face
 	float lerp1 = biLerp(p100, p101, p110, p111, v, w); // bilinear interpolation of right face
@@ -49,7 +49,7 @@ float MoreMath::triLerp(float p000, float p001, float p010, float p011, float p1
 	return lerp(lerp0, lerp1, u);
 }
 
-int MoreMath::random(int min, int max) {
+int GG::MoreMath::random(int min, int max) {
 	// this function is adapted from the example here: https://en.cppreference.com/cpp/numeric/random/uniform_int_distribution
 
 

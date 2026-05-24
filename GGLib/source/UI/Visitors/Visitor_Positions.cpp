@@ -1,18 +1,18 @@
 #include "GG/UI/UI.h"
 #include "GG/UI/Visitors/Visitor.h"
 
-void Visitor_Positions::visitForLabel(Label* label)
+void GG::Visitor_Positions::visitForLabel(Label* label)
 {
 	visitForControl(label);
 }
 
-void Visitor_Positions::visitForControl(Control* control)
+void GG::Visitor_Positions::visitForControl(Control* control)
 {
 	control->screenX = control->x + offsetX;
 	control->screenY = control->y + offsetY;
 }
 
-void Visitor_Positions::visitForAbsoluteContainer(Container* container)
+void GG::Visitor_Positions::visitForAbsoluteContainer(Container* container)
 {
 	container->screenX = container->x + offsetX;
 	container->screenY = container->y + offsetY;
@@ -32,7 +32,7 @@ void Visitor_Positions::visitForAbsoluteContainer(Container* container)
 	}
 }
 
-void Visitor_Positions::visitForFlexContainer(Container* container)
+void GG::Visitor_Positions::visitForFlexContainer(Container* container)
 {
 	container->screenX = container->x + offsetX;
 	container->screenY = container->y + offsetY;
@@ -133,4 +133,3 @@ void Visitor_Positions::visitForFlexContainer(Container* container)
 			offsetY += child->h + container->gap;
 	}
 }
-

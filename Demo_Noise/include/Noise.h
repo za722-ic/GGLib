@@ -1,24 +1,24 @@
 #pragma once
 
-#include "GG/Core/GGApp.h"
+#include "GG/Core/Application.h"
 
 #include "AssetManagerWrapper.h"
 #include "PerlinViewer.h"
 
-class Noise: public GGApp, KeyEventListener, MouseEventListener
+class Noise: public GG::Application, GG::KeyEventListener, GG::MouseEventListener
 {
 private:
 	std::shared_ptr<AssetManagerWrapper> assetManagerWrapper;
 
-	Container* root;
-	Label *lblWindowSize, *lblCursorPos;
-	Label* lblPosX, * lblPosY, * lblPosZ;
-	Slider* sliderVelX, * sliderVelY, * sliderVelZ;
-	Slider* sliderOctaves, *sliderInitialFrequency, *sliderInitialAmplitude;
-	Slider* sliderResolutionDivision;
-	Toggle* cbRoundNoise;
-	Label* lblFPS;
-	Button *btnResetPosition, *btnResetVelocity;
+	GG::Container* root;
+	GG::Label *lblWindowSize, *lblCursorPos;
+	GG::Label* lblPosX, * lblPosY, * lblPosZ;
+	GG::Slider* sliderVelX, * sliderVelY, * sliderVelZ;
+	GG::Slider* sliderOctaves, *sliderInitialFrequency, *sliderInitialAmplitude;
+	GG::Slider* sliderResolutionDivision;
+	GG::Toggle* cbRoundNoise;
+	GG::Label* lblFPS;
+	GG::Button *btnResetPosition, *btnResetVelocity;
 	PerlinViewer* perlinViewer;
 
 	float frameTimesAcc = 0.0f;
@@ -35,14 +35,13 @@ private:
 	void onLoop() override;
 	void onQuit() override;
 
-	void onKeyEvent(KeyEventType keyEventType, SDL_Keycode key) override;
-	void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
+	void onKeyEvent(GG::KeyEventType keyEventType, SDL_Keycode key) override;
+	void onMouseEvent(GG::MouseEventType mouseEventType, int mouseX, int mouseY) override;
 
-	void sizeLabel(Label* label);
-	void sizeButton(Button* button);
-	Label* createLabel(std::string labelText = "-");
-	Slider* createSlider(float min = 0, float max = 100, float interval = 1, float startingVal = 30);
-	Container *createPanel(std::string panelTitle, Button *btnReset, std::vector<Control*> controls, std::vector<std::string> controlLabels);
-	Button* createResetButton();
+	void sizeButton(GG::Button* button);
+	GG::Label* createLabel(std::string labelText = "-");
+	GG::Slider* createSlider(float min = 0, float max = 100, float interval = 1, float startingVal = 30);
+	GG::Container *createPanel(std::string panelTitle, GG::Button *btnReset, std::vector<GG::Control*> controls, std::vector<std::string> controlLabels);
+	GG::Button* createResetButton();
 	void defineElements();
 };

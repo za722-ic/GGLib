@@ -2,12 +2,14 @@
 
 #include "GG/UI/FileDialogs/FileDialog.h"
 
-class OpenFolderDialog : public FileDialog
+namespace GG
 {
-public:
-	bool acceptMultiple = false;
+	class OpenFolderDialog : public FileDialog
+	{
+	public:
+		bool acceptMultiple = false;
 
-public:
-	void showDialog(SDL_Window* window) override;
-};
-
+	public:
+		void showDialog(SDL_Window* window) override;
+	};
+}

@@ -1,6 +1,6 @@
 #include "GG/UI/FileDialogs/FileDialog.h"
 
-void SDLCALL FileDialog::dialogCallback(void* userdata, const char* const* filelist, int filter)
+void SDLCALL GG::FileDialog::dialogCallback(void* userdata, const char* const* filelist, int filter)
 {
 	// in showDialog(), we set userData to "this" i.e, the instance of the dialog class that made the call
 	// here we retrieve that instance

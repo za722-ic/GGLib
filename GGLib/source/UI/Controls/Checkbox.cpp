@@ -1,6 +1,6 @@
 #include "GG/UI/Controls/Checkbox.h"
 
-Checkbox::Checkbox()
+GG::Checkbox::Checkbox()
 {
 	setOnClick([&]() { isChecked = !isChecked; });
 	setOnMouseEnter([&]() {isMouseOver = true; });
@@ -9,7 +9,7 @@ Checkbox::Checkbox()
 	setWidthAbs(h); // TODO hack
 }
 
-void Checkbox::render(Canvas* canvas)
+void GG::Checkbox::render(GG::Canvas* canvas)
 {
 	int x = screenX;
 	int y = screenY;
@@ -34,7 +34,7 @@ void Checkbox::render(Canvas* canvas)
 		canvas->fillRect(x + checkedPadding, y + checkedPadding, h - 2 * checkedPadding, h - 2 * checkedPadding);
 	}
 
-	canvas->setAlignment(Canvas::Alignment::CENTER_LEFT);
+	canvas->setAlignment(GG::Canvas::Alignment::CENTER_LEFT);
 	canvas->drawString(text, x + h + checkedPadding, y + h / 2);
-	canvas->setAlignment(Canvas::Alignment::TOP_LEFT);
+	canvas->setAlignment(GG::Canvas::Alignment::TOP_LEFT);
 }

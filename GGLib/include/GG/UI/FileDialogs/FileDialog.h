@@ -8,20 +8,23 @@
 #include <cassert>
 #include <iostream>
 
-typedef SDL_DialogFileFilter FileFilter;
-
-class FileDialog
+namespace GG
 {
-public:
-	std::string initialDirectory;
-	std::function<void(const std::vector<std::string> files)> onDialogClose;
+	typedef SDL_DialogFileFilter FileFilter;
 
-public:
-	// this function returns immediately
-	// once the file dialog is closed, dialogCallback() is called
-	// which in-turn calls the user's onDialogClose
-	virtual void showDialog(SDL_Window* window) = 0;
+	class FileDialog
+	{
+	public:
+		std::string initialDirectory;
+		std::function<void(const std::vector<std::string> files)> onDialogClose;
 
-protected:
-	static void SDLCALL dialogCallback(void* userdata, const char* const* filelist, int filter);
-};
+	public:
+		// this function returns immediately
+		// once the file dialog is closed, dialogCallback() is called
+		// which in-turn calls the user's onDialogClose
+		virtual void showDialog(SDL_Window* window) = 0;
+
+	protected:
+		static void SDLCALL dialogCallback(void* userdata, const char* const* filelist, int filter);
+	};
+}

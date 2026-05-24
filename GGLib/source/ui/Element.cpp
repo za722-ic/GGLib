@@ -1,48 +1,47 @@
 #include "GG/UI/Element.h"
 
+GG::InputManager* GG::Element::inputManager = nullptr;
 
-InputManager* Element::inputManager = nullptr;
-
-void Element::setChildGap(int gap)
+void GG::Element::setChildGap(int gap)
 {
 	this->gap = gap;
 }
 
-void Element::setMinWidth(int minW) { minWidth = minW; }
-void Element::setMinWidthAuto() { minWidth = std::nullopt; }
-int Element::getMinWidth()
+void GG::Element::setMinWidth(int minW) { minWidth = minW; }
+void GG::Element::setMinWidthAuto() { minWidth = std::nullopt; }
+int GG::Element::getMinWidth()
 {
 	return minWidth.has_value() ? minWidth.value() : minWidthCalculated;
 }
 
-void Element::setMaxWidth(int maxW) { maxWidth = maxW; }
-void Element::setMaxWidthAuto() { maxWidth = std::nullopt; }
-int Element::getMaxWidth()
+void GG::Element::setMaxWidth(int maxW) { maxWidth = maxW; }
+void GG::Element::setMaxWidthAuto() { maxWidth = std::nullopt; }
+int GG::Element::getMaxWidth()
 {
 	return maxWidth.has_value() ? maxWidth.value() : maxWidthCalculated;
 }
 
-void Element::setMinHeight(int minH) { minHeight = minH; }
-void Element::setMinHeightAuto() { minHeight = std::nullopt; }
-int Element::getMinHeight()
+void GG::Element::setMinHeight(int minH) { minHeight = minH; }
+void GG::Element::setMinHeightAuto() { minHeight = std::nullopt; }
+int GG::Element::getMinHeight()
 {
 	return minHeight.has_value() ? minHeight.value() : minHeightCalculated;
 }
 
-void Element::setMaxHeight(int maxH) { maxHeight = maxH; }
-void Element::setMaxHeightAuto() { maxHeight = std::nullopt; }
-int Element::getMaxHeight()
+void GG::Element::setMaxHeight(int maxH) { maxHeight = maxH; }
+void GG::Element::setMaxHeightAuto() { maxHeight = std::nullopt; }
+int GG::Element::getMaxHeight()
 {
 	return maxHeight.has_value() ? maxHeight.value() : maxHeightCalculated;
 }
 
 // TODO --> this is just setting w/h, not preferredWidth or preferredHeight
-void Element::setPreferredWidth(int prefW)
+void GG::Element::setPreferredWidth(int prefW)
 {
 	//preferredWidth = prefW;  
 	w = prefW;
 }
-void Element::setPreferredHeight(int prefH)
+void GG::Element::setPreferredHeight(int prefH)
 {
 	//preferredHeight = prefH;  
 	h = prefH;
@@ -50,7 +49,7 @@ void Element::setPreferredHeight(int prefH)
 
 /*
 	TODO: invalidation/dirty flag
-	
+
 	if you create a button, and set it so that the button moves itself when clicked
 	then it can go from being below the cursor to somewhere where it is not below the cursor
 
@@ -62,15 +61,15 @@ void Element::setPreferredHeight(int prefH)
 	this whole thing should be solved with the introduction of invalidation/dirty flags when you implement them later on (hopefully)
 	since e.g., if setXAbs() is called, then you'll invalidate the layout, which will cause fresh layout calculations, which will cause a re-render, without the user moving their mouse first
 */
-void Element::setXAbs(int newX) { xAbs = newX; }
-void Element::setYAbs(int newY) { yAbs = newY; }
+void GG::Element::setXAbs(int newX) { xAbs = newX; }
+void GG::Element::setYAbs(int newY) { yAbs = newY; }
 
-int Element::getPreferredWidth() { return preferredWidth; }
-int Element::getPreferredHeight() { return preferredHeight; }
-int Element::getX() { return x; }
-int Element::getY() { return y; }
+int GG::Element::getPreferredWidth() { return preferredWidth; }
+int GG::Element::getPreferredHeight() { return preferredHeight; }
+int GG::Element::getX() { return x; }
+int GG::Element::getY() { return y; }
 
-void Element::setPadding(int padding)
+void GG::Element::setPadding(int padding)
 {
 	paddingLeft = padding;
 	paddingTop = padding;
@@ -78,7 +77,7 @@ void Element::setPadding(int padding)
 	paddingBottom = padding;
 }
 
-void Element::setPadding(int left, int right, int top, int bottom)
+void GG::Element::setPadding(int left, int right, int top, int bottom)
 {
 	this->paddingLeft = left;
 	this->paddingTop = top;
@@ -86,51 +85,51 @@ void Element::setPadding(int left, int right, int top, int bottom)
 	this->paddingBottom = bottom;
 }
 
-void Element::setWidthAbs(int w)
+void GG::Element::setWidthAbs(int w)
 {
 	setMinWidth(w);
 	setMaxWidth(w);
 	setPreferredWidth(w);
 }
-void Element::setHeightAbs(int h)
+void GG::Element::setHeightAbs(int h)
 {
 	setMinHeight(h);
 	setMaxHeight(h);
 	setPreferredHeight(h);
 }
 
-bool Element::isAutosize(Axis axis)
+bool GG::Element::isAutosize(Axis axis)
 {
 	if (axis == Axis::HORIZONTAL) return horizontalAutosize;
 	if (axis == Axis::VERTICAL) return verticalAutosize;
 }
 
-bool Element::isGrowable(Axis axis)
+bool GG::Element::isGrowable(Axis axis)
 {
 	if (isAutosize(axis)) return false;
 	if (axis == Axis::HORIZONTAL) return getMinWidth() < getPreferredWidth();
 	if (axis == Axis::VERTICAL) return getMinHeight() < getPreferredHeight();
 }
 
-bool Element::isShrinkable(Axis axis)
+bool GG::Element::isShrinkable(Axis axis)
 {
 	if (isAutosize(axis)) return false; // TODO check winforms that autosize trumps min/max sizing (cus w/autosize, a control is tied to its min size right?)
 	if (axis == Axis::HORIZONTAL) return getPreferredWidth() < getMaxWidth();
 	if (axis == Axis::VERTICAL) return getPreferredHeight() < getMaxHeight();
 }
 
-bool Element::isResizable(Axis axis)
+bool GG::Element::isResizable(Axis axis)
 {
 	return isGrowable(axis) || isShrinkable(axis);
 }
 
 
-void Element::setColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+void GG::Element::setColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
 	color = { r,g,b,a };
 }
 
-void Element::setColor(int hexCode)
+void GG::Element::setColor(int hexCode)
 {
 	// hexCode is 32 bits ARGB, 8 bytes per channel
 
@@ -143,12 +142,12 @@ void Element::setColor(int hexCode)
 	setColor(r, g, b, a);
 }
 
-void Element::setColor(const SDL_Color& color)
+void GG::Element::setColor(const SDL_Color& color)
 {
 	this->color = color;
 }
 
-void Element::render(Canvas* canvas)
+void GG::Element::render(Canvas* canvas)
 {
 	if (!isVisible) return;
 

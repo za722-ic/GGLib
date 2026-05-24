@@ -2,10 +2,13 @@
 
 #include "GG/UI/Control.h"
 
-class HorizontalDivider: public Control
+namespace GG
 {
-public:
-	HorizontalDivider(int dividerThickness);
+	class HorizontalDivider : public Control
+	{
+	public:
+		HorizontalDivider(int dividerThickness);
 
-	void render(Canvas* canvas) override;
-};
+		void render(Canvas* canvas) override;
+	};
+}
