@@ -1,9 +1,10 @@
 ﻿#pragma once
 
-#include "GGApp.h"
+#include "GG/Core/GGApp.h"
+#include "GG/Rendering/Text.h"
+
 #include "AssetManagerWrapper.h"
 
-#include "Text.h"
 
 class Demo: public GGApp, KeyEventListener, MouseEventListener
 {

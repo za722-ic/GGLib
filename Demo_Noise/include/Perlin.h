@@ -7,9 +7,9 @@
 #include <numeric>
 #include <iostream>
 
-#include "Vec2D.h"
-#include "Vec3D.h"
-#include "MoreMath.h"
+#include "GG/MoreMath/Vec2D.h"
+#include "GG/MoreMath/Vec3D.h"
+#include "GG/MoreMath/MoreMath.h"
 
 class PermutationTable
 {

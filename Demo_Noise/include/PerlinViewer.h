@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/Control.h"
+#include "GG/UI/Control.h"
 
 #include "Perlin.h"
 

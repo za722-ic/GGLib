@@ -1,5 +1,5 @@
-#include "UI.h"
-#include "ui/Visitor.h"
+#include "GG/UI/UI.h"
+#include "GG/UI/Visitor.h"
 
 void Visitor_GrowShrink_Vertical::visitForControl(Control* control)
 {

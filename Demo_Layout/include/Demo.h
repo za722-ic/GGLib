@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GGApp.h"
+#include "GG/Core/GGApp.h"
 #include "AssetManagerWrapper.h"
 
 class Demo: public GGApp, KeyEventListener, MouseEventListener

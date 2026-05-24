@@ -1,6 +1,6 @@
-#include "ui/Visitor.h"
-#include "ui/Container.h"
-#include "ui/Control.h"
+#include "GG/UI/Visitor.h"
+#include "GG/UI/Container.h"
+#include "GG/UI/Control.h"
 
 void Visitor::visitForContainer(Container* container)
 {
