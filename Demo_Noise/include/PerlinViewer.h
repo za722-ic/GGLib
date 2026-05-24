@@ -1,10 +1,10 @@
 #pragma once
 
-#include "ui/Control.h"
+#include "GG/UI/Control.h"
 
 #include "Perlin.h"
 
-class PerlinViewer : public Control
+class PerlinViewer : public GG::Control
 {
 private:
 	float viewWidth = 16;
@@ -51,7 +51,7 @@ public:
 			SDL_DestroyTexture(texture);
 	}
 
-	void render(Canvas* canvas) override
+	void render(GG::Canvas* canvas) override
 	{
 		// call super
 		Element::render(canvas);
@@ -90,7 +90,7 @@ public:
 	}
 
 private:
-	void generateTexture(Canvas *canvas)
+	void generateTexture(GG::Canvas *canvas)
 	{
 		if (texture != nullptr)	SDL_DestroyTexture(texture);
 
@@ -102,7 +102,7 @@ private:
 		SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST); // when enlarging the texture for rendering, keep things "pixelated"
 	}
 
-	void drawNoise3D(Canvas *canvas)
+	void drawNoise3D(GG::Canvas *canvas)
 	{
 		// draw noise plot
 		for (int x = 0; x < textureW; x++)
@@ -110,8 +110,8 @@ private:
 			for (int y = 0; y < textureH; y++)
 			{
 				float noiseVal = pn.fbm(
-					MoreMath::lerp(getViewLeft(), getViewRight(), (float)x / textureW),
-					MoreMath::lerp(getViewTop(), getViewBottom(), (float)y / textureH),
+					GG::MoreMath::lerp(getViewLeft(), getViewRight(), (float)x / textureW),
+					GG::MoreMath::lerp(getViewTop(), getViewBottom(), (float)y / textureH),
 					posZ,
 					initialFrequency,
 					initialAmplitude,
@@ -125,11 +125,11 @@ private:
 		}
 	}
 
-	void drawNoisePoint3D(Canvas *canvas, int x, int y, float noiseVal)
+	void drawNoisePoint3D(GG::Canvas *canvas, int x, int y, float noiseVal)
 	{
 		// round noise to 0 or 1
 		if (roundNoise)
-			noiseVal = MoreMath::step(noiseVal, 0.5f);
+			noiseVal = GG::MoreMath::step(noiseVal, 0.5f);
 
 		// draw color onto buffered image
 		int grayscaleValue = noiseVal * 255;

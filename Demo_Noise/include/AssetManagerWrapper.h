@@ -1,12 +1,12 @@
 #pragma once
 
-#include "AssetManager.h"
+#include "GG/Assetmanagement/AssetManager.h"
 
 // wrapper around engine's asset manager to avoid dealing with strings and filenames
 class AssetManagerWrapper
 {
 private:
-	AssetManager* assetManager;
+	GG::AssetManager* assetManager;
 
 	const std::string baseAssetPath = "resources/";
 
@@ -17,7 +17,7 @@ private:
 public:
 
 	// TODO: use weak ptr instead?
-	AssetManagerWrapper(AssetManager* assetManager) : assetManager(assetManager)
+	AssetManagerWrapper(GG::AssetManager* assetManager) : assetManager(assetManager)
 	{
 		assetManager->setBaseAssetPath(baseAssetPath);
 	}

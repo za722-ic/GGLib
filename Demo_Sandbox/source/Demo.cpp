@@ -10,10 +10,10 @@ bool Demo::onInit()
 	}
 
 	// set up window
-	ggWindow.setTitle("Demo");
-	ggWindow.setResizable(true);
-	ggWindow.setSize(1280, 720);
-	ggWindow.centerWindowPosition();
+	window.setTitle("Demo");
+	window.setResizable(true);
+	window.setSize(1280, 720);
+	window.centerWindowPosition();
 
 	// tell canvas to use loaded font
 	canvas.setFont(demoAssetManager->getFont());
@@ -23,7 +23,7 @@ bool Demo::onInit()
 	inputManager.addMouseEventListener(this);
 
 	// init UI
-	Text::init(canvas.getSDLRenderer(), demoAssetManager->getFont());
+	GG::Text::init(canvas.getSDLRenderer(), demoAssetManager->getFont());
 	defineElements();
 
 
@@ -32,7 +32,7 @@ bool Demo::onInit()
 
 void Demo::onQuit()
 {
-	Text::close();
+	GG::Text::close();
 }
 
 void Demo::onLoop()
@@ -42,7 +42,7 @@ void Demo::onLoop()
 	if (frameTimesAcc >= 1.0f)
 	{
 		avgFps = framesCount;
-		ggWindow.setTitle("FPS: " + std::to_string(avgFps));
+		window.setTitle("FPS: " + std::to_string(avgFps));
 
 		frameTimesAcc = 0.0f;
 		framesCount = 0;
@@ -53,8 +53,8 @@ void Demo::onLoop()
 	canvas.clear();
 
 	// draw UI
-	root->setWidthAbs(ggWindow.getWidth());
-	root->setHeightAbs(ggWindow.getHeight());
+	root->setWidthAbs(window.getWidth());
+	root->setHeightAbs(window.getHeight());
 	root->calculateLayout();
 	root->render(&canvas);
 
@@ -62,10 +62,10 @@ void Demo::onLoop()
 	canvas.present();
 }
 
-void Demo::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
+void Demo::onKeyEvent(GG::KeyEventType keyEventType, SDL_Keycode key)
 {
 	// The following events are all for when the key is pressed down, not when released
-	if (keyEventType == KEY_UP) return;
+	if (keyEventType == GG::KEY_UP) return;
 
 	// Exit on ESC key pressed
 	if (key == SDLK_ESCAPE)
@@ -76,7 +76,7 @@ void Demo::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
 
 	if (key == SDLK_F11)
 	{
-		ggWindow.toggleFullScreen();
+		window.toggleFullScreen();
 	}
 
 	auto ptToPx = [](float pt) { return pt * 1.3333333f; };
@@ -100,23 +100,23 @@ void Demo::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
 	}
 }
 
-void Demo::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
+void Demo::onMouseEvent(GG::MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 }
 
 void Demo::defineElements()
 {
 	// TODO: automate this
-	Element::inputManager = &inputManager;
+	GG::Element::inputManager = &inputManager;
 
 	// create root container
-	root = new Container;
+	root = new GG::Container;
 	root->setColor(210,210,180,255);
 	root->radius = 0;
-	root->layoutMode = LayoutMode::FLEX;
-	root->horizontalAlignmentMode = HAlignmentMode::CENTER;
-	root->verticalAlignmentMode = VAlignmentMode::CENTER;
-	root->layoutDirection = LayoutDirection::LEFT_TO_RIGHT;
+	root->layoutMode = GG::LayoutMode::FLEX;
+	root->horizontalAlignmentMode = GG::HAlignmentMode::CENTER;
+	root->verticalAlignmentMode = GG::VAlignmentMode::CENTER;
+	root->layoutDirection = GG::LayoutDirection::LEFT_TO_RIGHT;
 	root->setPadding(60);
 	root->setChildGap(60);
 
@@ -134,8 +134,8 @@ void Demo::defineElements()
 	};
 	for (int i = 0; i < 3; i++)
 	{
-		Container* panel = new Container;
-		panel->layoutDirection = LayoutDirection::TOP_TO_BOTTOM;
+		GG::Container* panel = new GG::Container;
+		panel->layoutDirection = GG::LayoutDirection::TOP_TO_BOTTOM;
 		panel->horizontalAutosize = false;
 		panel->verticalAutosize = true;
 		panel->setColor(colors.at(i));
@@ -146,10 +146,10 @@ void Demo::defineElements()
 		panel->shadowThickness = 6;
 		root->add(panel);
 
-		Label* label = new Label(loremIpsum);
+		GG::Label* label = new GG::Label(loremIpsum);
 		label->verticalAutosize = true;
-		label->setHAlignment(HAlignmentMode::CENTER);
-		label->setVAlignment(VAlignmentMode::CENTER);
+		label->setHAlignment(GG::HAlignmentMode::CENTER);
+		label->setVAlignment(GG::VAlignmentMode::CENTER);
 		label->setForeColor({ 255,255,255,165 });
 		panel->add(label);
 	}

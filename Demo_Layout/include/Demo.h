@@ -1,15 +1,15 @@
 #pragma once
 
-#include "GGApp.h"
+#include "GG/Core/Application.h"
 #include "AssetManagerWrapper.h"
 
-class Demo: public GGApp, KeyEventListener, MouseEventListener
+class Demo: public GG::Application, GG::KeyEventListener, GG::MouseEventListener
 {
 private:
 	std::shared_ptr<AssetManagerWrapper> demoAssetManager;
 
-	Label *lblFPS, *lblWindowSize, *lblCursorPos;
-	Container* root;
+	GG::Label *lblFPS, *lblWindowSize, *lblCursorPos;
+	GG::Container* root;
 
 	float frameTimesAcc;
 	unsigned int framesCount;
@@ -25,8 +25,8 @@ private:
 	void onLoop() override;
 	void onQuit() override;
 
-	void onKeyEvent(KeyEventType keyEventType, SDL_Keycode key) override;
-	void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
+	void onKeyEvent(GG::KeyEventType keyEventType, SDL_Keycode key) override;
+	void onMouseEvent(GG::MouseEventType mouseEventType, int mouseX, int mouseY) override;
 
 	void defineElements();
 };

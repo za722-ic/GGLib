@@ -31,10 +31,10 @@ bool Demo::onInit()
 	}
 
 	// set up window
-	ggWindow.setTitle("Demo");
-	ggWindow.setResizable(true);
-	ggWindow.setSize(1280, 720);
-	ggWindow.centerWindowPosition();
+	window.setTitle("Demo");
+	window.setResizable(true);
+	window.setSize(1280, 720);
+	window.centerWindowPosition();
 
 	// tell canvas to use loaded font
 	canvas.setFont(demoAssetManager->getFont());
@@ -74,7 +74,7 @@ void Demo::onLoop()
 	lblFPS->text = "FPS: " + std::to_string(avgFps);
 
 	// get updated window resolution
-	std::string windowResolutionText = "Window size: " + std::to_string(ggWindow.getWidth()) + "x" + std::to_string(ggWindow.getHeight());
+	std::string windowResolutionText = "Window size: " + std::to_string(window.getWidth()) + "x" + std::to_string(window.getHeight());
 	lblWindowSize->setText(windowResolutionText);
 
 	// get updated cursor position
@@ -82,8 +82,8 @@ void Demo::onLoop()
 	lblCursorPos->setText(cursorPosText);
 
 	int padding = 10;
-	root->setWidthAbs(ggWindow.getWidth() - 2*padding);
-	root->setHeightAbs(ggWindow.getHeight() - 2*padding);
+	root->setWidthAbs(window.getWidth() - 2*padding);
+	root->setHeightAbs(window.getHeight() - 2*padding);
 	root->setX(padding);
 	root->setY(padding);
 	root->calculateLayout();
@@ -93,7 +93,7 @@ void Demo::onLoop()
 	canvas.present();
 }
 
-void Demo::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
+void Demo::onKeyEvent(GG::KeyEventType keyEventType, SDL_Keycode key)
 {
 	// The following events are all for when the key is pressed down, not when released
 	if (keyEventType == KEY_UP) return;
@@ -107,17 +107,17 @@ void Demo::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
 
 	if (key == SDLK_F11)
 	{
-		ggWindow.toggleFullScreen();
+		window.toggleFullScreen();
 	}
 }
 
-void Demo::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
+void Demo::onMouseEvent(GG::MouseEventType mouseEventType, int mouseX, int mouseY)
 {
 }
 
 void Demo::defineElements()
 {
-	root = new Container();
+	root = new GG::Container();
 	root->setX(0);
 	root->setY(0);
 	root->setColor(0x292929);

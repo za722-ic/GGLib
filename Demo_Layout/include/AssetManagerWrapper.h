@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AssetManager.h"
+#include "GG/AssetManagement/AssetManager.h"
 
 // wrapper around engine's asset manager to avoid dealing with strings and filenames
 class AssetManagerWrapper

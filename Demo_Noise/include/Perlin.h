@@ -7,9 +7,9 @@
 #include <numeric>
 #include <iostream>
 
-#include "Vec2D.h"
-#include "Vec3D.h"
-#include "MoreMath.h"
+#include "GG/MoreMath/Vec2D.h"
+#include "GG/MoreMath/Vec3D.h"
+#include "GG/MoreMath/MoreMath.h"
 
 class PermutationTable
 {
@@ -130,16 +130,16 @@ class Perlin2D : Perlin
         y = y - (int)std::floor(y);
 
         // get pseudorandom gradients at each of the 4 square corners
-        Vec2D grad00 = grad(hash(X0, Y0));
-        Vec2D grad01 = grad(hash(X0, Y1));
-        Vec2D grad10 = grad(hash(X1, Y0));
-        Vec2D grad11 = grad(hash(X1, Y1));
+        GG::Vec2D grad00 = grad(hash(X0, Y0));
+        GG::Vec2D grad01 = grad(hash(X0, Y1));
+        GG::Vec2D grad10 = grad(hash(X1, Y0));
+        GG::Vec2D grad11 = grad(hash(X1, Y1));
 
         // get offsets (points from corner to {x, y})
-        Vec2D offset00(x, y);       // X coordinate of cell 0, 0
-        Vec2D offset01(x, y - 1);
-        Vec2D offset10(x - 1, y);
-        Vec2D offset11(x - 1, y - 1);
+        GG::Vec2D offset00(x, y);       // X coordinate of cell 0, 0
+        GG::Vec2D offset01(x, y - 1);
+        GG::Vec2D offset10(x - 1, y);
+        GG::Vec2D offset11(x - 1, y - 1);
 
         // grad DOT offset
         float dot00 = offset00.dot(grad00);
@@ -152,7 +152,7 @@ class Perlin2D : Perlin
         float v = fade(y);
 
         // bilinear interpolation
-        float noiseVal = MoreMath::biLerp(dot00, dot01, dot10, dot11, u, v);
+        float noiseVal = GG::MoreMath::biLerp(dot00, dot01, dot10, dot11, u, v);
 
         return noiseVal;
     }
@@ -162,13 +162,13 @@ class Perlin2D : Perlin
         return P.get(P.get(x) + y); // we need 512 rather than 256 elements in the permutation table due to this line (P.get returns max 255, y is max 255, sum is max 510)
     }
 
-    Vec2D grad(int hash)
+    GG::Vec2D grad(int hash)
     {
         const double PI = 3.14159265359;
         double angle = (2 * PI) * (hash / 256.0f);
         float vecX = (float)cos(angle);
         float vecY = (float)sin(angle);
-        return Vec2D(vecX, vecY);
+        return GG::Vec2D(vecX, vecY);
     }
 
 public:
@@ -208,24 +208,24 @@ protected:
         z = z - (int)std::floor(z);
 
         // get pseudorandom gradients at each of the 8 cube corners
-        Vec3D grad000 = grad(hash(X0, Y0, Z0));
-        Vec3D grad001 = grad(hash(X0, Y0, Z1));
-        Vec3D grad010 = grad(hash(X0, Y1, Z0));
-        Vec3D grad011 = grad(hash(X0, Y1, Z1));
-        Vec3D grad100 = grad(hash(X1, Y0, Z0));
-        Vec3D grad101 = grad(hash(X1, Y0, Z1));
-        Vec3D grad110 = grad(hash(X1, Y1, Z0));
-        Vec3D grad111 = grad(hash(X1, Y1, Z1));
+        GG::Vec3D grad000 = grad(hash(X0, Y0, Z0));
+        GG::Vec3D grad001 = grad(hash(X0, Y0, Z1));
+        GG::Vec3D grad010 = grad(hash(X0, Y1, Z0));
+        GG::Vec3D grad011 = grad(hash(X0, Y1, Z1));
+        GG::Vec3D grad100 = grad(hash(X1, Y0, Z0));
+        GG::Vec3D grad101 = grad(hash(X1, Y0, Z1));
+        GG::Vec3D grad110 = grad(hash(X1, Y1, Z0));
+        GG::Vec3D grad111 = grad(hash(X1, Y1, Z1));
 
         // get offsets (points from corner to {x, y, z})
-        Vec3D offset000(x, y, z);
-        Vec3D offset001(x, y, z - 1);
-        Vec3D offset010(x, y - 1, z);
-        Vec3D offset011(x, y - 1, z - 1);
-        Vec3D offset100(x - 1, y, z);
-        Vec3D offset101(x - 1, y, z - 1);
-        Vec3D offset110(x - 1, y - 1, z);
-        Vec3D offset111(x - 1, y - 1, z - 1);
+        GG::Vec3D offset000(x, y, z);
+        GG::Vec3D offset001(x, y, z - 1);
+        GG::Vec3D offset010(x, y - 1, z);
+        GG::Vec3D offset011(x, y - 1, z - 1);
+        GG::Vec3D offset100(x - 1, y, z);
+        GG::Vec3D offset101(x - 1, y, z - 1);
+        GG::Vec3D offset110(x - 1, y - 1, z);
+        GG::Vec3D offset111(x - 1, y - 1, z - 1);
 
         // grad DOT offset
         float dot000 = offset000.dot(grad000);
@@ -243,7 +243,7 @@ protected:
         float w = fade(z);
 
         // trilinear interpolation
-        float noiseVal = MoreMath::triLerp(dot000,
+        float noiseVal = GG::MoreMath::triLerp(dot000,
             dot001,
             dot010,
             dot011,
@@ -264,7 +264,7 @@ private:
         return P.get(P.get(P.get(x) + y) + z);
     }
 
-    Vec3D grad(int hash)
+    GG::Vec3D grad(int hash)
     {
         /*
         Where do these 16 vectors come from?
@@ -284,28 +284,28 @@ private:
         switch (hash & 0xF)
         {
 		    // 4 vectors from origin to the corners of a unit quad in the x-y plane (z=0)
-            case 0x0: return Vec3D(1.0f, 1.0f, 0.0f);
-            case 0x1: return Vec3D(-1.0f, 1.0f, 0.0f);
-            case 0x2: return Vec3D(1.0f, -1.0f, 0.0f);
-		    case 0x3: return Vec3D(-1.0f, -1.0f, 0.0f);
+            case 0x0: return GG::Vec3D(1.0f, 1.0f, 0.0f);
+            case 0x1: return GG::Vec3D(-1.0f, 1.0f, 0.0f);
+            case 0x2: return GG::Vec3D(1.0f, -1.0f, 0.0f);
+		    case 0x3: return GG::Vec3D(-1.0f, -1.0f, 0.0f);
 
 	        // 4 vectors from origin to the corners of a unit quad in the x-z plane (y=0)
-		    case 0x4: return Vec3D(1.0f, 0.0f, 1.0f);
-		    case 0x5: return Vec3D(-1.0f, 0.0f, 1.0f);
-		    case 0x6: return Vec3D(1.0f, 0.0f, -1.0f);
-		    case 0x7: return Vec3D(-1.0f, 0.0f, -1.0f);
+            case 0x4: return GG::Vec3D(1.0f, 0.0f, 1.0f);
+		    case 0x5: return GG::Vec3D(-1.0f, 0.0f, 1.0f);
+		    case 0x6: return GG::Vec3D(1.0f, 0.0f, -1.0f);
+		    case 0x7: return GG::Vec3D(-1.0f, 0.0f, -1.0f);
 
 	        // 4 vectors from origin to the corners of a unit quad in the y-z plane (x=0)
-		    case 0x8: return Vec3D(0.0f, 1.0f, 1.0f);
-		    case 0x9: return Vec3D(0.0f, -1.0f, 1.0f);
-		    case 0xA: return Vec3D(0.0f, 1.0f, -1.0f);
-		    case 0xB: return Vec3D(0.0f, -1.0f, -1.0f);
+            case 0x8: return GG::Vec3D(0.0f, 1.0f, 1.0f);
+		    case 0x9: return GG::Vec3D(0.0f, -1.0f, 1.0f);
+		    case 0xA: return GG::Vec3D(0.0f, 1.0f, -1.0f);
+		    case 0xB: return GG::Vec3D(0.0f, -1.0f, -1.0f);
 
 	        // padding so that we have 16 vectors (allows us to use bitwise-and instead of modulo)
-		    case 0xC: return Vec3D(1.0f, 1.0f, 0.0f);
-		    case 0xD: return Vec3D(0.0f, -1.0f, 1.0f);
-		    case 0xE: return Vec3D(-1.0f, 1.0f, 0.0f);
-		    case 0xF: return Vec3D(0.0f, -1.0f, -1.0f);
+            case 0xC: return GG::Vec3D(1.0f, 1.0f, 0.0f);
+		    case 0xD: return GG::Vec3D(0.0f, -1.0f, 1.0f);
+		    case 0xE: return GG::Vec3D(-1.0f, 1.0f, 0.0f);
+		    case 0xF: return GG::Vec3D(0.0f, -1.0f, -1.0f);
 
 	        // expected value is 0...15
 		    default: std::cout << "Unexpected value: " + (hash & 0xF);

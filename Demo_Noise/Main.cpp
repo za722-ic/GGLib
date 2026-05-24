@@ -3,7 +3,7 @@
 int main(int argc, char* args[])
 {
     Noise noiseDemo;
-    noiseDemo.mainLoop();
+    noiseDemo.begin();
 
     return 0;
 }
