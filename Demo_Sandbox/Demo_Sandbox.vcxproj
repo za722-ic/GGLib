@@ -20,16 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="source\Demo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GGLib\GGLib.vcxproj">
       <Project>{052b065e-41c2-4445-a5c9-e028eff94bd2}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\AssetManagerWrapper.h" />
-    <ClInclude Include="include\Demo.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
