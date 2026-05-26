@@ -16,6 +16,11 @@ namespace GG
 	private:
 		double dt;
 
+		float dtAccumulated;
+		float accumulationPeriod = 1.0f; // average FPS is calculated over this duration e.g., if this is 1.0f, then avgFPS is the average FPS over the last 1.0 seconds
+		unsigned int framesAccumulated;
+		float avgFPS;
+
 	protected:
 		bool isRunning = false;
 
@@ -46,6 +51,8 @@ namespace GG
 		}
 
 		double deltaTime();
+		double averageFPS();
+		void setFPSAveragingPeriod(double newAccumulationPeriod);
 
 	private:
 		void updateTimers(double deltaTime);

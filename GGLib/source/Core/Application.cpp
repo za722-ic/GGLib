@@ -46,10 +46,21 @@ void GG::Application::begin()
 		currTime = SDL_GetPerformanceCounter();
 		dt = 0.001 * (double)((currTime - prevTime) * 1000 / (double)SDL_GetPerformanceFrequency()); // (number of counts per frame)/(number of counts per second) = seconds per frame 
 
-		// Handle events/user input
+		// update average FPS
+		dtAccumulated += deltaTime();
+		framesAccumulated++;
+		if (dtAccumulated >= accumulationPeriod)
+		{
+			avgFPS = framesAccumulated;
+
+			dtAccumulated = 0.0f;
+			framesAccumulated = 0;
+		}
+
+		// handle events/user input
 		if (!inputManager.pollEvents()) isRunning = false;
 
-		// If we didn't just detect the user quitting: update timers, run user's main loop code and render
+		// if we didn't just detect the user quitting: update timers, run user's main loop code and render
 		if (isRunning)
 		{
 			updateTimers(dt);
@@ -63,6 +74,19 @@ void GG::Application::begin()
 double GG::Application::deltaTime()
 {
 	return dt;
+}
+
+double GG::Application::averageFPS()
+{
+	return avgFPS;
+}
+
+void GG::Application::setFPSAveragingPeriod(double newAccumulationPeriod)
+{
+	accumulationPeriod = newAccumulationPeriod;
+	
+	dtAccumulated = 0.0f;
+	framesAccumulated = 0;
 }
 
 void GG::Application::updateTimers(double deltaTime)
