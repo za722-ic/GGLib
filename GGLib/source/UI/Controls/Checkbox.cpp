@@ -6,7 +6,22 @@ GG::Checkbox::Checkbox()
 	setOnMouseEnter([&]() {isMouseOver = true; });
 	setOnMouseExit([&]() {isMouseOver = false; });
 
-	setWidthAbs(h); // TODO hack
+	// TODO maybe dont hardcode?
+	setWidthAbs(30);
+	setHeightAbs(30);
+}
+
+void GG::Checkbox::setOnClick(std::function<void()> func)
+{
+	onClick = func;
+}
+void GG::Checkbox::setOnMouseEnter(std::function<void()> func)
+{
+	onMouseEnter = func;
+}
+void GG::Checkbox::setOnMouseExit(std::function<void()> func)
+{
+	onMouseExit = func;
 }
 
 void GG::Checkbox::render(GG::Canvas* canvas)
@@ -14,7 +29,7 @@ void GG::Checkbox::render(GG::Canvas* canvas)
 	int x = screenX;
 	int y = screenY;
 
-	int checkedPadding = 8;
+	int checkedPadding = 3;
 	int cbThickness = 3;
 
 	canvas->drawRect(x, y, h, h, cbThickness);
@@ -33,8 +48,39 @@ void GG::Checkbox::render(GG::Canvas* canvas)
 	{
 		canvas->fillRect(x + checkedPadding, y + checkedPadding, h - 2 * checkedPadding, h - 2 * checkedPadding);
 	}
+}
 
-	canvas->setAlignment(GG::Canvas::Alignment::CENTER_LEFT);
-	canvas->drawString(text, x + h + checkedPadding, y + h / 2);
-	canvas->setAlignment(GG::Canvas::Alignment::TOP_LEFT);
+// mouse events
+void GG::Checkbox::onMouseEvent(GG::MouseEventType mouseEventType, int mouseX, int mouseY)
+{
+	wasInBounds = isInBounds;
+	isInBounds = (mouseX >= screenX && mouseX < screenX + w) && (mouseY >= screenY && mouseY < screenY + h);
+
+
+	if (isInBounds)
+	{
+		if (mouseEventType == GG::MouseEventType::LEFT_MOUSE_DOWN)
+		{
+			isMouseDown = true;
+		}
+		else if (mouseEventType == GG::MouseEventType::LEFT_MOUSE_UP)
+		{
+			isMouseDown = false;
+			if (onClick) onClick();
+		}
+	}
+	else
+	{
+		isMouseDown = false;
+	}
+
+	if (!wasInBounds && isInBounds && mouseEventType == GG::MouseEventType::MOUSE_MOVE && onMouseEnter)
+	{
+		onMouseEnter();
+	}
+
+	if (wasInBounds && !isInBounds && mouseEventType == GG::MouseEventType::MOUSE_MOVE && onMouseExit)
+	{
+		onMouseExit();
+	}
 }
