@@ -27,6 +27,7 @@ namespace GG
 
 
 	public:
+		Button(std::string text);
 
 		// bounds
 		void setBounds(int _x, int _y, int _w, int _h);

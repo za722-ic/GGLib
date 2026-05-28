@@ -2,6 +2,9 @@
 
 // TODO: it would be useful if you could push/pop canvas states, rather than having to restore values manually (esp. since the user might not have has TOP_LEFT before this call, and also since we aren't currently restoring the color)
 
+GG::Button::Button(std::string text) : text(text)
+{}
+
 // bounds
 void GG::Button::setBounds(int _x, int _y, int _w, int _h)
 {
@@ -81,7 +84,9 @@ void GG::Button::render(GG::Canvas* canvas)
 
 	// draw button text
 	canvas->setColor(foreColor);
-	canvas->drawString(text, screenX + paddingLeft, screenY + paddingTop);
+	canvas->setAlignment(GG::Canvas::Alignment::CENTER_CENTER);
+	canvas->drawString(text, screenX + w/2, screenY + h / 2);
+	canvas->setAlignment(GG::Canvas::Alignment::TOP_LEFT);
 }
 
 // mouse events
