@@ -63,6 +63,11 @@ namespace GG
 		// why not just set the sdl renderer color instead of storing it? because if someone sets the canvas color, then manually sets the sdl color, we should only use the original color they gave to the canvas. so we cannot rely on sdl to store it for us
 		SDL_Color color = { 255,255,255,255 };
 
+		// maintain a stack of clip rects. the active clip rect is the region of intersection of all of these.
+		std::vector<SDL_Rect> clipRectStack;
+		SDL_Rect activeClipRect; // TODO: optimisation: if this is equal to clipRectForNoRendering, then we can cull entire render operations
+		const SDL_Rect clipRectForNoRendering = { -1,-1,1,1 }; // by setting the active cliprect to this, rendering is effectively disabled
+
 	public:
 
 		/*
@@ -165,6 +170,17 @@ namespace GG
 		void drawLine(int x1, int y1, int x2, int y2);
 
 		void drawCubicBezier(Vec2D p0, Vec2D p1, Vec2D p2, Vec2D p3, int thickness, int numSegments); // more segments == smoother curves and worse performance
+
+
+
+		/*
+		+----------------------------------+
+		|		CLIP RECTS                 |
+		+----------------------------------+
+		*/
+		void pushClipRect(const SDL_Rect& clipRect);
+		void popClipRect();
+		void calculateActiveClipRect();
 
 	private:
 

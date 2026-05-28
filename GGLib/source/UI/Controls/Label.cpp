@@ -25,7 +25,7 @@ void GG::Label::render(GG::Canvas* canvas)
 
 	if (clipRect.w <= 0 || clipRect.h <= 0) return;
 
-	SDL_SetRenderClipRect(canvas->getSDLRenderer(), &clipRect);
+	canvas->pushClipRect(clipRect);
 	{
 		int textY;
 		if (verticalAlignmentMode == VAlignmentMode::TOP)
@@ -54,7 +54,7 @@ void GG::Label::render(GG::Canvas* canvas)
 		tttext->render();
 
 	}
-	SDL_SetRenderClipRect(canvas->getSDLRenderer(), NULL);
+	canvas->popClipRect();
 }
 
 void GG::Label::setText(std::string newText)

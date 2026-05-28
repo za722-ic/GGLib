@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo_Sandbox", "Demo_Sandbo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo_Scrollables", "Demo_Scrollables\Demo_Scrollables.vcxproj", "{BED64FDB-6827-4DCF-BC49-F7F768E04099}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo_ManyControls", "Demo_ManyControls\Demo_ManyControls.vcxproj", "{709DA291-4239-4CF6-B6CA-2C3E34B8B145}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{BED64FDB-6827-4DCF-BC49-F7F768E04099}.Release|x64.Build.0 = Release|x64
 		{BED64FDB-6827-4DCF-BC49-F7F768E04099}.Release|x86.ActiveCfg = Release|Win32
 		{BED64FDB-6827-4DCF-BC49-F7F768E04099}.Release|x86.Build.0 = Release|Win32
+		{709DA291-4239-4CF6-B6CA-2C3E34B8B145}.Debug|x64.ActiveCfg = Debug|x64
+		{709DA291-4239-4CF6-B6CA-2C3E34B8B145}.Debug|x64.Build.0 = Debug|x64
+		{709DA291-4239-4CF6-B6CA-2C3E34B8B145}.Debug|x86.ActiveCfg = Debug|Win32
+		{709DA291-4239-4CF6-B6CA-2C3E34B8B145}.Debug|x86.Build.0 = Debug|Win32
+		{709DA291-4239-4CF6-B6CA-2C3E34B8B145}.Release|x64.ActiveCfg = Release|x64
+		{709DA291-4239-4CF6-B6CA-2C3E34B8B145}.Release|x64.Build.0 = Release|x64
+		{709DA291-4239-4CF6-B6CA-2C3E34B8B145}.Release|x86.ActiveCfg = Release|Win32
+		{709DA291-4239-4CF6-B6CA-2C3E34B8B145}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

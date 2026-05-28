@@ -91,14 +91,15 @@ public:
 
 		// draw children of scrollable container, clipping them to the container bounds
 		SDL_Rect b = { screenX, screenY, w, h };
-		SDL_SetRenderClipRect(canvas->getSDLRenderer(), &b);
+		
+		canvas->pushClipRect(b);
 		{
 			for (auto child : children)
 			{
 				child->render(canvas);
 			}
 		}
-		SDL_SetRenderClipRect(canvas->getSDLRenderer(), NULL);
+		canvas->popClipRect();
 	}
 
 	void onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY) override
@@ -108,7 +109,7 @@ public:
 		viewportY += -scrollY * scrollbarScrollInterval;
 
 		int viewportH = h;
-		//viewportY = MoreMath::clamp(viewportY, 0, logicalHeight - viewportH);
+		viewportY = GG::MoreMath::clamp(viewportY, 0, logicalHeight - viewportH);
 	}
 
 private:

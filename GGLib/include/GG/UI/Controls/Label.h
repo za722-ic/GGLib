@@ -13,7 +13,7 @@ namespace GG
 	public:
 		std::unique_ptr<Text> tttext = nullptr;
 
-		VAlignmentMode verticalAlignmentMode = VAlignmentMode::TOP;
+		VAlignmentMode verticalAlignmentMode = VAlignmentMode::CENTER;
 
 	public:
 		// TODO: make use of width, height --> crop text with "..." if out of bounds (how do other libs handle this?)
