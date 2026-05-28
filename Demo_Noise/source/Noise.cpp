@@ -159,6 +159,7 @@ GG::Container* Noise::createPanel(std::string panelTitle, GG::Button* btnReset, 
 	GG::Container* titleBar = new GG::Container;
 	titleBar->layoutDirection = GG::LayoutDirection::LEFT_TO_RIGHT;
 	titleBar->verticalAlignmentMode = GG::VAlignmentMode::CENTER;
+	titleBar->horizontalAlignmentMode = GG::HAlignmentMode::LEFT;
 	titleBar->isVisible = false;
 	titleBar->verticalAutosize = true;
 	
@@ -194,8 +195,7 @@ GG::Container* Noise::createPanel(std::string panelTitle, GG::Button* btnReset, 
 }
 GG::Button* Noise::createResetButton()
 {
-	GG::Button* btnReset = new GG::Button;
-	btnReset->setText("Reset");
+	GG::Button* btnReset = new GG::Button("Reset");
 	btnReset->setPadding(8, 8, 2, 2);
 	btnReset->radius = 3;
 	btnReset->backColor = { 255,255,255,96 };

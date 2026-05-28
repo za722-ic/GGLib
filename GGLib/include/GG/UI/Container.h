@@ -35,8 +35,8 @@ namespace GG
 
 		LayoutDirection layoutDirection;
 
-		VAlignmentMode verticalAlignmentMode;
-		HAlignmentMode horizontalAlignmentMode;
+		VAlignmentMode verticalAlignmentMode = VAlignmentMode::CENTER;
+		HAlignmentMode horizontalAlignmentMode = HAlignmentMode::CENTER;
 
 		LayoutMode layoutMode = LayoutMode::FLEX;
 
