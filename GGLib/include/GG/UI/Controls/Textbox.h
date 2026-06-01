@@ -16,7 +16,7 @@ TODO:
 
 namespace GG
 {
-	class Textbox : Control
+	class Textbox : public Control
 	{
 	protected:
 
@@ -36,6 +36,8 @@ namespace GG
 		char erasedChar;
 	public:
 
+		Textbox();
+
 		// bounds
 		void setBounds(int _x, int _y, int _w, int _h);
 
@@ -53,15 +55,10 @@ namespace GG
 
 	private:
 
-		// mouse events
-		bool isInBounds = false;
-		void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
-
-		// keyboard events
-		virtual void onKeyEvent(KeyEventType keyEventType, SDL_Keycode key) override;
-
-		// text input events
-		virtual void onTextInputEvent(std::string text) override;
+		virtual void onTextInput(std::string text) override;
+		virtual void uiKeyEvent(KeyEventType keyEventType, SDL_Keycode key) override;
+		virtual void onMouseDown(int mouseX, int mouseY) override;
+		virtual void onMouseClickOff() override;
 
 		// handling text
 		void insertTextAtCursorPos(std::string text);

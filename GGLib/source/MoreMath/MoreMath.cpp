@@ -64,3 +64,11 @@ int GG::MoreMath::random(int min, int max) {
 
 	return distrib(gen);
 }
+
+bool GG::MoreMath::isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int rectH)
+{
+	return pointX >= rectX && 
+		   pointX < rectX + rectW && 
+		   pointY >= rectY && 
+		   pointY < rectY + rectH;
+}

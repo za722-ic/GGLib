@@ -20,4 +20,6 @@ namespace GG::MoreMath
     float triLerp(float p000, float p001, float p010, float p011, float p100, float p101, float p110, float p111, float u, float v, float w);
 
     int random(int min, int max);
+
+    bool isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int rectH);
 }

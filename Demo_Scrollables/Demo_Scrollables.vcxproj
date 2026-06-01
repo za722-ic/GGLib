@@ -30,7 +30,6 @@
   <ItemGroup>
     <ClInclude Include="include\AssetManagerWrapper.h" />
     <ClInclude Include="include\Demo.h" />
-    <ClInclude Include="include\ScrollableContainer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

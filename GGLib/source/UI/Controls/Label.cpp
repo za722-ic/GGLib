@@ -3,10 +3,7 @@
 GG::Label::Label(std::string textStr)
 {
 	tttext = std::make_unique<Text>(textStr);
-}
-
-void GG::Label::onMouseEvent(GG::MouseEventType mouseEventType, int mouseX, int mouseY)
-{
+	verticalAutosize = true;
 }
 
 void GG::Label::accept(GG::Visitor& visitor)

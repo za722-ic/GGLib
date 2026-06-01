@@ -174,6 +174,9 @@
     <ClInclude Include="include\GG\Core\Window.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
+    <ClInclude Include="include\GG\UI\RootContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\UI\Visitors\Visitor.cpp">
@@ -201,9 +204,6 @@
       <Filter>Source Files\UI\Visitors</Filter>
     </ClCompile>
     <ClCompile Include="source\UI\Visitors\Visitor_Positions.cpp">
-      <Filter>Source Files\UI\Visitors</Filter>
-    </ClCompile>
-    <ClCompile Include="source\UI\Visitors\Visitor_SetInputManager.cpp">
       <Filter>Source Files\UI\Visitors</Filter>
     </ClCompile>
     <ClCompile Include="source\UI\Visitors\Visitor_WrapText.cpp">
@@ -298,6 +298,12 @@
     </ClCompile>
     <ClCompile Include="source\Core\Window.cpp">
       <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\UI\RootContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\UI\Visitors\Visitor_HitTest.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,7 +3,9 @@
 // TODO: it would be useful if you could push/pop canvas states, rather than having to restore values manually (esp. since the user might not have has TOP_LEFT before this call, and also since we aren't currently restoring the color)
 
 GG::Button::Button(std::string text) : text(text)
-{}
+{
+	isMouseEventListener = true;
+}
 
 // bounds
 void GG::Button::setBounds(int _x, int _y, int _w, int _h)
@@ -37,15 +39,15 @@ std::string GG::Button::getText() const
 // button events
 void GG::Button::setOnClick(std::function<void()> func)
 {
-	onClick = func;
+	onClickCallback = func;
 }
 void GG::Button::setOnMouseEnter(std::function<void()> func)
 {
-	onMouseEnter = func;
+	onMouseEnterCallback = func;
 }
 void GG::Button::setOnMouseExit(std::function<void()> func)
 {
-	onMouseExit = func;
+	onMouseExitCallback = func;
 }
 
 void GG::Button::render(GG::Canvas* canvas)
@@ -68,6 +70,8 @@ void GG::Button::render(GG::Canvas* canvas)
 	// draw button border and shadow
 	int borderRadius = radius + borderThickness;
 	int shadowRadius = borderRadius + shadowThickness;
+
+	// TODO: should border instead be AT screenX, screenY? (this applies to a whole bunch of other elements, including the Element class's own render function)
 	canvas->drawRoundedRect(screenX - borderThickness,
 		screenY - borderThickness,
 		w + 2 * borderThickness,
@@ -81,7 +85,6 @@ void GG::Button::render(GG::Canvas* canvas)
 		shadowThickness,
 		{ 0,0,0,96 }, { 0,0,0,0 });
 
-
 	// draw button text
 	canvas->setColor(foreColor);
 	canvas->setAlignment(GG::Canvas::Alignment::CENTER_CENTER);
@@ -89,37 +92,25 @@ void GG::Button::render(GG::Canvas* canvas)
 	canvas->setAlignment(GG::Canvas::Alignment::TOP_LEFT);
 }
 
-// mouse events
-void GG::Button::onMouseEvent(GG::MouseEventType mouseEventType, int mouseX, int mouseY)
+void GG::Button::onMouseDown(int mouseX, int mouseY)
 {
-	wasInBounds = isInBounds;
-	isInBounds = (mouseX >= screenX && mouseX < screenX + w) && (mouseY >= screenY && mouseY < screenY + h);
+	isMouseDown = true;
+}
 
+void GG::Button::onMouseUp(int mouseX, int mouseY)
+{
+	isMouseDown = false;
+	if (onClickCallback) onClickCallback();
+}
 
-	if (isInBounds)
-	{
-		if (mouseEventType == GG::MouseEventType::LEFT_MOUSE_DOWN)
-		{
-			isMouseDown = true;
-		}
-		else if (mouseEventType == GG::MouseEventType::LEFT_MOUSE_UP)
-		{
-			isMouseDown = false;
-			if (onClick) onClick();
-		}
-	}
-	else
-	{
-		isMouseDown = false;
-	}
+void GG::Button::onMouseEnter(int mouseX, int mouseY)
+{
+	isInBounds = true;
+	if (onMouseEnterCallback) onMouseEnterCallback();
+}
 
-	if (!wasInBounds && isInBounds && mouseEventType == GG::MouseEventType::MOUSE_MOVE && onMouseEnter)
-	{
-		onMouseEnter();
-	}
-
-	if (wasInBounds && !isInBounds && mouseEventType == GG::MouseEventType::MOUSE_MOVE && onMouseExit)
-	{
-		onMouseExit();
-	}
+void GG::Button::onMouseExit(int mouseX, int mouseY)
+{
+	isInBounds = false;
+	if (onMouseExitCallback) onMouseExitCallback();
 }

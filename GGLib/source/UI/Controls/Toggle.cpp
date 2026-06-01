@@ -8,20 +8,7 @@ GG::Toggle::Toggle()
 	padding = 2;
 	shadowThickness = 4;
 
-	setOnClick([&]() { isChecked = !isChecked;  });
-}
-
-void GG::Toggle::setOnClick(std::function<void()> func)
-{
-	onClick = func;
-}
-void GG::Toggle::setOnMouseEnter(std::function<void()> func)
-{
-	onMouseEnter = func;
-}
-void GG::Toggle::setOnMouseExit(std::function<void()> func)
-{
-	onMouseExit = func;
+	isMouseEventListener = true;
 }
 
 void GG::Toggle::render(Canvas* canvas)
@@ -38,11 +25,11 @@ void GG::Toggle::render(Canvas* canvas)
 		h / 2 + shadowThickness,
 		shadowThickness,
 		{ 0,0,0,96 }, { 0,0,0,0 },
-		trianglesPerCorner);
-
+		trianglesPerCorner
+	);
 
 	// render toggle button
-	if (isInBounds)
+	if (isMouseHovering)
 		canvas->setColor(hoverToggleColor);
 	else
 		canvas->setColor(toggleColor);
@@ -64,24 +51,15 @@ void GG::Toggle::render(Canvas* canvas)
 		trianglesPerCorner);
 }
 
-void GG::Toggle::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
+void GG::Toggle::onMouseUp(int mouseX, int mouseY)
 {
-	// TODO: the same logic is in button -- refactor
-	wasInBounds = isInBounds;
-	isInBounds = (mouseX >= screenX && mouseX < screenX + w) && (mouseY >= screenY && mouseY < screenY + h);
-
-	if (isInBounds && mouseEventType == MouseEventType::LEFT_MOUSE_UP && onClick)
-	{
-		onClick();
-	}
-
-	if (!wasInBounds && isInBounds && mouseEventType == MouseEventType::MOUSE_MOVE && onMouseEnter)
-	{
-		onMouseEnter();
-	}
-
-	if (wasInBounds && !isInBounds && mouseEventType == MouseEventType::MOUSE_MOVE && onMouseExit)
-	{
-		onMouseExit();
-	}
+	isChecked = !isChecked;
+}
+void GG::Toggle::onMouseExit(int mouseX, int mouseY)
+{
+	isMouseHovering = false;
+}
+void GG::Toggle::onMouseEnter(int mouseX, int mouseY)
+{
+	isMouseHovering = true;
 }

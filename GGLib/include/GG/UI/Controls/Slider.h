@@ -10,13 +10,8 @@ namespace GG
 {
 	class Slider : public Control
 	{
-
-	private:
-		DragManager dragManager;
-
 	public:
 		// TODO: setters, getters
-
 		float min = 0;
 		float max = 100;
 		float value = 50;
@@ -35,14 +30,14 @@ namespace GG
 
 		Slider();
 
-		void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
-
-		void onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY) override;
-
 		void render(Canvas* canvas) override;
 
+
 	private:
-		// TODO: shoiuld this just get placed in Element?
-		bool isCoordInSliderBounds(int coordX, int coordY);
+		void onMouseDown(int mouseX, int mouseY) override;
+		void onMouseDrag(int mouseX, int mouseY) override;
+		void onMouseEnter(int mouseX, int mouseyY) override;
+		void onMouseExit(int mouseX, int mouseyY) override;
+		void uiScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY);
 	};
 }

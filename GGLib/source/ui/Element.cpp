@@ -1,7 +1,5 @@
 #include "GG/UI/Element.h"
 
-GG::InputManager* GG::Element::inputManager = nullptr;
-
 void GG::Element::setChildGap(int gap)
 {
 	this->gap = gap;
@@ -173,3 +171,23 @@ void GG::Element::render(Canvas* canvas)
 		{ 0,0,0,128 }, { 0,0,0,0 },
 		numTriangles);
 }
+
+
+void GG::Element::onMouseEnter(int mouseX, int mouseY)
+{}
+void GG::Element::onMouseExit(int mouseX, int mouseY)
+{}
+void GG::Element::onMouseDown(int mouseX, int mouseY)
+{}
+void GG::Element::onMouseUp(int mouseX, int mouseY)
+{}
+void GG::Element::uiScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY)
+{}
+void GG::Element::onTextInput(std::string text)
+{}
+void GG::Element::onMouseClickOff()
+{}
+void GG::Element::uiKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
+{}
+void GG::Element::onMouseDrag(int mouseX, int mouseY)
+{}

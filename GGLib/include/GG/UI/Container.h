@@ -9,9 +9,25 @@
 #include "GG/MoreMath/MoreMath.h"
 #include "GG/UI/Element.h"
 
+
+/*
+TODO:
+
+Making controls/containers scrollable if the size needed to fit their content exceeds that element's max size
+In such a scenario, the following should happen:
+
+- Scrollbar is added to the element
+- Only render a certain viewport of the content instead of the entire logical area
+	- This can be mostly acheived woth SDL_RenderSetClipRect
+	- Can automatically cull elements who bottom is above the viewports top, and whose top is below the viewports bottom
+
+- If something is at e.g. y=1000 in a container, but the viewport is at y = 800, then the rendering location relative to the container's top left is 1000-800=200
+
+*/
+
 namespace GG
 {
-	class Container : public Element, public ScrollEventListener
+	class Container : public Element
 	{
 	public:
 		bool verticalScroll = false;
@@ -50,10 +66,28 @@ namespace GG
 
 		void accept(Visitor& visitor) override;
 
-		void calculateLayout();
-
 		virtual void render(Canvas* canvas) override;
 
-		virtual void onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY) override;
+		void setScrollable(bool isScrollable)
+		{
+			isScrollEventListener = isScrollable;
+
+			// TODO: is this redundant given that we have isScrollEventListener? Maybe not, since we don't want to couple listening to scroll events with being a scroll event listener? But... is there ever a point where a *container* that listens to scroll events should not scoll vertically?
+			verticalScroll = isScrollable;
+
+			// TODO: we are overwriting user-set min height if they set scrollable. Is the below even necessary?
+			if (isScrollable)
+				setMinHeight(0);
+			else
+				setMinHeightAuto();
+		}
+
+		void uiScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY) override
+		{
+			viewportY += -scrollY * scrollbarScrollInterval;
+
+			int viewportH = h;
+			viewportY = GG::MoreMath::clamp(viewportY, 0, logicalHeight - viewportH);
+		}
 	};
 }

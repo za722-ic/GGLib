@@ -3,7 +3,7 @@
 class MyApp : public GG::Application
 {
 private:
-	GG::Container* root = nullptr;
+	GG::RootContainer* root = nullptr;
 
 private:
 	bool onInit() override
@@ -22,7 +22,6 @@ private:
 		GG::Text::init(canvas.getSDLRenderer(), assetManager.getFont("NotoSans-Medium.ttf").value());
 
 		// define UI
-		GG::Element::inputManager = &inputManager;
 		defineElements();
 
 		// tell library set up was successful
@@ -44,11 +43,7 @@ private:
 		window.setTitle("FPS: " + std::to_string(averageFPS()));
 
 		// layout and render UI
-		root->setWidthAbs(window.getWidth());
-		root->setHeightAbs(window.getHeight());
-		root->x = 0;
-		root->y = 0;
-		root->calculateLayout();
+		root->calculateLayout(0, 0, window.getWidth(), window.getHeight());
 		root->render(&canvas);
 
 		// update screen
@@ -60,7 +55,8 @@ private:
 	{ 
 		// define root container
 		// have to set root container's position manually
-		root = new GG::Container;
+		root = new GG::RootContainer;
+		root->setInputManager(&inputManager);
 		root->layoutMode = GG::LayoutMode::ABSOLUTE;
 		
 		// create button and add it to the UI

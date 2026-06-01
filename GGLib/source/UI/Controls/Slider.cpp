@@ -5,61 +5,46 @@ GG::Slider::Slider()
 	setHeightAbs(6);
 	setMinWidth(170);
 
+	isDragListener = true;
+	isMouseEventListener = true;
+	isScrollEventListener = true;
+
 	rRail = std::min(h, w) / 2;
 	textPadding = rKnob + 5;
 	borderThickness = 3;
-
-	dragManager.setOnClick([&](int mouseX, int mouseY) {
-		if (isCoordInSliderBounds(mouseX, mouseY))
-			value = (int)std::roundf(MoreMath::map(mouseX, screenX, screenX + w, min, max));
-		});
-
-	dragManager.setOnDragStart([&](int mouseX, int mouseY) {
-		isSliderBeingDragged = isCoordInSliderBounds(mouseX, mouseY);
-		});
-
-	dragManager.setOnDragContinue([&](int mouseX, int mouseY) {
-		// we only care if the user _started_ dragging within our bounds
-		if (!isSliderBeingDragged) return;
-
-		// change slider value based on mouseX
-		// TODO this only applies if slider is horizontal --> vertical sliders? diagonal sliders?
-		// value = (int)std::roundf(MoreMath::mapAndClamp(mouseX, screenX, screenX + w, min, max));
-
-		// TODO: (i) clean up and (ii) the same calculations should go in setOnClick
-		float unsnappedValue = MoreMath::map(mouseX, screenX, screenX + w, min, max);
-		float intervalsFromStart = std::round(((unsnappedValue - min) / interval));
-		float snappedValue = intervalsFromStart * interval + min;
-		value = MoreMath::clamp(snappedValue, min, max);
-		});
-
-	dragManager.setOnDragEnd([&](int mouseX, int mouseY) {
-		isSliderBeingDragged = false;
-		});
 }
 
-void GG::Slider::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
+void GG::Slider::onMouseDown(int mouseX, int mouseY)
 {
-	dragManager.processDrag(mouseEventType, mouseX, mouseY);
-
-	isMouseHovering = isCoordInSliderBounds(mouseX, mouseY);
+	value = (int)std::roundf(MoreMath::map(mouseX, screenX, screenX + w, min, max));
 }
-
-void GG::Slider::onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY)
+void GG::Slider::onMouseDrag(int mouseX, int mouseY)
 {
-	if (isCoordInSliderBounds(mouseX, mouseY))
-		value = MoreMath::clamp(value + interval * scrollY, min, max);
+	// change slider value based on mouseX
+	float unsnappedValue = MoreMath::map(mouseX, screenX, screenX + w, min, max);
+	float intervalsFromStart = std::round(((unsnappedValue - min) / interval));
+	float snappedValue = intervalsFromStart * interval + min;
+	value = MoreMath::clamp(snappedValue, min, max);
 }
+void GG::Slider::onMouseEnter(int mouseX, int mouseyY)
+{
+	isMouseHovering = true;
+}
+void GG::Slider::onMouseExit(int mouseX, int mouseyY)
+{
+	isMouseHovering = false;
+}
+void GG::Slider::uiScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY)
+{
+	value = MoreMath::clamp(value + interval * scrollY, min, max);
+}
+
+
 
 void GG::Slider::render(Canvas* canvas)
 {
 	int x = screenX;
 	int y = screenY;
-
-	//canvas->setColor(255, 0, 0, 128);
-	//canvas->fillRect(x, y, w, h);
-	//return;
-
 
 	// draw text
 	int textWidth, textHeight;
@@ -96,12 +81,4 @@ void GG::Slider::render(Canvas* canvas)
 	int borderRadius = rKnob + borderThickness;
 	int knobDiameter = 2 * rKnob;
 	canvas->drawRoundedRect(knobX - borderThickness, knobY - borderThickness, knobDiameter + 2 * borderThickness, knobDiameter + 2 * borderThickness, borderRadius, borderThickness, { 0,0,0,96 }, { 0,0,0,0 }, numTriangles);
-}
-
-// TODO: shoiuld this just get placed in Element?
-bool GG::Slider::isCoordInSliderBounds(int coordX, int coordY)
-{
-	if (coordY < screenY || coordY > screenY + h) return false;
-	if (coordX < screenX || coordX > screenX + w) return false;
-	return true;
 }

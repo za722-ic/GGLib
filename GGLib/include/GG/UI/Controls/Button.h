@@ -14,9 +14,9 @@ namespace GG
 	class Button : public Control
 	{
 	public:
-		std::function<void()> onClick;
-		std::function<void()> onMouseEnter;
-		std::function<void()> onMouseExit;
+		std::function<void()> onClickCallback;
+		std::function<void()> onMouseEnterCallback;
+		std::function<void()> onMouseExitCallback;
 
 		SDL_Color backColorOnHover = { 200,200,200, 255 };
 		SDL_Color backColorOnMouseDown = { 180,180,180,255 };
@@ -50,9 +50,11 @@ namespace GG
 	private:
 
 		// mouse events
-		bool wasInBounds = false; // on prev call
 		bool isInBounds = false;
 		bool isMouseDown = false;
-		void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
+		void onMouseDown(int mouseX, int mouseY) override;
+		void onMouseUp(int mouseX, int mouseY) override;
+		void onMouseEnter(int mouseX, int mouseY) override;
+		void onMouseExit(int mouseX, int mouseY) override;
 	};
 }

@@ -4,7 +4,19 @@
 
 namespace GG
 {
-	class Combobox : Control
+	/* 
+		TODO: this does not receive input events under the updated top-down input scheme
+		since it still needs to use onMouseEvent
+
+		since when the combobiox is expanded, the mouse needs to interact with locations outside
+		the explicit bounds of the combobox.
+		to solve this, maybe make it so that we can distinguish between the hitbox bounds of a control,
+		its layout bounds, and its visual bounds
+
+		so e.g., for layout, this is just a small rectangle even when expanded
+		but when expanded the visual bounds and hitbox update to be taller than the layout bounds
+	*/
+	class Combobox : Control, public MouseEventListener
 	{
 	protected:
 

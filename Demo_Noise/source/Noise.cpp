@@ -82,11 +82,7 @@ void Noise::onLoop()
 
 	// position and render UI
 	int padding = 0;
-	root->setWidthAbs(window.getWidth() - 2*padding);
-	root->setHeightAbs(window.getHeight() - 2*padding);
-	root->setXAbs(padding);
-	root->setYAbs(padding);
-	root->calculateLayout();
+	root->calculateLayout(padding, padding, window.getWidth() - 2*padding, window.getHeight() - 2*padding);
 	root->render(&canvas);
 
 	// update screen
@@ -210,16 +206,11 @@ GG::Button* Noise::createResetButton()
 
 void Noise::defineElements()
 {
-	GG::Element::inputManager = &inputManager;
-
-	root = new GG::Container();
-	root->setXAbs(0);
-	root->setYAbs(0);
+	root = new GG::RootContainer();
+	root->setInputManager(&inputManager);
 	root->setPadding(24);
 	root->setChildGap(26);
 	root->layoutDirection = GG::LayoutDirection::LEFT_TO_RIGHT;
-	root->setWidthAbs(1280);
-	root->setHeightAbs(720);
 	root->isVisible = false;
 
 	GG::Container* sidebar = new GG::Container;
@@ -230,6 +221,7 @@ void Noise::defineElements()
 	sidebar->setChildGap(26);
 	sidebar->isVisible = false;
 	// sidebar->setColor(0xff00ff);
+	sidebar->setScrollable(true);
 	root->add(sidebar);
 
 	perlinViewer = new PerlinViewer();

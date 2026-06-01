@@ -20,8 +20,6 @@ namespace GG
 
 		Label(std::string textStr = "");
 
-		void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;
-
 		void accept(Visitor& visitor) override;
 
 		void render(Canvas* canvas) override;

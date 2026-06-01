@@ -3,7 +3,6 @@
 #include "GG/Core/Application.h"
 #include "GG/Rendering/Text.h"
 
-#include "ScrollableContainer.h"
 #include "AssetManagerWrapper.h"
 
 
@@ -12,7 +11,7 @@ class Demo: public GG::Application, GG::KeyEventListener, GG::MouseEventListener
 private:
 	std::shared_ptr<AssetManagerWrapper> demoAssetManager;
 
-	GG::Container* root; // TODO: maybe make a UI class that inherits Container, but is the only one that has calculateLayout. Since only root containers should have that?
+	GG::RootContainer* root; // TODO: maybe make a UI class that inherits Container, but is the only one that has calculateLayout. Since only root containers should have that?
 
 	float frameTimesAcc;
 	unsigned int framesCount;

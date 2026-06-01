@@ -6,10 +6,11 @@
 #include "GG/UI/FileDialogs/SaveFileDialog.h"
 #include "GG/UI/FileDialogs/OpenFolderDialog.h"
 
-#include "GG/UI/Container.h"
-#include "GG/UI/Control.h"
 #include "GG/UI/Element.h"
+#include "GG/UI/Container.h"
+#include "GG/UI/RootContainer.h"
 
+#include "GG/UI/Control.h"
 #include "GG/UI/Controls/Button.h"
 #include "GG/UI/Controls/Checkbox.h"
 #include "GG/UI/Controls/Combobox.h"

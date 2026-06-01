@@ -29,8 +29,5 @@
     <ClInclude Include="include\Demo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ScrollableContainer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

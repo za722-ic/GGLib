@@ -60,10 +60,16 @@ namespace GG
 		int shadowThickness = 0;
 		SDL_Color borderColor;
 
-		static InputManager* inputManager; // TODO: is this the best way of doing things (also see add() func of Container)
+
+		bool isMouseEventListener = false;
+		bool isScrollEventListener = false;
+		bool isDragListener = false;
+		bool isTextInputListener = false;
+
+
+
 
 	public:
-		// TODO see: virtual destructors
 		virtual ~Element() {}
 
 		virtual void accept(Visitor& visitor) = 0;
@@ -110,6 +116,25 @@ namespace GG
 		void setColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
 		void setColor(int hexCode);
 		void setColor(const SDL_Color& color);
+
+
+		// mouse events
+		virtual void onMouseEnter(int mouseX, int mouseY);
+		virtual void onMouseExit(int mouseX, int mouseY);
+		virtual void onMouseDown(int mouseX, int mouseY);
+		virtual void onMouseUp(int mouseX, int mouseY);
+
+		// scroll event
+		virtual void uiScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY);
+
+		// text input events
+		virtual void onTextInput(std::string text);
+		virtual void onMouseClickOff();
+		virtual void uiKeyEvent(KeyEventType keyEventType, SDL_Keycode key);
+
+		// drag event
+		virtual void onMouseDrag(int mouseX, int mouseY);
+
 
 		virtual void render(Canvas* canvas);
 	};

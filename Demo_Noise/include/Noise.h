@@ -10,7 +10,7 @@ class Noise: public GG::Application, GG::KeyEventListener, GG::MouseEventListene
 private:
 	std::shared_ptr<AssetManagerWrapper> assetManagerWrapper;
 
-	GG::Container* root;
+	GG::RootContainer* root;
 	GG::Label *lblWindowSize, *lblCursorPos;
 	GG::Label* lblPosX, * lblPosY, * lblPosZ;
 	GG::Slider* sliderVelX, * sliderVelY, * sliderVelZ;

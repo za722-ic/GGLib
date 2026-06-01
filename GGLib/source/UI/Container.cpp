@@ -4,13 +4,6 @@ void GG::Container::add(Element* newChild)
 {
 	children.push_back(newChild);
 	newChild->parent = this;
-
-	if (inputManager != nullptr)
-	{
-		Visitor_SetInputManager visitor_SetInputManager;
-		visitor_SetInputManager.inputManager = inputManager;
-		newChild->accept(visitor_SetInputManager);
-	}
 }
 
 void GG::Container::remove(Element* child)
@@ -30,65 +23,38 @@ void GG::Container::accept(Visitor& visitor)
 	visitor.visitForContainer(this);
 }
 
-void GG::Container::calculateLayout()
-{
-	Visitor_CalculateMinimumSizing visitor_calculateMinimumSizing;
-	accept(visitor_calculateMinimumSizing);
-
-
-
-
-	Visitor_Autosize_Horizontal visitor_Autosize_Horizontal;
-	accept(visitor_Autosize_Horizontal);
-
-	Visitor_GrowShrink_Horizontal visitor_GrowShrink_Horizontal;
-	visitor_GrowShrink_Horizontal.breadthFirstGrowShrink(this);
-
-
-
-	Visitor_WrapText visitor_WrapText;
-	accept(visitor_WrapText);
-
-
-
-	Visitor_Autosize_Vertical visitor_Autosize_Vertical;
-	accept(visitor_Autosize_Vertical);
-
-	Visitor_GrowShrink_Vertical visitor_GrowShrink_Vertical;
-	visitor_GrowShrink_Vertical.breadthFirstGrowShrink(this);
-
-
-
-
-	Visitor_Positions visitor_Positions;
-	accept(visitor_Positions);
-
-
-
-	//Visitor_CalculateMinimumSizing visitor_calculateMinimumSizing;
-	//accept(visitor_calculateMinimumSizing);
-
-	//Visitor_Autosize visitor_Autosize;
-	//accept(visitor_Autosize);
-
-	//Visitor_GrowShrink visitor_GrowShrink;
-	//visitor_GrowShrink.breadthFirstGrowShrink(this);
-
-	//Visitor_Positions visitor_Positions;
-	//accept(visitor_Positions);
-}
-
 void GG::Container::render(Canvas* canvas)
 {
-	// rener this element
+	// render this element
 	Element::render(canvas);
 
-	// render its children
+
+
+	// scrollable stuff
+	if (verticalScroll)
+	{
+		int viewportH = h;
+		int maxViewportY = logicalHeight - viewportH;
+
+		render_scrollbarH = GG::MoreMath::map(viewportH / logicalHeight, 0, 1, render_scrollbarMinHeight, viewportH - 2 * render_scrollbarPaddingVertical);
+		render_scrollbarY = GG::MoreMath::map(viewportY, 0, maxViewportY, render_scrollbarPaddingVertical, h - render_scrollbarH - render_scrollbarPaddingVertical);
+
+		canvas->setColor(150);
+		canvas->fillRect(screenX + w - render_scrollbarPaddingHorizontal,
+			screenY + render_scrollbarY,
+			render_scrollbarWidth,
+			render_scrollbarH
+		);
+	}
+
+
+
+	// render its children, clipping them to the container bounds
+	int forcedShadowPadding = 8; // TODO: this is here because clipping doesn't take into account drop-shadow/borders, so we force a padding value to not clip them --> this is not correct. It breaks things like user interaction (as hittesting uses rects without this forced padding) and just generally violates pixel-correctness.
+	canvas->pushClipRect({ screenX - forcedShadowPadding, screenY - forcedShadowPadding, w + 2*forcedShadowPadding, h + 2*forcedShadowPadding});
 	for (auto child : children)
 	{
 		child->render(canvas);
 	}
+	canvas->popClipRect();
 }
-
-void GG::Container::onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY)
-{}

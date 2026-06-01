@@ -31,17 +31,29 @@ namespace GG
 		virtual ~Visitor() = default;
 	};
 
-	class Visitor_SetInputManager : public Visitor
+	class Visitor_HitTest: public Visitor
 	{
 	public:
-		InputManager* inputManager = nullptr;
+		const int mouseX = -1;
+		const int mouseY = -1;
 
-		void visitForControl(Control* control) override;
+		Element* hitElement = nullptr;
+		Element* hitScrollListener = nullptr;
+
+	public:
+		Visitor_HitTest(int mouseX, int mouseY);
+
 		void visitForLabel(Label* label) override;
+		void visitForControl(Control* control) override;
 
 		void visitForFlexContainer(Container* container) override;
+
 		void visitForAbsoluteContainer(Container* container) override;
 
+	private:
+		void hitTestContainer(Container* container);
+
+		bool isMouseInElement(Element* element);
 	};
 
 	class Visitor_GetChildren : public Visitor

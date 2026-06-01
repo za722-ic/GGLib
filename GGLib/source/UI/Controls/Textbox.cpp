@@ -1,5 +1,11 @@
 #include "GG/UI/Controls/Textbox.h"
 
+GG::Textbox::Textbox()
+{
+	isTextInputListener = true;
+	isMouseEventListener = true;
+}
+
 // bounds
 void GG::Textbox::setBounds(int _x, int _y, int _w, int _h)
 {
@@ -32,6 +38,9 @@ std::string GG::Textbox::getText() const
 // rendering
 void GG::Textbox::render(Canvas* canvas)
 {
+	int x = screenX;
+	int y = screenY;
+
 	// draw light border if focused
 	if (isFocused)
 	{
@@ -103,19 +112,8 @@ void GG::Textbox::render(Canvas* canvas)
 	//canvas->drawString(std::to_string(cursorPos), x + PADDING - viewportX, y + 3 * h);
 }
 
-// mouse events
-void GG::Textbox::onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY)
-{
-	if (mouseEventType == MouseEventType::LEFT_MOUSE_UP)
-	{
-		// set/unset textbox focus
-		bool isInBounds = (mouseX >= x && mouseX < x + w) && (mouseY >= y && mouseY < y + h);
-		isFocused = isInBounds;
-	}
-}
-
-// key events
-void GG::Textbox::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
+// input events
+void GG::Textbox::uiKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
 {
 	if (!isFocused) return;
 
@@ -129,13 +127,24 @@ void GG::Textbox::onKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
 	if (key == SDLK_END) moveCursorToEndOfText();
 
 }
-
-void GG::Textbox::onTextInputEvent(std::string text)
+void GG::Textbox::onTextInput(std::string text)
 {
 	if (!isFocused) return;
 
 	insertTextAtCursorPos(text);
 }
+void GG::Textbox::onMouseDown(int mouseX, int mouseY)
+{
+	isFocused = true;
+}
+void GG::Textbox::onMouseClickOff()
+{
+	isFocused = false;
+}
+
+
+
+
 
 // handling text
 void GG::Textbox::insertTextAtCursorPos(std::string t)

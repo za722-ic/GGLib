@@ -54,11 +54,7 @@ void Demo::onLoop()
 
 	// draw UI
 	int padding = 100;
-	root->setWidthAbs(window.getWidth() - 2*padding);
-	root->setHeightAbs(window.getHeight() - 2*padding);
-	root->x = padding;
-	root->y = padding;
-	root->calculateLayout();
+	root->calculateLayout(padding, padding, window.getWidth() - 2*padding, window.getHeight() - 2*padding);
 	root->render(&canvas);
 
 	// update screen
@@ -109,23 +105,18 @@ void Demo::onMouseEvent(GG::MouseEventType mouseEventType, int mouseX, int mouse
 
 void Demo::defineElements()
 {
-	// TODO: automate this
-	GG::Element::inputManager = &inputManager;
-
 	// create root container
-	root = new ScrollableContainer;
+	root = new GG::RootContainer;
+	root->setScrollable(true);
+	root->setInputManager(&inputManager);
 	root->setColor(210,210,180,255);
 	root->radius = 0;
 	root->layoutMode = GG::LayoutMode::FLEX;
 	root->horizontalAlignmentMode = GG::HAlignmentMode::CENTER;
 	root->verticalAlignmentMode = GG::VAlignmentMode::TOP;
 	root->layoutDirection = GG::LayoutDirection::TOP_TO_BOTTOM;
-	//root->isVScrollEnabled = true;
 	root->setPadding(60);
 	root->setChildGap(60);
-	GG::Visitor_SetInputManager visitor_SetInputManager;
-	visitor_SetInputManager.inputManager = GG::Element::inputManager;
-	root->accept(visitor_SetInputManager);
 
 	std::vector<unsigned int> colors =
 	{
