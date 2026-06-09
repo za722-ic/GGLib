@@ -65,23 +65,8 @@ std::string GG::Label::getText()
 
 void GG::Label::setHAlignment(HAlignmentMode alignment)
 {
-	switch (alignment)
-	{
-	case HAlignmentMode::LEFT:
-		tttext->setHAlignment(TTF_HORIZONTAL_ALIGN_LEFT);
-		break;
-	case HAlignmentMode::CENTER:
-		tttext->setHAlignment(TTF_HORIZONTAL_ALIGN_CENTER);
-		break;
-	case HAlignmentMode::RIGHT:
-		tttext->setHAlignment(TTF_HORIZONTAL_ALIGN_RIGHT);
-		break;
-
-	default:
-		assert(false); // something wrong has happened
-	}
+	tttext->setHAlignment(alignment);
 }
-
 void GG::Label::setVAlignment(VAlignmentMode alignment)
 {
 	verticalAlignmentMode = alignment;

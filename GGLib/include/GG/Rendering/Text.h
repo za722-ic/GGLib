@@ -4,6 +4,10 @@
 
 #include <string>
 #include <iostream>
+#include <cassert>
+
+#include "GG/UI/Enums.h"
+
 
 namespace GG
 {
@@ -44,8 +48,8 @@ namespace GG
 		void setPosition(int x, int y);
 		std::pair<int, int> getPosition();
 
-		void setHAlignment(TTF_HorizontalAlignment alignment);
-		TTF_HorizontalAlignment getHAlignment();
+		void setHAlignment(HAlignmentMode alignment);
+		HAlignmentMode getHAlignment();
 
 		std::pair<int, int> getDimensions();
 
@@ -53,5 +57,8 @@ namespace GG
 
 	private:
 		void calculateDimensions();
+
+		TTF_HorizontalAlignment hAlignmentModeToTTFHorizontalAlignment(GG::HAlignmentMode horizontalAlignment);
+		GG::HAlignmentMode TTFHorizontalAlignmentToHAlignmentMode(TTF_HorizontalAlignment horizontalAlignment);
 	};
 }

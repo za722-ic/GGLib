@@ -84,14 +84,14 @@ std::pair<int, int> GG::Text::getPosition()
 	return std::pair<int, int>(x, y);
 }
 
-void GG::Text::setHAlignment(TTF_HorizontalAlignment alignment)
+void GG::Text::setHAlignment(HAlignmentMode alignment)
 {
 	TTF_Font* font = TTF_GetTextFont(ttfText);
-	TTF_SetFontWrapAlignment(font, alignment);
+	TTF_SetFontWrapAlignment(font, hAlignmentModeToTTFHorizontalAlignment(alignment));
 }
-TTF_HorizontalAlignment GG::Text::getHAlignment()
+GG::HAlignmentMode GG::Text::getHAlignment()
 {
-	return TTF_GetFontWrapAlignment(font);
+	return TTFHorizontalAlignmentToHAlignmentMode(TTF_GetFontWrapAlignment(font));
 }
 
 std::pair<int, int> GG::Text::getDimensions()
@@ -107,4 +107,40 @@ void GG::Text::render()
 void GG::Text::calculateDimensions()
 {
 	TTF_GetStringSizeWrapped(font, strText.c_str(), strText.size(), getWrapWidth(), &w, &h);
+}
+
+TTF_HorizontalAlignment GG::Text::hAlignmentModeToTTFHorizontalAlignment(HAlignmentMode horizontalAlignment)
+{
+	switch (horizontalAlignment)
+	{
+	case HAlignmentMode::LEFT:
+		return TTF_HORIZONTAL_ALIGN_LEFT;
+
+	case HAlignmentMode::CENTER:
+		return TTF_HORIZONTAL_ALIGN_CENTER;
+
+	case HAlignmentMode::RIGHT:
+		return TTF_HORIZONTAL_ALIGN_RIGHT;
+
+	default:
+		assert(false); // something wrong has happened
+	}
+}
+
+GG::HAlignmentMode GG::Text::TTFHorizontalAlignmentToHAlignmentMode(TTF_HorizontalAlignment horizontalAlignment)
+{
+	switch (horizontalAlignment)
+	{
+	case TTF_HORIZONTAL_ALIGN_LEFT:
+		return HAlignmentMode::LEFT;
+
+	case TTF_HORIZONTAL_ALIGN_CENTER:
+		return HAlignmentMode::CENTER;
+
+	case TTF_HORIZONTAL_ALIGN_RIGHT:
+		return HAlignmentMode::RIGHT;
+
+	default:
+		assert(false); // something wrong has happened
+	}
 }
