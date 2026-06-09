@@ -181,6 +181,13 @@ namespace GG
 		void pushClipRect(const SDL_Rect& clipRect);
 		void popClipRect();
 		void calculateActiveClipRect();
+		void setClippingEnabled(bool clippingEnabled)
+		{
+			if (clippingEnabled)
+				SDL_SetRenderClipRect(renderer, &activeClipRect);
+			else
+				SDL_SetRenderClipRect(renderer, NULL);
+		}
 
 	private:
 
