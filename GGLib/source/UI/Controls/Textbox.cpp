@@ -41,16 +41,21 @@ void GG::Textbox::render(Canvas* canvas)
 	int x = screenX;
 	int y = screenY;
 
+	// draw back
+	canvas->setColor(color);
+	canvas->fillRoundedRect(x, y, w, h, radius);
+
 	// draw light border if focused
+	SDL_Color borderColor;
 	if (isFocused)
 	{
-		canvas->setColor(255);
+		borderColor = { 255,255,255,255 };
 	}
 	else
 	{
-		canvas->setColor(128);
+		borderColor = { 255,255,255,160};
 	}
-	canvas->drawRect(x, y, w, h, 3);
+	canvas->drawRoundedRect(x, y, w, h, radius, 1, borderColor, borderColor);
 
 	// draw text
 	unsigned int viewportW = w - 2 * PADDING;
