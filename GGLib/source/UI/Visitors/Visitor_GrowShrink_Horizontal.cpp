@@ -105,6 +105,13 @@ void GG::Visitor_GrowShrink_Horizontal::resizeChildrenAlongMainAxis(Container* c
 		}
 	}
 
+	float totalFlexGrow = 0.0f, totalFlexShrink = 0.0f;
+	for (auto child : horizontallyResizableChildren)
+	{
+		totalFlexGrow += child->flexGrow;
+		totalFlexShrink += child->flexShrink;
+	}
+
 	// keep looping until either
 	// 1. no remaining space to to shrink/grow children by
 	// 2. there are no remaining children that can be resized (e.g.,  because they all grew to their max or min size)
@@ -174,7 +181,18 @@ void GG::Visitor_GrowShrink_Horizontal::resizeChildrenAlongMainAxis(Container* c
 
 		for (auto childThatIsMost : childrenThatAreMost)
 		{
-			childThatIsMost->w += sizeToAddPerElement;
+			// calculate weight adjustment from flex factor (if flex factor sums to zreo then can ignore)
+			float flexFactor = 0.0f;
+			if (shrinking && totalFlexShrink != 0.0f)
+			{
+				flexFactor = remainingWidth * childThatIsMost->flexShrink / totalFlexShrink;
+			}
+			else if (!shrinking && totalFlexGrow != 0.0f)
+			{
+				flexFactor = remainingWidth * childThatIsMost->flexGrow / totalFlexGrow;
+			}
+
+			childThatIsMost->w += sizeToAddPerElement + flexFactor;
 
 			// remove from resizables if this element has been grown passed max width, or shrunk past min width
 			if (shrinking && childThatIsMost->w <= childThatIsMost->getMinWidth())

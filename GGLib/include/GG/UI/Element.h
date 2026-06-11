@@ -55,7 +55,7 @@ namespace GG
 		bool verticalAutosize = false;
 
 		bool isVisible = true;
-		int radius = 12;
+		int radius = 0;
 		int borderThickness = 0;
 		int shadowThickness = 0;
 		SDL_Color borderColor;
@@ -67,6 +67,33 @@ namespace GG
 		bool isTextInputListener = false;
 
 
+		float flexGrow = 0.0f;
+		float flexShrink = 0.0f;
+
+		//bool isLayoutDirty = true;
+		//bool isChildLayoutDirty = true;
+
+		//void bubbleUpLayoutInvalidation()
+		//{
+		//	if (parent != nullptr)
+		//	{
+		//		parent->isChildPresentationDirty = true;
+		//		parent->bubbleUpLayoutInvalidation();
+		//	}
+		//}
+		//void invalidateLayout()
+		//{
+		//	isLayoutDirty = true;
+		//	bubbleUpLayoutInvalidation();
+		//}
+
+
+		//bool isPresentationDirty = true;
+		//bool isChildPresentationDirty = true;
+		//void invalidatePresentation()
+		//{
+
+		//}
 
 
 	public:
