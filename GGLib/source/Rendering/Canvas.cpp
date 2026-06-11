@@ -461,6 +461,15 @@ std::vector<int> GG::Canvas::getIndices_TriangleStrip_Loop(int numVertices)
 // TODO: this does not adhere to applyCanvasAlignment, applyCanvasOrigin
 void GG::Canvas::drawRoundedRect(int x, int y, int w, int h, int r, int thickness, SDL_Color innerColor, SDL_Color outerColor, const unsigned int trianglesPerCorner)
 {
+	// TODO: this is to avoid SDL eating up GB worth of memory at the extreme. Its not the most elegant solution
+	static int flushCounter = 0;
+	const int flustCounterPeriod = 20;
+	if (++flushCounter == flustCounterPeriod)
+	{
+		flushCounter = 0;
+		SDL_FlushRenderer(renderer);
+	}
+
 	int outerRadius = r;
 	int innerRadius = outerRadius - thickness;
 
@@ -472,11 +481,20 @@ void GG::Canvas::drawRoundedRect(int x, int y, int w, int h, int r, int thicknes
 	std::vector<int> indices = getIndices_TriangleStrip_Loop(verts.size());
 
 	SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), indices.data(), indices.size());
+
 }
 
 // TODO: this does not adhere to applyCanvasAlignment, applyCanvasOrigin
 void GG::Canvas::fillRoundedRect(int x, int y, int w, int h, int r, const unsigned int trianglesPerCorner)
 {
+	// TODO: this is to avoid SDL eating up GB worth of memory at the extreme. Its not the most elegant solution
+	static int flushCounter = 0;
+	const int flustCounterPeriod = 20;
+	if (++flushCounter == flustCounterPeriod)
+	{
+		flushCounter = 0;
+		SDL_FlushRenderer(renderer);
+	}
 	// // r cannot be greater than w or h, otherwise the quarter circles that get rendered are too big
 	// // TODO: the case where r is greater than w or h makes this look weird --> how does CSS handle it?
 	// if (r > w/2) r = w/2;
