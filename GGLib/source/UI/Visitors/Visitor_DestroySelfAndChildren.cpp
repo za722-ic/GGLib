@@ -13,14 +13,14 @@ void GG::Visitor_DestroySelfAndChildren::visitForLabel(Label* label)
 
 void GG::Visitor_DestroySelfAndChildren::visitForFlexContainer(Container* container)
 {
-	for (auto child : container->children) delete child;
+	for (auto child : container->children) child->accept(*this);
 
 	delete container;
 }
 
 void GG::Visitor_DestroySelfAndChildren::visitForAbsoluteContainer(Container* container)
 {
-	for (auto child : container->children) delete child;
+	for (auto child : container->children) child->accept(*this);
 
 	delete container;
 }
