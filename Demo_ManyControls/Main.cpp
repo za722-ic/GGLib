@@ -1,3 +1,8 @@
+#include <fstream>
+#include <iostream>
+#include <string>
+
+#include "PerformanceTracker.h"
 #include "GG/Core/Application.h"
 
 class MyApp : public GG::Application
@@ -5,13 +10,26 @@ class MyApp : public GG::Application
 private:
 	GG::RootContainer* root = nullptr;
 
+	PerformanceTracker perfTracker;
+
+	double elapsedTimeSinceFirstLoop = 0.0f;
+	const double minElapsedTimeSinceFirstLoop = 10.0f; // wait some time for transient behaviour to end and cache to be established
+	const double maxElapsedTimeSinceFirstLoop = 25.0f;
+
+	const double memorySampleInterval = 3.0f;
+	double timeElapsedSinceLastMemorySample = 0.0f;
+
+public:
+	int totalElements = -1;
+
 private:
 	bool onInit() override
 	{
 		// set up window
 		window.setTitle("MyApp");
 		window.setResizable(true);
-		window.setSize(300, 300);
+		window.maximise();
+		window.setSize(1920, 1008);
 
 		// load font
 		assetManager.setBaseAssetPath("resources/");
@@ -30,7 +48,17 @@ private:
 
 	void onQuit() override
 	{
-		GG::Text::close();
+		root->destroySelfAndChildren();
+
+		auto results = perfTracker.calculateMetrics();
+
+		std::ofstream logFile("metrics.csv", std::ios_base::app);
+		logFile << totalElements << "," << results.averageFps << "," << results.onePercentLowFps << "," << results.maxMem << std::endl;
+
+		std::cout << "Total elements = " << totalElements << std::endl;
+		std::cout << "Average FPS: " << results.averageFps << std::endl;
+		std::cout << "One percent low FPS: " << results.onePercentLowFps << std::endl;
+		std::cout << "Peak Physical Memory Usage: " << results.maxMem << " MB" << std::endl << std::endl;
 	}
 
 	void onLoop() override
@@ -46,6 +74,25 @@ private:
 		root->calculateLayout(0, 0, window.getWidth(), window.getHeight());
 		root->render(&canvas);
 
+		elapsedTimeSinceFirstLoop += deltaTime();
+		if (elapsedTimeSinceFirstLoop >= maxElapsedTimeSinceFirstLoop)
+		{
+			isRunning = false;
+			return;
+		}
+		else if (elapsedTimeSinceFirstLoop >= minElapsedTimeSinceFirstLoop)
+		{
+			perfTracker.recordFrame(deltaTime());
+		}
+
+		timeElapsedSinceLastMemorySample += deltaTime();
+		if (timeElapsedSinceLastMemorySample >= memorySampleInterval)
+		{
+			perfTracker.sampleMemory();
+			timeElapsedSinceLastMemorySample = 0.0f;
+		}
+
+
 		// update screen
 		canvas.present();
 	}
@@ -54,30 +101,39 @@ private:
 	void defineElements()
 	{ 
 		// define root container
-		// have to set root container's position manually
 		root = new GG::RootContainer;
 		root->setInputManager(&inputManager);
 		root->layoutMode = GG::LayoutMode::ABSOLUTE;
+		root->verticalAlignmentMode = GG::VAlignmentMode::TOP;
+		root->verticalScroll = true;
+		root->isScrollEventListener = true;
+		root->verticalAutosize = true;
 		
-		// create button and add it to the UI
-		int i = 0;
+		// create label and add it to the UI
+		const int gap = 2;
+		int x = gap, y = gap;
 		const int size = 30;
-		for (int x = 0; x < 1920 - size; x += size + 2)
+		
+		for (int i = 0; i < totalElements; i++)
 		{
-			for (int y = 0; y < 1008 - size; y += size + 2)
+			GG::Label* label = new GG::Label(std::to_string(i));
+
+			label->setWidthAbs(size);
+			label->setHeightAbs(size);
+			label->xAbs = x;
+			label->yAbs = y;
+			label->radius = 5;
+			label->setColor({ 255,255,255,255 });
+			label->setForeColor({ 0,0,0,255 });
+			label->setHAlignment(GG::HAlignmentMode::CENTER);
+
+			root->add(label);
+
+			x += size + gap;
+			if (x >= window.getWidth() - size)
 			{
-				GG::Label* label = new GG::Label(std::to_string(i++));
-
-				label->setWidthAbs(size);
-				label->setHeightAbs(size);
-				label->x = x;
-				label->y = y;
-				label->radius = 5;
-				label->setColor({ 255,255,255,255 });
-				label->setForeColor({ 0,0,0,255 });
-				label->setHAlignment(GG::HAlignmentMode::CENTER);
-
-				root->add(label);
+				x = gap;
+				y += size + gap;
 			}
 		}
 	}
@@ -85,8 +141,16 @@ private:
 
 int main(int argc, char* args[])
 {
-	MyApp app;
-	app.begin();
+	std::ofstream logFile("metrics.csv");
+	logFile << "TotalElements,AverageFPS,OnePercentLowFPS,PeakMemoryMB\n";
+	logFile.close();
+
+	for (int totalElements = 100; totalElements <= 4000; totalElements += 100)
+	{
+		MyApp app;
+		app.totalElements = totalElements;
+		app.begin();
+	}
 
 	return 0;
 }

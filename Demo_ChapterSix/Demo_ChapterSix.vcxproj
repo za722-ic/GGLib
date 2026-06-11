@@ -33,10 +33,10 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{709da291-4239-4cf6-b6ca-2c3e34b8b145}</ProjectGuid>
-    <RootNamespace>Demo_ManyControls</RootNamespace>
+    <ProjectGuid>{8ae28a02-31e4-480e-8b1f-b227e7d6b447}</ProjectGuid>
+    <RootNamespace>Demo_ChapterSix</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Demo_ManyControls</ProjectName>
+    <ProjectName>Demo_ChapterSix</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
