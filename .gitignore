@@ -365,3 +365,5 @@ FodyWeavers.xsd
 /SDL3_image-3.4.4
 /SDL3_mixer-3.2.0
 /SDL3_ttf-3.1.0
+/Demo_ChapterSix/metrics.csv
+/Demo_ManyControls/metrics.csv
