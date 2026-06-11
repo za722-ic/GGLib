@@ -50,8 +50,12 @@ void GG::Window::setTitle(std::string title)
 
 void GG::Window::setFullScreen(bool isFullScreen)
 {
-	//    Uint32 flags = isFullScreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
-	//    SDL_SetWindowFullscreen(window, flags);
+	SDL_SetWindowFullscreen(window, isFullScreen);
+}
+
+void GG::Window::maximise()
+{
+	SDL_MaximizeWindow(window);
 }
 
 void GG::Window::setResizable(bool isResizable)

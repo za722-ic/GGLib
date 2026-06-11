@@ -21,6 +21,7 @@ namespace GG
 		void setTitle(std::string title);
 
 		void setFullScreen(bool isFullScreen);
+		void maximise();
 		bool getFullScreen();
 		void toggleFullScreen();
 
