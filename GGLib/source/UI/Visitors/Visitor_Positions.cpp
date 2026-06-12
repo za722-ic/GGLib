@@ -17,6 +17,9 @@ void GG::Visitor_Positions::visitForAbsoluteContainer(Container* container)
 	container->screenX = container->x + offsetX;
 	container->screenY = container->y + offsetY;
 
+	// for scroll
+	if (container->parent != nullptr) container->screenY -= container->parent->viewportY;
+
 	offsetX = container->screenX;
 	offsetY = container->screenY;
 	for (auto child : container->children)
@@ -36,7 +39,8 @@ void GG::Visitor_Positions::visitForFlexContainer(Container* container)
 {
 	container->screenX = container->x + offsetX;
 	container->screenY = container->y + offsetY;
-
+	
+	// for scroll
 	if (container->parent != nullptr) container->screenY -= container->parent->viewportY;
 
 	// TODO refactor alignment calculations
