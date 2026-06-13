@@ -36,7 +36,8 @@ void GG::Container::render(Canvas* canvas)
 		int viewportH = h;
 		int maxViewportY = logicalHeight - viewportH;
 
-		render_scrollbarH = GG::MoreMath::map(viewportH / logicalHeight, 0, 1, render_scrollbarMinHeight, viewportH - 2 * render_scrollbarPaddingVertical);
+		if (logicalHeight == 0) render_scrollbarH = render_scrollbarMinHeight;
+		else render_scrollbarH = GG::MoreMath::map(viewportH / logicalHeight, 0, 1, render_scrollbarMinHeight, viewportH - 2 * render_scrollbarPaddingVertical);
 		render_scrollbarY = GG::MoreMath::map(viewportY, 0, maxViewportY, render_scrollbarPaddingVertical, h - render_scrollbarH - render_scrollbarPaddingVertical);
 
 		canvas->setColor(150);

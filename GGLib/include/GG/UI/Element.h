@@ -44,12 +44,12 @@ namespace GG
 		int maxWidthCalculated = INT_MAX;
 		int maxHeightCalculated = INT_MAX;
 
-		int screenX;
-		int screenY;
+		int screenX = 0;
+		int screenY = 0;
 
-		Container* parent;
+		Container* parent = nullptr;
 
-		SDL_Color color;
+		SDL_Color color = { 255,0,255,0 };
 
 		bool horizontalAutosize = false;
 		bool verticalAutosize = false;

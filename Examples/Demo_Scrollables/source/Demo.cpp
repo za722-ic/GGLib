@@ -53,7 +53,7 @@ void Demo::onLoop()
 	canvas.clear();
 
 	// draw UI
-	int padding = 100;
+	int padding = 0;
 	root->calculateLayout(padding, padding, window.getWidth() - 2*padding, window.getHeight() - 2*padding);
 	root->render(&canvas);
 

@@ -49,7 +49,7 @@ namespace GG
 	public: // TODO: protected
 		std::vector<Element*> children;
 
-		LayoutDirection layoutDirection;
+		LayoutDirection layoutDirection = LayoutDirection::TOP_TO_BOTTOM;
 
 		VAlignmentMode verticalAlignmentMode = VAlignmentMode::CENTER;
 		HAlignmentMode horizontalAlignmentMode = HAlignmentMode::CENTER;

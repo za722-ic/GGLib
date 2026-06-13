@@ -58,12 +58,14 @@ private:
 		root = new GG::RootContainer;
 		root->setInputManager(&inputManager);
 		root->layoutMode = GG::LayoutMode::FLEX;
+		root->layoutDirection = GG::LayoutDirection::TOP_TO_BOTTOM;
 		root->setChildGap(0);
 		root->setPadding(0);
 		
 
 		GG::Container* sc = new GG::Container;
 		sc->verticalAlignmentMode = GG::VAlignmentMode::TOP;
+		sc->layoutDirection = GG::LayoutDirection::TOP_TO_BOTTOM;
 		sc->setColor({ 255,0,180, 255 });
 		sc->setScrollable(true);
 		sc->setChildGap(200);
@@ -75,6 +77,7 @@ private:
 		// slider
 		GG::Container* sc2 = new GG::Container;
 		sc2->verticalAlignmentMode = GG::VAlignmentMode::TOP;
+		sc2->layoutDirection = GG::LayoutDirection::TOP_TO_BOTTOM;
 		sc2->setScrollable(true);
 		sc2->setColor({ 180,0,255,255 });
 		sc2->setChildGap(200);
@@ -95,6 +98,7 @@ private:
 		// textboix
 		GG::Container* sc3 = new GG::Container;
 		sc3->verticalAlignmentMode = GG::VAlignmentMode::TOP;
+		sc3->layoutDirection = GG::LayoutDirection::TOP_TO_BOTTOM;
 		sc3->setColor({ 180,0,255,255 });
 		sc3->setScrollable(true);
 		sc3->setChildGap(200);
@@ -112,6 +116,7 @@ private:
 		// checkbox
 		GG::Container* sc4 = new GG::Container;
 		sc4->verticalAlignmentMode = GG::VAlignmentMode::TOP;
+		sc4->layoutDirection = GG::LayoutDirection::TOP_TO_BOTTOM;
 		sc4->setColor({ 180,0,255,255 });
 		sc4->setChildGap(200);
 		sc4->setScrollable(true);
@@ -128,6 +133,7 @@ private:
 		GG::Container* sc5 = new GG::Container;
 		sc5->setColor({ 180,0,255,255 });
 		sc5->setChildGap(200);
+		sc5->layoutDirection = GG::LayoutDirection::TOP_TO_BOTTOM;
 		sc5->verticalAlignmentMode = GG::VAlignmentMode::TOP;
 		sc5->setScrollable(true);
 		sc5->setPadding(20);
@@ -143,6 +149,7 @@ private:
 		GG::Container* sc6 = new GG::Container;
 		sc6->setColor({ 180,0,255,255 });
 		sc6->verticalAlignmentMode = GG::VAlignmentMode::TOP;
+		sc6->layoutDirection = GG::LayoutDirection::TOP_TO_BOTTOM;
 		sc6->setChildGap(200);
 		sc6->setScrollable(true);
 		sc6->setPadding(20);
@@ -159,6 +166,7 @@ private:
 		// label
 		GG::Container* sc7 = new GG::Container;
 		sc7->setColor({ 180,0,255,255 });
+		sc7->layoutDirection = GG::LayoutDirection::TOP_TO_BOTTOM;
 		sc7->verticalAlignmentMode = GG::VAlignmentMode::TOP;
 		sc7->setChildGap(200);
 		sc7->setPadding(20);
