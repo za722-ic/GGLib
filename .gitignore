@@ -367,3 +367,6 @@ FodyWeavers.xsd
 /SDL3_ttf-3.1.0
 /Demo_ChapterSix/metrics.csv
 /Demo_ManyControls/metrics.csv
+/build
+/Examples/Demo_ChapterSix/metrics.csv
+/Examples/Demo_ManyControls/metrics.csv
