@@ -6,7 +6,7 @@
 - Clone the repo (this might take a while as it recursively clones dependencies):
 
 ``` bash
-git clone --recursive https://www.github.com/za722-ic/GGLib
+git clone --recursive https://www.github.com/za722-ic/GGLib -b report
 ```
 
 - Run CMake:
@@ -20,7 +20,11 @@ cmake ..
 
 ### Windows
 
-A `.sln` file will have been generated in the `build` folder. Open it using Visual Studio. Click the green "Local Windows Debugger" button to build and run one of the example projects. You can select other example projects by opening "Solution Explorer" (CTRL+ALT+L), right clicking one of the demo projects (names "Demo_\*") and clicking "Set as Startup Project". The demos should give a good idea how to use the library.
+A `.sln` file will have been generated in the `build` folder. Open it using Visual Studio.
+
+Click the green "Local Windows Debugger" button to build and run one of the example projects. Set the project to "Release" mode to for good performance, or "Debug" if you want to use the debugger.
+
+You can select other example projects by opening "Solution Explorer" (CTRL+ALT+L), and then right-clicking one of the demo projects ("Demo_\*"), and then clicking "Set as Startup Project". The demos should give a good idea how to use the library.
 
 ### Linux
 
