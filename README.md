@@ -32,6 +32,8 @@ make
 
 This will build all the demo applications. You can then go into the respective folder and run the generated executable. The demos should give a good idea how to use the library.
 
+> Note: There are a few example programs that are Windows only. See `Examples/CMakeLists.txt`.
+
 ## Creating an application
 
 Here is a small project that creates an application with a counter:

@@ -44,8 +44,11 @@ endfunction()
 # ======================================
 
 add_gglib_example(Demo_ButtonCounter)
-add_gglib_example(Demo_ChapterSix)
 add_gglib_example(Demo_GameOfLife)
-add_gglib_example(Demo_ManyControls)
 add_gglib_example(Demo_Noise)
 add_gglib_example(Demo_Scrollables)
+
+if (WIN32)
+    add_gglib_example(Demo_ChapterSix)
+    add_gglib_example(Demo_ManyControls)
+endif()
