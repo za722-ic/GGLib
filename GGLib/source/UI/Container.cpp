@@ -51,7 +51,7 @@ void GG::Container::render(Canvas* canvas)
 
 
 	// render its children, clipping them to the container bounds
-	int forcedShadowPadding = 8; // TODO: this is here because clipping doesn't take into account drop-shadow/borders, so we force a padding value to not clip them --> this is not correct. It breaks things like user interaction (as hittesting uses rects without this forced padding) and just generally violates pixel-correctness.
+	int forcedShadowPadding = 0; // TODO: this is here because clipping doesn't take into account drop-shadow/borders, so we force a padding value to not clip them --> this is not correct. It breaks things like user interaction (as hittesting uses rects without this forced padding) and just generally violates pixel-correctness.
 	canvas->pushClipRect({ screenX - forcedShadowPadding, screenY - forcedShadowPadding, w + 2*forcedShadowPadding, h + 2*forcedShadowPadding});
 	for (auto child : children)
 	{

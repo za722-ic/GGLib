@@ -217,7 +217,7 @@ void Noise::defineElements()
 	sidebar->layoutDirection = GG::LayoutDirection::TOP_TO_BOTTOM;
 	sidebar->verticalAlignmentMode = GG::VAlignmentMode::TOP;
 	sidebar->horizontalAutosize = true;
-	sidebar->setPadding(0);
+	sidebar->setPadding(8);
 	sidebar->setChildGap(26);
 	sidebar->isVisible = false;
 	// sidebar->setColor(0xff00ff);
