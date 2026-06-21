@@ -175,7 +175,7 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="include\GG\UI\RootContainer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -300,10 +300,10 @@
       <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="source\UI\RootContainer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="source\UI\Visitors\Visitor_HitTest.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\UI\Visitors</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

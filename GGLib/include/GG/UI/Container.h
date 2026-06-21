@@ -61,6 +61,7 @@ namespace GG
 		void add(Element* newChild);
 
 		void remove(Element* child);
+		void removeAllChildren();
 
 		void destroySelfAndChildren();
 

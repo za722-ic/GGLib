@@ -1,6 +1,7 @@
 #include "GG/UI/Visitors/Visitor.h"
 #include "GG/UI/Container.h"
 #include "GG/UI/Control.h"
+#include "GG/UI/RootContainer.h"
 
 void GG::Visitor::visitForContainer(Container* container)
 {
@@ -16,4 +17,9 @@ void GG::Visitor::visitForContainer(Container* container)
 	default:
 		assert(false); // unknown layout mode
 	}
+}
+
+void GG::Visitor::visitForRootContainer(RootContainer* rootContainer)
+{
+	visitForContainer(rootContainer);
 }

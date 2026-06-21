@@ -16,6 +16,7 @@ namespace GG
 	class Control;
 	class Element;
 	class Label;
+	class RootContainer;
 
 	class Visitor
 	{
@@ -26,6 +27,8 @@ namespace GG
 		void visitForContainer(Container* container);
 		virtual void visitForFlexContainer(Container* container) = 0;
 		virtual void visitForAbsoluteContainer(Container* container) = 0;
+
+		virtual void visitForRootContainer(RootContainer* rootContainer);
 
 		// see: virtual destructor and default TODO
 		virtual ~Visitor() = default;
@@ -49,6 +52,8 @@ namespace GG
 		void visitForFlexContainer(Container* container) override;
 
 		void visitForAbsoluteContainer(Container* container) override;
+
+		void visitForRootContainer(RootContainer* rootContainer) override;
 
 	private:
 		void hitTestContainer(Container* container);

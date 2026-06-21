@@ -58,7 +58,7 @@ namespace GG
 		virtual void onTextInput(std::string text) override;
 		virtual void uiKeyEvent(KeyEventType keyEventType, SDL_Keycode key) override;
 		virtual void onMouseDown(int mouseX, int mouseY) override;
-		virtual void onMouseClickOff() override;
+		virtual void onMouseClickOff(int mouseX, int mouseY) override;
 
 		// handling text
 		void insertTextAtCursorPos(std::string text);

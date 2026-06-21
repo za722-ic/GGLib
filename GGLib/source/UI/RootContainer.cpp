@@ -9,27 +9,56 @@ void GG::RootContainer::calculateLayout(int screenX, int screenY, int screenW, i
 	setHeightAbs(screenH);
 
 
-	// calculate laout using visitor pipeline
-	Visitor_CalculateMinimumSizing visitor_calculateMinimumSizing;
-	accept(visitor_calculateMinimumSizing);
+	{
+		// calculate laout using visitor pipeline
+		Visitor_CalculateMinimumSizing visitor_calculateMinimumSizing;
+		accept(visitor_calculateMinimumSizing);
 
-	Visitor_Autosize_Horizontal visitor_Autosize_Horizontal;
-	accept(visitor_Autosize_Horizontal);
+		Visitor_Autosize_Horizontal visitor_Autosize_Horizontal;
+		accept(visitor_Autosize_Horizontal);
 
-	Visitor_GrowShrink_Horizontal visitor_GrowShrink_Horizontal;
-	visitor_GrowShrink_Horizontal.breadthFirstGrowShrink(this);
+		Visitor_GrowShrink_Horizontal visitor_GrowShrink_Horizontal;
+		visitor_GrowShrink_Horizontal.breadthFirstGrowShrink(this);
 
-	Visitor_WrapText visitor_WrapText;
-	accept(visitor_WrapText);
+		Visitor_WrapText visitor_WrapText;
+		accept(visitor_WrapText);
 
-	Visitor_Autosize_Vertical visitor_Autosize_Vertical;
-	accept(visitor_Autosize_Vertical);
+		Visitor_Autosize_Vertical visitor_Autosize_Vertical;
+		accept(visitor_Autosize_Vertical);
 
-	Visitor_GrowShrink_Vertical visitor_GrowShrink_Vertical;
-	visitor_GrowShrink_Vertical.breadthFirstGrowShrink(this);
+		Visitor_GrowShrink_Vertical visitor_GrowShrink_Vertical;
+		visitor_GrowShrink_Vertical.breadthFirstGrowShrink(this);
 
-	Visitor_Positions visitor_Positions;
-	accept(visitor_Positions);
+		Visitor_Positions visitor_Positions;
+		accept(visitor_Positions);
+	}
+
+
+	// TODO: refactor
+	if (overlay != nullptr)
+	{
+		// calculate laout using visitor pipeline
+		Visitor_CalculateMinimumSizing visitor_calculateMinimumSizing;
+		overlay->accept(visitor_calculateMinimumSizing);
+
+		Visitor_Autosize_Horizontal visitor_Autosize_Horizontal;
+		overlay->accept(visitor_Autosize_Horizontal);
+
+		Visitor_GrowShrink_Horizontal visitor_GrowShrink_Horizontal;
+		visitor_GrowShrink_Horizontal.breadthFirstGrowShrink(overlay);
+
+		Visitor_WrapText visitor_WrapText;
+		overlay->accept(visitor_WrapText);
+
+		Visitor_Autosize_Vertical visitor_Autosize_Vertical;
+		overlay->accept(visitor_Autosize_Vertical);
+
+		Visitor_GrowShrink_Vertical visitor_GrowShrink_Vertical;
+		visitor_GrowShrink_Vertical.breadthFirstGrowShrink(overlay);
+
+		Visitor_Positions visitor_Positions;
+		overlay->accept(visitor_Positions);
+	}
 }
 
 void GG::RootContainer::setInputManager(InputManager* inputManager)
@@ -37,6 +66,19 @@ void GG::RootContainer::setInputManager(InputManager* inputManager)
 	unsubscribeFromInputs();
 	this->inputManager = inputManager;
 	subscribeToInputs();
+}
+
+void GG::RootContainer::render(Canvas* canvas)
+{
+	GG::Container::render(canvas);
+
+	if (overlay != nullptr)
+		overlay->render(canvas);
+}
+
+void GG::RootContainer::accept(Visitor& visitor)
+{
+	visitor.visitForRootContainer(this);
 }
 
 void GG::RootContainer::onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY)
@@ -84,12 +126,12 @@ void GG::RootContainer::onMouseEvent(MouseEventType mouseEventType, int mouseX, 
 	if (hitElement == nullptr) return;
 
 	// we have not changed the hitElement, so the mouse has done something in the element's bounds
-	if (state == MouseState::MOUSE_UP && mouseEventType == LEFT_MOUSE_DOWN)
+	if (state == MouseState::MOUSE_UP && mouseEventType == LEFT_MOUSE_DOWN) // mouse has gone from up to down
 	{
 		state = MouseState::MOUSE_DOWN;
 
 		// if mouse event listener, trigger mouse down event
-		if (hitElement->isMouseEventListener) 
+		if (hitElement->isMouseEventListener)
 			hitElement->onMouseDown(mouseX, mouseY);
 
 		// if draggable, remember it (drags persist only when the mouse is *released*, even if the mouse exits)
@@ -98,15 +140,15 @@ void GG::RootContainer::onMouseEvent(MouseEventType mouseEventType, int mouseX, 
 
 		// deselect old activeTextInput if we clicked off of it
 		if (hitElement != activeTextInputListener && activeTextInputListener != nullptr)
-			activeTextInputListener->onMouseClickOff(); 
+			activeTextInputListener->onMouseClickOff(mouseX, mouseY);
 
 		// if selected a (different) textinput, select it
-		if (hitElement->isTextInputListener)
+		if (hitElement != nullptr && hitElement->isTextInputListener)
 			activeTextInputListener = hitElement;
 		else
 			activeTextInputListener = nullptr;
 	}
-	else if (state == MouseState::MOUSE_DOWN && mouseEventType == LEFT_MOUSE_UP)
+	else if (state == MouseState::MOUSE_DOWN && mouseEventType == LEFT_MOUSE_UP) // mouse has gone from down to up
 	{
 		state = MouseState::MOUSE_UP;
 
@@ -116,10 +158,20 @@ void GG::RootContainer::onMouseEvent(MouseEventType mouseEventType, int mouseX, 
 		// end any dragging
 		activeDragListener = nullptr;
 	}
-	else if (state == MouseState::MOUSE_DOWN && mouseEventType == MOUSE_MOVE)
+	else if (state == MouseState::MOUSE_DOWN && mouseEventType == MOUSE_MOVE) // mouse is down and has moved (aka drag)
 	{
 		if (activeDragListener != nullptr) activeDragListener->onMouseDrag(mouseX, mouseY);
 		state = MouseState::MOUSE_DOWN;
+
+		// TODO: put mouse down in the window. keep mouse down and exit the window. life mouse button whilst out of window. keep mouse up, but move it back into the window --> BUG: the window still think the mouse is being dragged, even though it is up. --> have to click to end dragging.
+		// The following code will help showcase this behaviour. You should also check how the rest of the state machine operates when the mouse exits the window
+		// static int dragCounter = 0;
+		// std::cout << "MOUSE DRAG " << dragCounter++ << std::endl;
+	}
+	else if (state == MouseState::MOUSE_UP && mouseEventType == MOUSE_MOVE) // mouse is up and has moved
+	{
+		if (hitElement->isMouseEventListener) hitElement->onMouseMove(mouseX, mouseY);
+		state = MouseState::MOUSE_UP;
 	}
 }
 

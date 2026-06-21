@@ -31,6 +31,8 @@ std::optional<SDL_Renderer*> GG::Window::init()
 		return std::nullopt;
 	}
 
+	setResizable(true);
+
 	return renderer;
 }
 

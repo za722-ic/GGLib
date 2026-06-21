@@ -23,7 +23,17 @@ void GG::Element::setMinHeight(int minH) { minHeight = minH; }
 void GG::Element::setMinHeightAuto() { minHeight = std::nullopt; }
 int GG::Element::getMinHeight()
 {
-	return minHeight.has_value() ? minHeight.value() : minHeightCalculated;
+	if (maxHeight.has_value()) // TODO: I've added this, because the priority order of iize should be: user-set min, user-set max, calculated min, calculated max. Just double check this is actually what should be going on. I'm tired rn.
+	{
+		if (minHeight.has_value()) 
+			return minHeight.value();
+		else
+			return 0;
+	}
+	else
+	{
+		return minHeight.has_value() ? minHeight.value() : minHeightCalculated;
+	}
 }
 
 void GG::Element::setMaxHeight(int maxH) { maxHeight = maxH; }
@@ -174,20 +184,32 @@ void GG::Element::render(Canvas* canvas)
 
 
 void GG::Element::onMouseEnter(int mouseX, int mouseY)
-{}
+{
+}
 void GG::Element::onMouseExit(int mouseX, int mouseY)
-{}
+{
+}
 void GG::Element::onMouseDown(int mouseX, int mouseY)
-{}
+{
+}
 void GG::Element::onMouseUp(int mouseX, int mouseY)
-{}
+{
+}
+void GG::Element::onMouseMove(int mouseX, int mouseY)
+{
+}
 void GG::Element::uiScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY)
-{}
+{
+}
 void GG::Element::onTextInput(std::string text)
-{}
-void GG::Element::onMouseClickOff()
-{}
+{
+}
+void GG::Element::onMouseClickOff(int mouseX, int mouseY)
+{
+}
 void GG::Element::uiKeyEvent(KeyEventType keyEventType, SDL_Keycode key)
-{}
+{
+}
 void GG::Element::onMouseDrag(int mouseX, int mouseY)
-{}
+{
+}

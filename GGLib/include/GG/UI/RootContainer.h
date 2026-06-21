@@ -1,14 +1,15 @@
 #pragma once
 
-#include "GG/UI/Container.h"
+#include <functional>
 
+#include "GG/UI/Container.h"
 #include "GG/Input/InputManager.h"
 
 namespace GG
 {
 	class RootContainer : public Container, ScrollEventListener, MouseEventListener, TextInputEventListener, KeyEventListener
 	{
-	private:
+	public:
 		InputManager* inputManager = nullptr;
 
 		Element* activeScrollListener = nullptr;
@@ -25,10 +26,16 @@ namespace GG
 
 		MouseState state = MouseState::MOUSE_UP;
 
+		Container* overlay = nullptr;
+
 	public:
 		void calculateLayout(int screenX, int screenY, int screenW, int screenH);
 
 		void setInputManager(InputManager* inputManager);
+
+		void render(Canvas* canvas) override;
+
+		void accept(Visitor& visitor) override;
 
 		void onScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY) override;
 		void onMouseEvent(MouseEventType mouseEventType, int mouseX, int mouseY) override;

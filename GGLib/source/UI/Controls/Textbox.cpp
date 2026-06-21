@@ -142,7 +142,7 @@ void GG::Textbox::onMouseDown(int mouseX, int mouseY)
 {
 	isFocused = true;
 }
-void GG::Textbox::onMouseClickOff()
+void GG::Textbox::onMouseClickOff(int mouseX, int mouseY)
 {
 	isFocused = false;
 }

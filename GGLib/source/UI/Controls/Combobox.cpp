@@ -1,5 +1,11 @@
 #include "GG/UI/Controls/Combobox.h"
 
+GG::Combobox::Combobox(std::string text, GG::RootContainer *root) : root(root)
+{
+	isMouseEventListener = true;
+	isTextInputListener = true;
+}
+
 // bounds
 void GG::Combobox::setBounds(int _x, int _y, int _w, int _h)
 {
@@ -29,80 +35,87 @@ std::string GG::Combobox::getText() const
 	return text;
 }
 
+void GG::Combobox::addOption(std::string optionText)
+{
+	options.push_back(optionText);
+}
+
+void GG::Combobox::clearOptions()
+{
+	options.clear();
+}
+
+std::vector<std::string> GG::Combobox::getOptions()
+{
+	return options;
+}
+
+std::string GG::Combobox::getSelectedOption()
+{
+	return options.at(selectedOptionIndex);
+}
+
 void GG::Combobox::render(Canvas* canvas)
 {
-	if (isInBounds)
+	// draw body
+	if (isMouseDown)
 	{
-		canvas->setColor(backColor);
+		canvas->setColor(backColorOnMouseDown);
+	}
+	else if (isInBounds)
+	{
+		canvas->setColor(backColorOnHover);
 	}
 	else
 	{
-		canvas->setColor(128, 128, 128);
+		canvas->setColor(backColor);
 	}
-	canvas->fillRect(x, y, w, h);
+	canvas->fillRoundedRect(screenX, screenY, w, h, radius);
 
+	// draw border and shadow
+	int borderRadius = radius + borderThickness;
+	int shadowRadius = borderRadius + shadowThickness;
+
+	// TODO: should border instead be AT screenX, screenY? (this applies to a whole bunch of other elements, including the Element class's own render function)
+	canvas->drawRoundedRect(screenX - borderThickness,
+		screenY - borderThickness,
+		w + 2 * borderThickness,
+		h + 2 * borderThickness, borderRadius, borderThickness, borderColor, borderColor);
+
+	canvas->drawRoundedRect(screenX - borderThickness - shadowThickness,
+		screenY - borderThickness - shadowThickness,
+		w + 2 * borderThickness + 2 * shadowThickness,
+		h + 2 * borderThickness + 2 * shadowThickness,
+		shadowRadius,
+		shadowThickness,
+		{ 0,0,0,96 }, { 0,0,0,0 });
+
+	// draw text
 	canvas->setColor(foreColor);
 	canvas->setAlignment(GG::Canvas::Alignment::CENTER_CENTER);
-	canvas->drawString(text, x + w / 2, y + h / 2);
+	canvas->drawString(text, screenX + w / 2, screenY + h / 2);
 	canvas->setAlignment(GG::Canvas::Alignment::TOP_LEFT); // TODO: it would be useful if you could push/pop canvas states, rather than having to restore values manually (esp. since the user might not have has TOP_LEFT before this call, and also since we aren't currently restoring the color)
 
-	if (isExpanded)
+	// draw arrow
+	canvas->setColor({ foreColor.r, foreColor.g, foreColor.b, 128});
+	const int size = 5;
+	const int arrowPadding = 10;
+	const float PI = 3.14159265359;
+	float angle;
+	if (pnlDropDownOptions == nullptr)
 	{
-		for (int i = 0; i < options.size(); i++)
-		{
-			int optionY = y + (i + 1) * h;
-
-			if (i == indexToHighlight)
-				canvas->setColor(backColor);
-			else
-				canvas->setColor(128, 128, 128);
-
-			canvas->fillRect(x, optionY, w, h);
-
-			canvas->setColor(foreColor);
-			canvas->setAlignment(GG::Canvas::Alignment::CENTER_CENTER);
-			canvas->drawString(options.at(i), x + w / 2, optionY + h / 2);
-			canvas->setAlignment(GG::Canvas::Alignment::TOP_LEFT); // TODO: it would be useful if you could push/pop canvas states, rather than having to restore values manually (esp. since the user might not have has TOP_LEFT before this call, and also since we aren't currently restoring the color)
-		}
+		angle = 2 * PI * 0.25f;
 	}
-}
-
-// mouse events
-void GG::Combobox::onMouseEvent(GG::MouseEventType mouseEventType, int mouseX, int mouseY)
-{
-	isInBounds = (mouseX >= x && mouseX < x + w) && (mouseY >= y && mouseY < y + h);
-	bool isInBoundsExpanded = (mouseX >= x && mouseX < x + w) && (mouseY >= y && mouseY < y + h * (options.size() + 1));
-
-
-	if (mouseEventType == GG::MouseEventType::LEFT_MOUSE_UP)
+	else
 	{
-		if (isExpanded && isInBoundsExpanded)
-		{
-			int selectedOptionIndex = (mouseY - y - h) / h;
-			setText(options.at(selectedOptionIndex));
-			isExpanded = false;
-
-		}
-
-		if (isInBounds)
-		{
-			isExpanded = !isExpanded;
-		}
-		else
-		{
-			isExpanded = false;
-		}
+		angle = 2 * PI * 0.75f;
 	}
+	canvas->renderRegularPolygon(screenX + w - size - arrowPadding, screenY + h / 2, 3, angle, size);
 
-	if (mouseEventType == GG::MouseEventType::MOUSE_MOVE)
+	// update dropdown item positions in case combobox has moved
+	if (pnlDropDownOptions != nullptr)
 	{
-		if (isExpanded && isInBoundsExpanded)
-		{
-			indexToHighlight = (mouseY - y - h) / h;
-		}
-		else
-		{
-			indexToHighlight = -1;
-		}
+		pnlDropDownOptions->x = screenX;
+		pnlDropDownOptions->y = screenY + h;
 	}
 }

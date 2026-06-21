@@ -44,12 +44,12 @@ namespace GG
 		int maxWidthCalculated = INT_MAX;
 		int maxHeightCalculated = INT_MAX;
 
-		int screenX;
-		int screenY;
+		int screenX = 0;
+		int screenY = 0;
 
-		Container* parent;
+		Container* parent = nullptr;
 
-		SDL_Color color;
+		SDL_Color color = { 255,0,255,0 };
 
 		bool horizontalAutosize = false;
 		bool verticalAutosize = false;
@@ -150,13 +150,14 @@ namespace GG
 		virtual void onMouseExit(int mouseX, int mouseY);
 		virtual void onMouseDown(int mouseX, int mouseY);
 		virtual void onMouseUp(int mouseX, int mouseY);
+		virtual void onMouseMove(int mouseX, int mouseY);
 
 		// scroll event
 		virtual void uiScrollEvent(int mouseX, int mouseY, float scrollX, float scrollY);
 
 		// text input events
 		virtual void onTextInput(std::string text);
-		virtual void onMouseClickOff();
+		virtual void onMouseClickOff(int mouseX, int mouseY);
 		virtual void uiKeyEvent(KeyEventType keyEventType, SDL_Keycode key);
 
 		// drag event

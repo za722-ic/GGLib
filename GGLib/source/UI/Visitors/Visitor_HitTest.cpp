@@ -28,6 +28,25 @@ void GG::Visitor_HitTest::visitForAbsoluteContainer(Container* container)
 	hitTestContainer(container);
 }
 
+void GG::Visitor_HitTest::visitForRootContainer(RootContainer* rootContainer)
+{
+	if (!isMouseInElement(rootContainer)) return;
+
+	hitElement = rootContainer;
+
+	if (rootContainer->isScrollEventListener) hitScrollListener = rootContainer;
+
+	for (auto child : rootContainer->children)
+	{
+		child->accept(*this);
+	}
+
+	if (rootContainer->overlay != nullptr)
+	{
+		rootContainer->overlay->accept(*this);
+	}
+}
+
 void GG::Visitor_HitTest::hitTestContainer(Container* container)
 {
 	if (!isMouseInElement(container)) return;
