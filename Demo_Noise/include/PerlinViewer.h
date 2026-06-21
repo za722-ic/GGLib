@@ -21,6 +21,7 @@ public:
 
 	int resolutionDivision = 8;
 	bool roundNoise = false;
+	bool isClippedColorDrawn = false;
 
 	int octaves = 1;
 	float initialAmplitude = 1.0f;
@@ -133,11 +134,17 @@ private:
 
 		// draw color onto buffered image
 		int grayscaleValue = noiseVal * 255;
+		
+		if (!isClippedColorDrawn)
+		{
+			grayscaleValue = GG::MoreMath::clamp(grayscaleValue, 0, 255);
+		}
+
 		if (grayscaleValue > 255)
 			canvas->setColor(255, 0, 255);
 		else if (grayscaleValue < 0)
 			canvas->setColor(255, 255, 0);
-		else                           
+		else
 			canvas->setColor(grayscaleValue);
 
 		canvas->drawRect(x, y, 1, 1);

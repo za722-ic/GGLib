@@ -158,6 +158,7 @@ GG::Container* Noise::createPanel(std::string panelTitle, GG::Button* btnReset, 
 	titleBar->horizontalAlignmentMode = GG::HAlignmentMode::LEFT;
 	titleBar->isVisible = false;
 	titleBar->verticalAutosize = true;
+	titleBar->setPadding(4, 7, 4, 4);
 	
 	titleBar->add(createLabel(panelTitle));
 	if (btnReset != nullptr)
@@ -179,6 +180,7 @@ GG::Container* Noise::createPanel(std::string panelTitle, GG::Button* btnReset, 
 		bar->verticalAlignmentMode = GG::VAlignmentMode::CENTER;
 		bar->isVisible = false;
 		bar->verticalAutosize = true;
+		bar->setPadding(4, 7, 4, 4);
 
 		bar->add(createLabel(controlLabels[i]));
 		bar->add(new GG::HorizontalSpacer(100));
@@ -217,11 +219,13 @@ void Noise::defineElements()
 	sidebar->layoutDirection = GG::LayoutDirection::TOP_TO_BOTTOM;
 	sidebar->verticalAlignmentMode = GG::VAlignmentMode::TOP;
 	sidebar->horizontalAutosize = true;
-	sidebar->setPadding(0);
+	sidebar->setPadding(8);
 	sidebar->setChildGap(26);
 	sidebar->isVisible = false;
-	// sidebar->setColor(0xff00ff);
+	sidebar->setColor(0xff00ff);
 	sidebar->setScrollable(true);
+	sidebar->borderColor = { 255,255,255,255 };
+	sidebar->borderThickness = 1;
 	root->add(sidebar);
 
 	perlinViewer = new PerlinViewer();
